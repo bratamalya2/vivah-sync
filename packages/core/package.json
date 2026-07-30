@@ -1,0 +1,17 @@
+{
+  "name": "@vivahsync/core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./pdf": "./src/pdf.ts"
+  },
+  "dependencies": {
+    "pdfkit": "^0.15.2"
+  },
+  "devDependencies": {
+    "@types/pdfkit": "^0.13.9"
+  }
+}

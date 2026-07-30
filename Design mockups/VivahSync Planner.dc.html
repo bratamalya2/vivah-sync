@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="_ds/modernist-c5829d3f-7748-4bf4-aa11-afb50e5f4b73/styles.css">
+<script src="_ds/modernist-c5829d3f-7748-4bf4-aa11-afb50e5f4b73/_ds_bundle.js"></script>
+<style>
+  /* Modernist accent ramp retuned to the VivahSync brand: maroon primary, gold secondary. */
+  :root, #dc-root, .sc-host {
+    --vs-maroon:#6B1226;
+    --vs-maroon-100:#FCF3F5; --vs-maroon-200:#F6E4E8; --vs-maroon-300:#E5C6CD;
+    --vs-maroon-400:#C07084; --vs-maroon-500:#8E1B32; --vs-maroon-600:#6B1226;
+    --vs-maroon-700:#55101F; --vs-maroon-800:#3E0A16; --vs-maroon-900:#2A070F;
+    --vs-gold:#D99A2B;
+    --vs-gold-100:#FBF6EE; --vs-gold-200:#F3E6D2; --vs-gold-300:#E3D0AE;
+    --vs-gold-400:#E3C07A; --vs-gold-500:#D99A2B; --vs-gold-600:#B57C1C;
+    --vs-gold-700:#8A6A22; --vs-gold-800:#614A18; --vs-gold-900:#3F300F;
+    --color-accent: #6B1226;
+  }
+  *{ box-sizing:border-box; }
+  html, body { margin:0; padding:0; }
+  body { font-variant-numeric: tabular-nums; -webkit-font-smoothing:antialiased; }
+  a { color: var(--vs-maroon-700); text-decoration:none; text-underline-offset:3px; }
+  a:hover { color: var(--vs-maroon); text-decoration:underline; }
+  button { font-family:inherit; cursor:pointer; border-radius:0; }
+  select, input { font-family:inherit; border-radius:0; }
+  /* Density only — .btn / .input / .tag visuals stay the system's. This is a dense power tool. */
+  .btn { min-height:30px; padding:5px 11px; font-size:12px; font-weight:600; }
+  .btn-block { margin-top:0; }
+  .btn-sm { min-height:26px; padding:3px 8px; font-size:11px; }
+  .btn-step { width:26px; min-height:26px; padding:0; justify-content:center; }
+  .input { min-height:32px; padding:5px 8px; font-size:12px; }
+  .tag { text-transform:uppercase; letter-spacing:0.08em; font-size:9px; font-weight:700; padding:2px 6px; }
+  ::-webkit-scrollbar { width:10px; height:10px; }
+  ::-webkit-scrollbar-thumb { background: var(--color-neutral-300); border:3px solid var(--color-bg); }
+</style>
+</helmet>
+
+<div style="display:flex; flex-direction:column; height:100vh; min-height:720px; background:var(--color-bg); font-size:13px;">
+
+  <div style="display:flex; align-items:center; gap:20px; height:52px; flex:0 0 52px; padding:0 16px; background:var(--vs-maroon-800); color:var(--color-bg); border-bottom:1px solid var(--vs-maroon-900);">
+    <div style="display:flex; align-items:center; gap:9px;">
+      <div style="width:26px; height:26px; display:grid; place-items:center; background:var(--vs-gold); color:var(--vs-maroon-800); font-size:15px; font-weight:700; line-height:1;">∞</div>
+      <div style="font-size:15px; font-weight:700; letter-spacing:-0.2px;">VivahSync</div>
+    </div>
+    <div style="width:1px; height:22px; background:var(--vs-maroon-600);"></div>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <div style="font-size:12px; font-weight:600;">Shubh Muhurat Weddings</div>
+      <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; padding:3px 6px; background:var(--vs-gold); color:var(--vs-maroon-800);">Studio · ₹5,999/mo</div>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px; margin-left:8px; padding:5px 10px; background:var(--vs-maroon-700); border:1px solid var(--vs-maroon-600);">
+      <span style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--vs-maroon-300);">Project</span>
+      <span style="font-size:12px; font-weight:600;">Mehra–Kapoor</span>
+      <span style="font-family:var(--font-body); letter-spacing:0.01em; font-size:11px; color:var(--vs-maroon-300);">12–16 Feb 2027 · Jaipur</span>
+      <span style="font-size:10px; color:var(--vs-maroon-300);"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span>
+    </div>
+    <div style="flex:1;"></div>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:11px; color:var(--vs-maroon-300);">T−{{ daysOut }} days</div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div style="width:24px; height:24px; display:grid; place-items:center; background:var(--vs-gold); color:var(--vs-maroon-800); font-size:10px; font-weight:700;">PM</div>
+        <div style="font-size:12px;">Priya Mehta</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex; flex:1; min-height:0;">
+
+    <div style="width:238px; flex:0 0 238px; background:var(--color-surface); border-right:2px solid var(--color-divider); overflow-y:auto; padding-bottom:24px;">
+      <div style="padding:16px 14px 6px; font-size:9px; font-weight:700; letter-spacing:0.11em; text-transform:uppercase; color:var(--color-neutral-700);">Agency</div>
+      <sc-for list="{{ agencyNav }}" as="item" hint-placeholder-count="4">
+        <button onClick="{{ item.go }}" style="{{ item.style }}">
+          <span>{{ item.label }}</span>
+          <span style="font-family:var(--font-body); letter-spacing:0.01em; font-size:10px; color:var(--color-neutral-700);">{{ item.badge }}</span>
+        </button>
+      </sc-for>
+      <div style="padding:20px 14px 6px; font-size:9px; font-weight:700; letter-spacing:0.11em; text-transform:uppercase; color:var(--color-neutral-700);">Mehra–Kapoor</div>
+      <sc-for list="{{ projectNav }}" as="item" hint-placeholder-count="6">
+        <button onClick="{{ item.go }}" style="{{ item.style }}">
+          <span>{{ item.label }}</span>
+          <span style="{{ item.badgeStyle }}">{{ item.badge }}</span>
+        </button>
+      </sc-for>
+      <div style="padding:20px 14px 6px; font-size:9px; font-weight:700; letter-spacing:0.11em; text-transform:uppercase; color:var(--color-neutral-700);">Views</div>
+      <sc-for list="{{ viewNav }}" as="item" hint-placeholder-count="2">
+        <button onClick="{{ item.go }}" style="{{ item.style }}">
+          <span>{{ item.label }}</span>
+          <span style="font-family:var(--font-body); letter-spacing:0.01em; font-size:10px; color:var(--color-neutral-700);">{{ item.badge }}</span>
+        </button>
+      </sc-for>
+      <div style="margin:22px 14px 0; padding:10px; background:var(--vs-gold-100); border:1px solid var(--vs-gold-300);">
+        <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--vs-gold-800);">Data scope</div>
+        <div style="margin-top:5px; font-size:11px; line-height:1.45; color:var(--color-neutral-700);">You are <strong style="color:var(--color-text);">FULL</strong> on this project. Vendors see only their own booking; family sees schedule only.</div>
+      </div>
+    </div>
+
+    <div style="flex:1; min-width:0; overflow-y:auto;">
+
+      <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ true }}">
+        <div style="padding:18px 22px 40px;">
+          <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:16px; padding-bottom:14px; border-bottom:2px solid var(--color-divider);">
+            <div>
+              <div style="font-size:9px; font-weight:700; letter-spacing:0.11em; text-transform:uppercase; color:var(--color-neutral-700);">Project dashboard · computed live, never stored</div>
+              <div style="margin-top:5px; font-size:22px; font-weight:700; letter-spacing:-0.4px;">Mehra–Kapoor · 6 ceremonies across 5 days</div>
+            </div>
+            <div style="display:flex; gap:6px; flex:0 0 auto;">
+              <button onClick="{{ setDashA }}" style="{{ dashAStyle }}">Layout A · Risk-first</button>
+              <button onClick="{{ setDashB }}" style="{{ dashBStyle }}">Layout B · Grid</button>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(5,1fr); border:2px solid var(--color-divider); border-bottom:none; background:var(--color-surface); margin-top:16px;">
+            <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="5">
+              <div style="padding:12px 14px; border-right:1px solid var(--color-neutral-300); border-bottom:2px solid var(--color-divider);">
+                <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700);">{{ k.label }}</div>
+                <div style="{{ k.valueStyle }}">{{ k.value }}</div>
+                <div style="font-size:11px; color:var(--color-neutral-700);">{{ k.sub }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="{{ dashGridStyle }}">
+
+            <div style="border:2px solid var(--color-divider); background:var(--color-surface);">
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-bottom:2px solid var(--color-divider); background:var(--color-neutral-200);">
+                <div style="font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">Risks requiring action</div>
+                <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:10px; color:var(--color-neutral-700);">FR-801.1 · recomputed 2 min ago</div>
+              </div>
+              <sc-for list="{{ risks }}" as="r" hint-placeholder-count="5">
+                <div style="display:grid; grid-template-columns:76px 1fr auto; gap:12px; align-items:start; padding:11px 14px; border-bottom:1px solid var(--color-neutral-300);">
+                  <div class="tag" style="{{ r.sevStyle }}">{{ r.sev }}</div>
+                  <div>
+                    <div style="font-size:13px; font-weight:600;">{{ r.title }}</div>
+                    <div style="margin-top:3px; font-size:12px; color:var(--color-neutral-700); line-height:1.45;">{{ r.detail }}</div>
+                    <div style="margin-top:5px; font-family:var(--font-body); letter-spacing:0.01em; font-size:10px; color:var(--color-neutral-700);">{{ r.meta }}</div>
+                  </div>
+                  <button onClick="{{ r.go }}" class="btn btn-secondary btn-sm" style="color:var(--vs-maroon); border-color:var(--vs-maroon-300); white-space:nowrap;">{{ r.cta }}</button>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:14px;">
+              <div style="border:2px solid var(--color-divider); background:var(--color-surface);">
+                <div style="padding:10px 14px; border-bottom:2px solid var(--color-divider); background:var(--color-neutral-200); font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">Upcoming ceremonies</div>
+                <sc-for list="{{ upcoming }}" as="e" hint-placeholder-count="6">
+                  <div style="display:grid; grid-template-columns:54px 1fr auto; gap:10px; align-items:center; padding:9px 14px; border-bottom:1px solid var(--color-neutral-300);">
+                    <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:11px; color:var(--color-neutral-700);">{{ e.dayLabel }}</div>
+                    <div>
+                      <div style="font-size:12px; font-weight:600;">{{ e.name }}</div>
+                      <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:11px; color:var(--color-neutral-700);">{{ e.timeLabel }} · {{ e.spaceName }}</div>
+                    </div>
+                    <div style="{{ e.capStyle }}">{{ e.capLabel }}</div>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="border:2px solid var(--color-divider); background:var(--color-surface);">
+                <div style="padding:10px 14px; border-bottom:2px solid var(--color-divider); background:var(--color-neutral-200); font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">Unconfirmed vendors</div>
+                <sc-for list="{{ unconfirmed }}" as="v" hint-placeholder-count="3">
+                  <div style="display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center; padding:9px 14px; border-bottom:1px solid var(--color-neutral-300);">
+                    <div>
+                      <div style="font-size:12px; font-weight:600;">{{ v.name }}</div>
+                      <div style="font-size:11px; color:var(--color-neutral-700);">{{ v.category }} · {{ v.eventName }} · {{ v.amountLabel }}</div>
+                    </div>
+                    <div class="tag" style="{{ v.statusStyle }}">{{ v.status }}</div>
+                  </div>
+                </sc-for>
+                <button onClick="{{ goVendors }}" class="btn btn-ghost btn-block" style="border-top:1px solid var(--color-neutral-300);">Open vendor pipeline <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isTimeline }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; height:100%; min-height:0;">
+          <div style="flex:1; min-width:0; padding:18px 20px 40px; overflow-y:auto;">
+            <div style="display:flex; align-items:flex-end; justify-content:space-between; padding-bottom:12px; border-bottom:2px solid var(--color-divider);">
+              <div>
+                <div style="font-size:9px; font-weight:700; letter-spacing:0.11em; text-transform:uppercase; color:var(--color-neutral-700);">Day-by-day structure · FR-021.1 / FR-101.1</div>
+                <div style="margin-top:5px; font-size:20px; font-weight:700; letter-spacing:-0.3px;">Ceremony schedule · Fairmont Jaipur</div>
+              </div>
+              <button onClick="{{ toggleBuffers }}" style="{{ bufferBtnStyle }}">{{ bufferBtnLabel }}</button>
+            </div>
+
+            <div style="display:flex; gap:0; margin-top:14px; border:2px solid var(--color-divider); background:var(--color-surface);">
+              <sc-for list="{{ dayTabs }}" as="d" hint-placeholder-count="5">
+                <button onClick="{{ d.go }}" style="{{ d.style }}">
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--color-neutral-700);">{{ d.dow }}</div>
+                  <div style="margin-top:2px; font-size:13px; font-weight:700;">{{ d.date }}</div>
+                  <div style="margin-top:2px; font-size:11px; color:var(--color-neutral-700);">{{ d.summary }}</div>
+                </button>
+              </sc-for>
+            </div>
+
+            <div style="margin-top:14px; border:2px solid var(--color-divider); background:var(--color-surface); overflow-x:auto;">
+              <div style="min-width:860px;">
+              <div style="display:grid; grid-template-columns:150px 1fr; border-bottom:2px solid var(--color-divider); background:var(--color-neutral-200);">
+                <div style="padding:8px 12px; font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); border-right:2px solid var(--color-divider);">Venue space</div>
+                <div style="position:relative; height:28px;">
+                  <sc-for list="{{ ticks }}" as="t" hint-placeholder-count="9">
+                    <div style="{{ t.style }}">{{ t.label }}</div>
+                  </sc-for>
+                </div>
+              </div>
+              <sc-for list="{{ ganttRows }}" as="row" hint-placeholder-count="4">
+                <div style="display:grid; grid-template-columns:150px 1fr; border-bottom:1px solid var(--color-neutral-300); min-height:52px;">
+                  <div style="padding:9px 12px; border-right:2px solid var(--color-divider);">
+                    <div style="font-size:12px; font-weight:600;">{{ row.name }}</div>
+                    <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:10px; color:var(--color-neutral-700);">cap {{ row.cap }} · {{ row.type }}</div>
+                  </div>
+                  <div style="position:relative; background-image:repeating-linear-gradient(to right, var(--color-neutral-200) 0 1px, transparent 1px 12.5%);">
+                    <sc-for list="{{ row.bars }}" as="b" hint-placeholder-count="1">
+                      <div onClick="{{ b.go }}" style="{{ b.style }}">{{ b.label }}</div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+              </div>
+            </div>
+
+            <div style="margin-top:14px; border:2px solid var(--color-divider); background:var(--color-surface);">
+              <div style="padding:10px 14px; border-bottom:2px solid var(--color-divider); background:var(--color-neutral-200); font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">Ceremonies on this day</div>
+              <sc-for list="{{ dayEvents }}" as="e" hint-placeholder-count="2">
+                <div onClick="{{ e.go }}" style="{{ e.rowStyle }}">
+                  <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:12px; font-weight:500;">{{ e.timeLabel }}</div>
+                  <div>
+                    <div style="font-size:13px; font-weight:600;">{{ e.name }}</div>
+                    <div style="font-size:11px; color:var(--color-neutral-700);">{{ e.spaceName }} · {{ e.guests }} guests · owner {{ e.owner }} · {{ e.vendorCount }} vendors locked</div>
+                  </div>
+                  <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:10px; color:var(--color-neutral-700);">setup {{ e.setupLabel }} / teardown {{ e.teardownLabel }}</div>
+                  <div style="font-size:11px; font-weight:600; color:var(--vs-maroon);">Edit <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></div>
+                </div>
+              </sc-for>
+              <sc-if value="{{ noDayEvents }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:22px 14px; text-align:center; font-size:12px; color:var(--color-neutral-700);">No ceremonies scheduled on this day. Vendor load-in holds may still occupy spaces.</div>
+              </sc-if>
+            </div>
+          </div>
+
+          <div style="width:372px; flex:0 0 372px; border-left:2px solid var(--color-divider); background:var(--color-surface); overflow-y:auto;">
+            <div style="padding:14px; border-bottom:2px solid var(--color-divider); background:var(--color-neutral-200);">
+              <div style="font-size:9px; font-weight:700; letter-spacing:0.11em; text-transform:uppercase; color:var(--color-neutral-700);">Editing ceremony</div>
+              <div style="margin-top:4px; font-size:16px; font-weight:700;">{{ draftName }}</div>
+              <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:11px; color:var(--color-neutral-700);">{{ draftDayLabel }}</div>
+            </div>
+
+            <div style="padding:14px; display:flex; flex-direction:column; gap:12px; border-bottom:2px solid var(--color-divider);">
+              <div>
+                <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:5px;">Venue space</div>
+                <select value="{{ draftSpace }}" onChange="{{ onSpace }}" class="input">
+                  <sc-for list="{{ spaceOptions }}" as="s" hint-placeholder-count="4">
+                    <option value="{{ s.id }}">{{ s.label }}</option>
+                  </sc-for>
+                </select>
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div>
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:5px;">Start</div>
+                  <div style="display:flex; align-items:stretch; border:1px solid var(--color-neutral-400);">
+                    <button onClick="{{ startMinus }}" aria-label="Decrease start" class="btn btn-secondary btn-step" style="width:30px; min-height:32px; border:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path></svg></button>
+                    <div style="flex:1; display:grid; place-items:center; font-family:var(--font-body); letter-spacing:0.01em; font-size:13px; font-weight:600;">{{ draftStartLabel }}</div>
+                    <button onClick="{{ startPlus }}" aria-label="Increase start" class="btn btn-secondary btn-step" style="width:30px; min-height:32px; border:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></button>
+                  </div>
+                </div>
+                <div>
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:5px;">End</div>
+                  <div style="display:flex; align-items:stretch; border:1px solid var(--color-neutral-400);">
+                    <button onClick="{{ endMinus }}" aria-label="Decrease end" class="btn btn-secondary btn-step" style="width:30px; min-height:32px; border:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path></svg></button>
+                    <div style="flex:1; display:grid; place-items:center; font-family:var(--font-body); letter-spacing:0.01em; font-size:13px; font-weight:600;">{{ draftEndLabel }}</div>
+                    <button onClick="{{ endPlus }}" aria-label="Increase end" class="btn btn-secondary btn-step" style="width:30px; min-height:32px; border:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></button>
+                  </div>
+                </div>
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+                <div>
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:5px;">Setup</div>
+                  <div style="display:flex; align-items:stretch; border:1px solid var(--color-neutral-400);">
+                    <button onClick="{{ setupMinus }}" aria-label="Decrease setup" class="btn btn-secondary btn-step" style="width:26px; min-height:26px; border:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path></svg></button>
+                    <div style="flex:1; display:grid; place-items:center; font-family:var(--font-body); letter-spacing:0.01em; font-size:12px;">{{ draftSetupLabel }}</div>
+                    <button onClick="{{ setupPlus }}" aria-label="Increase setup" class="btn btn-secondary btn-step" style="width:26px; min-height:26px; border:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></button>
+                  </div>
+                </div>
+                <div>
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:5px;">Teardown</div>
+                  <div style="display:flex; align-items:stretch; border:1px solid var(--color-neutral-400);">
+                    <button onClick="{{ tdMinus }}" aria-label="Decrease teardown" class="btn btn-secondary btn-step" style="width:26px; min-height:26px; border:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path></svg></button>
+                    <div style="flex:1; display:grid; place-items:center; font-family:var(--font-body); letter-spacing:0.01em; font-size:12px;">{{ draftTdLabel }}</div>
+                    <button onClick="{{ tdPlus }}" aria-label="Increase teardown" class="btn btn-secondary btn-step" style="width:26px; min-height:26px; border:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></button>
+                  </div>
+                </div>
+                <div>
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:5px;">Guests</div>
+                  <div style="display:flex; align-items:stretch; border:1px solid var(--color-neutral-400);">
+                    <button onClick="{{ guestMinus }}" aria-label="Decrease guests" class="btn btn-secondary btn-step" style="width:26px; min-height:26px; border:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path></svg></button>
+                    <div style="flex:1; display:grid; place-items:center; font-family:var(--font-body); letter-spacing:0.01em; font-size:12px;">{{ draftGuests }}</div>
+                    <button onClick="{{ guestPlus }}" aria-label="Increase guests" class="btn btn-secondary btn-step" style="width:26px; min-height:26px; border:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></button>
+                  </div>
+                </div>
+              </div>
+              <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:10px; color:var(--color-neutral-700); line-height:1.5;">Occupies {{ draftWindowLabel }} — setup through teardown. This is the window checked against the space.</div>
+            </div>
+
+            <div style="{{ blockPanelStyle }}">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div style="{{ blockDotStyle }}"></div>
+                <div style="font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">{{ blockTitle }}</div>
+              </div>
+              <div style="margin-top:6px; font-size:12px; line-height:1.5; color:var(--color-neutral-800);">{{ blockLede }}</div>
+
+              <sc-for list="{{ violations }}" as="v" hint-placeholder-count="0">
+                <div style="margin-top:10px; background:var(--color-surface); border:1px solid var(--vs-maroon-300);">
+                  <div style="display:flex; align-items:center; justify-content:space-between; padding:7px 10px; background:var(--vs-maroon-100); border-bottom:1px solid var(--vs-maroon-200);">
+                    <div style="font-size:11px; font-weight:700; color:var(--vs-maroon);">{{ v.rule }}</div>
+                    <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:10px; color:var(--color-neutral-700);">{{ v.code }}</div>
+                  </div>
+                  <div style="padding:9px 10px;">
+                    <div style="font-size:12px; line-height:1.5;">{{ v.message }}</div>
+                    <div style="margin-top:8px; padding:8px; background:var(--color-bg); border-left:2px solid var(--vs-maroon);">
+                      <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--color-neutral-700);">Offending record</div>
+                      <div style="margin-top:3px; font-size:12px; font-weight:600;">{{ v.offenderTitle }}</div>
+                      <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:11px; color:var(--color-neutral-700);">{{ v.offenderMeta }}</div>
+                      <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:10px; color:var(--color-neutral-700); margin-top:3px;">{{ v.offenderId }}</div>
+                    </div>
+                    <div style="margin-top:8px; font-size:12px; color:var(--color-neutral-800); line-height:1.5;"><strong style="color:var(--color-text);">Fix:</strong> {{ v.fix }}</div>
+                    <button onClick="{{ v.apply }}" class="btn btn-primary btn-sm" style="margin-top:8px;">{{ v.fixLabel }}</button>
+                  </div>
+                </div>
+              </sc-for>
+
+              <sc-if value="{{ hasImpacted }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:10px; padding:9px 10px; background:var(--vs-gold-100); border:1px solid var(--vs-gold-300);">
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--vs-gold-800);">Impacted vendors need re-confirmation · FR-261.1</div>
+                  <sc-for list="{{ impacted }}" as="i" hint-placeholder-count="2">
+                    <div style="display:flex; justify-content:space-between; margin-top:5px; font-size:12px;">
+                      <span>{{ i.name }}</span>
+                      <span style="font-family:var(--font-body); letter-spacing:0.01em; color:var(--color-neutral-700);">{{ i.detail }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+
+            <div style="padding:14px; display:flex; gap:8px;">
+              <button onClick="{{ applyDraft }}" class="{{ saveBtnClass }}" style="{{ saveBtnStyle }}">{{ saveLabel }}</button>
+              <button onClick="{{ resetDraft }}" class="btn btn-secondary" style="min-height:36px;">Reset</button>
+            </div>
+            <div style="padding:0 14px 20px; font-family:var(--font-body); letter-spacing:0.01em; font-size:10px; color:var(--color-neutral-700); line-height:1.6;">{{ saveHint }}</div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isVenues }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:18px 22px 40px;">
+          <div style="padding-bottom:12px; border-bottom:2px solid var(--color-divider);">
+            <div style="font-size:9px; font-weight:700; letter-spacing:0.11em; text-transform:uppercase; color:var(--color-neutral-700);">Venue & space allocation · FR-061.1 / FR-081.1</div>
+            <div style="margin-top:5px; font-size:20px; font-weight:700; letter-spacing:-0.3px;">Fairmont Jaipur · 4 mapped spaces</div>
+            <div style="margin-top:4px; font-size:12px; color:var(--color-neutral-700);">Access 06:00–02:00 · Contact Vikram Rathore, +91 98290 44120 · Noise curfew 01:00 (overridden for Sangeet)</div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:16px;">
+            <sc-for list="{{ spaceCards }}" as="s" hint-placeholder-count="4">
+              <div style="border:2px solid var(--color-divider); background:var(--color-surface);">
+                <div style="padding:11px 12px; border-bottom:1px solid var(--color-neutral-300);">
+                  <div style="font-size:13px; font-weight:700;">{{ s.name }}</div>
+                  <div style="font-size:11px; color:var(--color-neutral-700);">{{ s.type }} · capacity {{ s.cap }}</div>
+                </div>
+                <div style="padding:11px 12px;">
+                  <div style="display:flex; justify-content:space-between; font-family:var(--font-body); letter-spacing:0.01em; font-size:11px;">
+                    <span style="color:var(--color-neutral-700);">Peak load</span><span style="font-weight:600;">{{ s.peakLabel }}</span>
+                  </div>
+                  <div style="margin-top:6px; height:6px; background:var(--color-neutral-300);">
+                    <div style="{{ s.barStyle }}"></div>
+                  </div>
+                  <div style="margin-top:9px; display:flex; flex-direction:column; gap:5px;">
+                    <sc-for list="{{ s.uses }}" as="u" hint-placeholder-count="2">
+                      <div style="display:flex; justify-content:space-between; font-size:11px;">
+                        <span>{{ u.name }}</span>
+                        <span style="font-family:var(--font-body); letter-spacing:0.01em; color:var(--color-neutral-700);">{{ u.meta }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="{{ s.flagStyle }}">{{ s.flag }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="margin-top:18px; border:2px solid var(--color-divider); background:var(--color-surface);">
+            <div style="padding:10px 14px; border-bottom:2px solid var(--color-divider); background:var(--color-neutral-200); font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">Venue rule overrides · rationale mandatory, audit-logged</div>
+            <div style="display:grid; grid-template-columns:180px 1fr 200px 150px; gap:0; padding:8px 14px; border-bottom:1px solid var(--color-neutral-300); background:var(--color-bg); font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--color-neutral-700);">
+              <div>Baseline rule</div><div>Override & rationale</div><div>Applies to</div><div>Logged</div>
+            </div>
+            <sc-for list="{{ overrides }}" as="o" hint-placeholder-count="3">
+              <div style="display:grid; grid-template-columns:180px 1fr 200px 150px; gap:0; padding:10px 14px; border-bottom:1px solid var(--color-neutral-300); align-items:start;">
+                <div style="font-size:12px; font-weight:600;">{{ o.rule }}</div>
+                <div style="font-size:12px; color:var(--color-neutral-800); line-height:1.45; padding-right:16px;">{{ o.rationale }}</div>
+                <div style="font-size:12px;">{{ o.scope }}</div>
+                <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:11px; color:var(--color-neutral-700);">{{ o.logged }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isVendors }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:18px 22px 40px;">
+          <div style="padding-bottom:12px; border-bottom:2px solid var(--color-divider);">
+            <div style="font-size:9px; font-weight:700; letter-spacing:0.11em; text-transform:uppercase; color:var(--color-neutral-700);">Vendor requirements & booking lifecycle · FR-121.1 / FR-181.1 / FR-201.1</div>
+            <div style="margin-top:5px; font-size:20px; font-weight:700; letter-spacing:-0.3px;">7 engagements · 4 locked · 1 rejected, unassigned</div>
+          </div>
+          <div style="display:flex; gap:0; margin-top:14px; border:2px solid var(--color-divider); background:var(--color-surface);">
+            <sc-for list="{{ statusCols }}" as="c" hint-placeholder-count="6">
+              <div style="flex:1; padding:10px 12px; border-right:1px solid var(--color-neutral-300);">
+                <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--color-neutral-700);">{{ c.label }}</div>
+                <div style="margin-top:3px; font-family:var(--font-body); letter-spacing:0.01em; font-size:20px; font-weight:600;">{{ c.count }}</div>
+                <div style="font-size:11px; color:var(--color-neutral-700);">{{ c.sub }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="margin-top:14px; border:2px solid var(--color-divider); background:var(--color-surface);">
+            <div style="display:grid; grid-template-columns:1.5fr 1fr 1.2fr 1fr 110px 1fr 150px; padding:8px 14px; border-bottom:2px solid var(--color-divider); background:var(--color-neutral-200); font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--color-neutral-700);">
+              <div>Vendor</div><div>Category</div><div>Ceremony & scope</div><div>Arrival → complete</div><div>Amount</div><div>Status</div><div>Action</div>
+            </div>
+            <sc-for list="{{ vendorRows }}" as="v" hint-placeholder-count="7">
+              <div style="display:grid; grid-template-columns:1.5fr 1fr 1.2fr 1fr 110px 1fr 150px; padding:11px 14px; border-bottom:1px solid var(--color-neutral-300); align-items:center;">
+                <div>
+                  <div style="font-size:13px; font-weight:600;">{{ v.name }}</div>
+                  <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:10px; color:var(--color-neutral-700);">{{ v.orgNote }}</div>
+                </div>
+                <div style="font-size:12px;">{{ v.category }}</div>
+                <div>
+                  <div style="font-size:12px;">{{ v.eventName }}</div>
+                  <div style="font-size:11px; color:var(--color-neutral-700); line-height:1.4;">{{ v.scope }}</div>
+                </div>
+                <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:11px; color:var(--color-neutral-800);">{{ v.window }}</div>
+                <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:12px; font-weight:600;">{{ v.amountLabel }}</div>
+                <div>
+                  <div class="tag" style="{{ v.statusStyle }}">{{ v.status }}</div>
+                  <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:10px; color:var(--color-neutral-700); margin-top:3px;">{{ v.statusMeta }}</div>
+                </div>
+                <div>
+                  <button onClick="{{ v.act }}" class="{{ v.actClass }}" style="{{ v.actStyle }}">{{ v.actLabel }}</button>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:10px; font-family:var(--font-body); letter-spacing:0.01em; font-size:10px; color:var(--color-neutral-700);">Draft → Sent → Accepted → Confirmed is strictly sequential. Acceptance writes locked_scope as a JSON snapshot; later edits to the requirement never rewrite what the vendor agreed to.</div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isContracts }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:18px 22px 40px;">
+          <div style="padding-bottom:12px; border-bottom:2px solid var(--color-divider);">
+            <div style="font-size:9px; font-weight:700; letter-spacing:0.11em; text-transform:uppercase; color:var(--color-neutral-700);">Vendor contract & milestone plan · FR-2841.1 / FR-2861.1 / FR-2881.1</div>
+            <div style="margin-top:5px; font-size:20px; font-weight:700; letter-spacing:-0.3px;">LensCraft Studios · Photography & cinematography</div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1.6fr 1fr; gap:16px; margin-top:16px; align-items:start;">
+            <div style="border:2px solid var(--color-divider); background:var(--color-surface);">
+              <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; border-bottom:2px solid var(--color-divider);">
+                <div style="padding:11px 14px; border-right:1px solid var(--color-neutral-300);">
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700);">Contract value</div>
+                  <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:18px; font-weight:600;">{{ contractTotalLabel }}</div>
+                </div>
+                <div style="padding:11px 14px; border-right:1px solid var(--color-neutral-300);">
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700);">GST treatment</div>
+                  <div style="font-size:13px; font-weight:600; margin-top:3px;">18% extra · registered</div>
+                </div>
+                <div style="padding:11px 14px; border-right:1px solid var(--color-neutral-300);">
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700);">Payable</div>
+                  <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:18px; font-weight:600;">{{ payableLabel }}</div>
+                </div>
+                <div style="padding:11px 14px;">
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700);">Paid to date</div>
+                  <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:18px; font-weight:600; color:var(--vs-gold-800);">{{ paidLabel }}</div>
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1.4fr 90px 130px 130px 1fr 90px; padding:8px 14px; border-bottom:1px solid var(--color-neutral-300); background:var(--color-neutral-200); font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--color-neutral-700);">
+                <div>Milestone</div><div>Share</div><div>Amount</div><div>Due</div><div>Trigger</div><div></div>
+              </div>
+              <sc-for list="{{ milestoneRows }}" as="m" hint-placeholder-count="4">
+                <div style="display:grid; grid-template-columns:1.4fr 90px 130px 130px 1fr 90px; padding:10px 14px; border-bottom:1px solid var(--color-neutral-300); align-items:center;">
+                  <div>
+                    <div style="font-size:13px; font-weight:600;">{{ m.name }}</div>
+                    <div class="tag" style="{{ m.stateStyle }}">{{ m.state }}</div>
+                  </div>
+                  <div style="display:flex; align-items:stretch; border:1px solid var(--color-neutral-400); height:26px;">
+                    <button onClick="{{ m.dec }}" aria-label="Decrease share" class="btn btn-secondary btn-step" style="width:22px; min-height:24px; border:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path></svg></button>
+                    <div style="flex:1; display:grid; place-items:center; font-family:var(--font-body); letter-spacing:0.01em; font-size:12px; font-weight:600;">{{ m.pctLabel }}</div>
+                    <button onClick="{{ m.inc }}" aria-label="Increase share" class="btn btn-secondary btn-step" style="width:22px; min-height:24px; border:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></button>
+                  </div>
+                  <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:12px;">{{ m.amountLabel }}</div>
+                  <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:12px; color:var(--color-neutral-800);">{{ m.due }}</div>
+                  <div style="font-size:11px; color:var(--color-neutral-700);">{{ m.trigger }}</div>
+                  <div><button onClick="{{ m.remove }}" class="btn btn-secondary btn-sm">Remove</button></div>
+                </div>
+              </sc-for>
+
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px; background:var(--color-bg);">
+                <button onClick="{{ addMilestone }}" class="btn btn-secondary" style="color:var(--vs-maroon); border-style:dashed; border-color:var(--vs-maroon-300);"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg> Add milestone</button>
+                <div style="text-align:right;">
+                  <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:11px; color:var(--color-neutral-700);">Allocated</div>
+                  <div style="{{ sumStyle }}">{{ sumLabel }}</div>
+                </div>
+              </div>
+              <div style="height:8px; background:var(--color-neutral-300); margin:0 14px 14px; position:relative;">
+                <div style="{{ sumBarStyle }}"></div>
+                <div style="position:absolute; left:100%; top:-4px; width:1px; height:16px; background:var(--color-text);"></div>
+              </div>
+            </div>
+
+            <div style="{{ msPanelStyle }}">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div style="{{ msDotStyle }}"></div>
+                <div style="font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">{{ msTitle }}</div>
+              </div>
+              <div style="margin-top:7px; font-size:12px; line-height:1.55; color:var(--color-neutral-800);">{{ msLede }}</div>
+              <div style="margin-top:12px; background:var(--color-surface); border:1px solid var(--color-neutral-300);">
+                <div style="display:flex; justify-content:space-between; padding:8px 10px; border-bottom:1px solid var(--color-neutral-300);">
+                  <span style="font-size:12px; color:var(--color-neutral-700);">Contract obligation</span>
+                  <span style="font-family:var(--font-body); letter-spacing:0.01em; font-size:12px; font-weight:600;">{{ contractTotalLabel }}</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding:8px 10px; border-bottom:1px solid var(--color-neutral-300);">
+                  <span style="font-size:12px; color:var(--color-neutral-700);">Milestones sum</span>
+                  <span style="font-family:var(--font-body); letter-spacing:0.01em; font-size:12px; font-weight:600;">{{ msSumAmountLabel }}</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding:8px 10px;">
+                  <span style="font-size:12px; color:var(--color-neutral-700);">Difference</span>
+                  <span style="{{ msDiffStyle }}">{{ msDiffLabel }}</span>
+                </div>
+              </div>
+              <sc-if value="{{ msBlocked }}" hint-placeholder-val="{{ true }}">
+                <div style="margin-top:12px; padding:9px 10px; background:var(--color-surface); border-left:2px solid var(--vs-maroon);">
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--color-neutral-700);">Enforcing constraint</div>
+                  <div style="margin-top:3px; font-family:var(--font-body); letter-spacing:0.01em; font-size:11px; color:var(--color-neutral-800); line-height:1.5;">payment_milestones_sum_100 · deferrable constraint trigger, FOR UPDATE on the contract row</div>
+                  <div style="margin-top:6px; font-size:12px; line-height:1.5;"><strong>Fix:</strong> {{ msFix }}</div>
+                  <button onClick="{{ balanceMilestones }}" class="btn btn-primary btn-sm" style="margin-top:8px;">Absorb difference into final milestone</button>
+                </div>
+              </sc-if>
+              <button onClick="{{ saveMilestones }}" class="{{ msSaveClass }}" style="{{ msSaveStyle }}">{{ msSaveLabel }}</button>
+              <div style="margin-top:8px; font-family:var(--font-body); letter-spacing:0.01em; font-size:10px; color:var(--color-neutral-700); line-height:1.6;">{{ msSaveHint }}</div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isLedger }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:18px 22px 40px;">
+          <div style="padding-bottom:12px; border-bottom:2px solid var(--color-divider);">
+            <div style="font-size:9px; font-weight:700; letter-spacing:0.11em; text-transform:uppercase; color:var(--color-neutral-700);">Immutable ledger & liquidity · FR-2961.1 / FR-3181.1</div>
+            <div style="margin-top:5px; font-size:20px; font-weight:700; letter-spacing:-0.3px;">Money · Mehra–Kapoor</div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); border:2px solid var(--color-divider); background:var(--color-surface); margin-top:16px;">
+            <div style="padding:12px 14px; border-right:1px solid var(--color-neutral-300);">
+              <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700);">Inflow</div>
+              <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:19px; font-weight:600; color:var(--vs-gold-800);">{{ inflowLabel }}</div>
+            </div>
+            <div style="padding:12px 14px; border-right:1px solid var(--color-neutral-300);">
+              <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700);">Outflow</div>
+              <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:19px; font-weight:600; color:var(--vs-maroon);">{{ outflowLabel }}</div>
+            </div>
+            <div style="padding:12px 14px; border-right:1px solid var(--color-neutral-300);">
+              <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700);">Cash on hand</div>
+              <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:19px; font-weight:600;">{{ balanceLabel }}</div>
+            </div>
+            <div style="padding:12px 14px;">
+              <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700);">Committed, unpaid</div>
+              <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:19px; font-weight:600; color:var(--vs-gold-800);">{{ committedLabel }}</div>
+            </div>
+          </div>
+
+          <div style="margin-top:16px; border:2px solid var(--color-divider); background:var(--color-surface);">
+            <div style="padding:10px 14px; border-bottom:2px solid var(--color-divider); background:var(--color-neutral-200); font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">Daily inflow vs outflow · prep period through event days</div>
+            <div style="display:grid; grid-template-columns:repeat(12,1fr); gap:6px; padding:16px 14px 10px; height:170px; align-items:end;">
+              <sc-for list="{{ cashDays }}" as="d" hint-placeholder-count="12">
+                <div style="display:flex; flex-direction:column; justify-content:flex-end; height:100%; gap:3px;">
+                  <div style="display:flex; align-items:flex-end; gap:2px; height:100%;">
+                    <div style="{{ d.inStyle }}"></div>
+                    <div style="{{ d.outStyle }}"></div>
+                  </div>
+                  <div style="text-align:center; font-family:var(--font-body); letter-spacing:0.01em; font-size:9px; color:var(--color-neutral-700);">{{ d.label }}</div>
+                  <div style="{{ d.flagStyle }}">{{ d.flag }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 320px; gap:16px; margin-top:16px; align-items:start;">
+            <div style="border:2px solid var(--color-divider); background:var(--color-surface);">
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-bottom:2px solid var(--color-divider); background:var(--color-neutral-200);">
+                <div style="font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">Ledger entries · append-only</div>
+                <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:10px; color:var(--color-neutral-700);">REVOKE UPDATE, DELETE · corrections are reversals</div>
+              </div>
+              <div style="display:grid; grid-template-columns:110px 1fr 120px 130px 90px; padding:8px 14px; border-bottom:1px solid var(--color-neutral-300); background:var(--color-bg); font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--color-neutral-700);">
+                <div>Recorded</div><div>Description</div><div>Mode / payer</div><div style="text-align:right;">Amount</div><div></div>
+              </div>
+              <sc-for list="{{ ledgerRows }}" as="l" hint-placeholder-count="6">
+                <div style="{{ l.rowStyle }}">
+                  <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:11px; color:var(--color-neutral-700);">{{ l.ts }}</div>
+                  <div>
+                    <div style="{{ l.descStyle }}">{{ l.desc }}</div>
+                    <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:10px; color:var(--color-neutral-700);">{{ l.ref }}</div>
+                  </div>
+                  <div style="font-size:11px; color:var(--color-neutral-700);">{{ l.mode }}</div>
+                  <div style="{{ l.amountStyle }}">{{ l.amountLabel }}</div>
+                  <div style="text-align:right;"><button onClick="{{ l.act }}" class="btn btn-secondary btn-sm" style="{{ l.actStyle }}">{{ l.actLabel }}</button></div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="border:2px solid var(--color-divider); background:var(--color-surface);">
+              <div style="padding:10px 14px; border-bottom:2px solid var(--color-divider); background:var(--color-neutral-200); font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">Record a movement</div>
+              <div style="padding:14px; display:flex; flex-direction:column; gap:11px;">
+                <div>
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:5px;">Direction</div>
+                  <div style="display:flex; gap:6px;">
+                    <button onClick="{{ setIn }}" style="{{ inBtnStyle }}">Inflow</button>
+                    <button onClick="{{ setOut }}" style="{{ outBtnStyle }}">Outflow</button>
+                  </div>
+                </div>
+                <div>
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:5px;">Counterparty</div>
+                  <select value="{{ formParty }}" onChange="{{ onParty }}" class="input">
+                    <sc-for list="{{ partyOptions }}" as="p" hint-placeholder-count="5">
+                      <option value="{{ p }}">{{ p }}</option>
+                    </sc-for>
+                  </select>
+                </div>
+                <div>
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:5px;">Mode</div>
+                  <select value="{{ formMode }}" onChange="{{ onMode }}" class="input">
+                    <sc-for list="{{ modeOptions }}" as="m" hint-placeholder-count="4">
+                      <option value="{{ m }}">{{ m }}</option>
+                    </sc-for>
+                  </select>
+                </div>
+                <div>
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:5px;">Amount</div>
+                  <div style="display:flex; align-items:stretch; border:1px solid var(--color-neutral-400);">
+                    <button onClick="{{ amtMinus }}" aria-label="Decrease amount" class="btn btn-secondary btn-step" style="width:32px; min-height:32px; border:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path></svg></button>
+                    <div style="flex:1; display:grid; place-items:center; font-family:var(--font-body); letter-spacing:0.01em; font-size:14px; font-weight:600;">{{ formAmountLabel }}</div>
+                    <button onClick="{{ amtPlus }}" aria-label="Increase amount" class="btn btn-secondary btn-step" style="width:32px; min-height:32px; border:none;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></button>
+                  </div>
+                </div>
+                <button onClick="{{ addEntry }}" class="btn btn-primary btn-block" style="min-height:38px;">Append entry</button>
+                <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:10px; color:var(--color-neutral-700); line-height:1.6;">Entries cannot be edited or deleted once written. A mistake is corrected by a compensating reversal that stays visible in the trail.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isWeddings }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:18px 22px 40px;">
+          <div style="display:flex; align-items:flex-end; justify-content:space-between; padding-bottom:12px; border-bottom:2px solid var(--color-divider);">
+            <div>
+              <div style="font-size:9px; font-weight:700; letter-spacing:0.11em; text-transform:uppercase; color:var(--color-neutral-700);">Agency workspace</div>
+              <div style="margin-top:5px; font-size:20px; font-weight:700; letter-spacing:-0.3px;">Weddings · 3 active, 1 closed</div>
+            </div>
+            <button class="btn btn-primary" style="min-height:36px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg> New wedding project</button>
+          </div>
+          <div style="margin-top:14px; border:2px solid var(--color-divider); background:var(--color-surface);">
+            <div style="display:grid; grid-template-columns:1.4fr 1fr 1fr 0.8fr 1fr 1fr 90px; padding:8px 14px; border-bottom:2px solid var(--color-divider); background:var(--color-neutral-200); font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--color-neutral-700);">
+              <div>Project</div><div>Dates</div><div>City & venue</div><div>Guests</div><div>Contracted</div><div>Risks</div><div></div>
+            </div>
+            <sc-for list="{{ weddingRows }}" as="w" hint-placeholder-count="4">
+              <div style="display:grid; grid-template-columns:1.4fr 1fr 1fr 0.8fr 1fr 1fr 90px; padding:12px 14px; border-bottom:1px solid var(--color-neutral-300); align-items:center;">
+                <div>
+                  <div style="font-size:13px; font-weight:600;">{{ w.name }}</div>
+                  <div style="font-size:11px; color:var(--color-neutral-700);">{{ w.shape }}</div>
+                </div>
+                <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:11px;">{{ w.dates }}</div>
+                <div style="font-size:12px;">{{ w.venue }}</div>
+                <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:12px;">{{ w.guests }}</div>
+                <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:12px;">{{ w.value }}</div>
+                <div style="{{ w.riskStyle }}">{{ w.risks }}</div>
+                <div><button onClick="{{ w.open }}" class="btn btn-secondary btn-sm" style="color:var(--vs-maroon); border-color:var(--vs-maroon-300);">Open</button></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isBilling }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:18px 22px 48px;">
+          <div style="padding-bottom:12px; border-bottom:2px solid var(--color-divider);">
+            <div style="font-size:9px; font-weight:700; letter-spacing:0.11em; text-transform:uppercase; color:var(--color-neutral-700);">Agency onboarding & subscription</div>
+            <div style="margin-top:5px; font-size:20px; font-weight:700; letter-spacing:-0.3px;">Sign up · pick how you pay</div>
+            <div style="margin-top:4px; font-size:12px; color:var(--color-neutral-700);">Planner agencies pay. Vendors and families use VivahSync free. Prices are GST-exclusive; registered agencies reclaim the 18% as input credit.</div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:340px 1fr; gap:20px; margin-top:18px; align-items:start;">
+            <div style="border:2px solid var(--color-divider); background:var(--color-surface);">
+              <div style="padding:10px 14px; border-bottom:2px solid var(--color-divider); background:var(--color-neutral-200); font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">Step 1 · Agency details</div>
+              <div style="padding:14px; display:flex; flex-direction:column; gap:12px;">
+                <div>
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:5px;">Agency legal name</div>
+                  <div style="padding:8px 9px; font-size:13px; border:1px solid var(--color-neutral-400); background:var(--color-surface);">Shubh Muhurat Weddings LLP</div>
+                </div>
+                <div>
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:5px;">GSTIN <span style="color:var(--vs-maroon);">required for tax invoice</span></div>
+                  <div style="padding:8px 9px; font-family:var(--font-body); letter-spacing:0.01em; font-size:13px; border:1px solid var(--color-neutral-400); background:var(--color-surface);">08AAGCS4821K1ZP</div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                  <div>
+                    <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:5px;">State</div>
+                    <div style="padding:8px 9px; font-size:13px; border:1px solid var(--color-neutral-400); background:var(--color-surface);">Rajasthan</div>
+                  </div>
+                  <div>
+                    <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:5px;">Weddings / year</div>
+                    <div style="padding:8px 9px; font-family:var(--font-body); letter-spacing:0.01em; font-size:13px; border:1px solid var(--color-neutral-400); background:var(--color-surface);">38</div>
+                  </div>
+                </div>
+                <div style="padding:9px 10px; background:var(--vs-gold-100); border:1px solid var(--vs-gold-300); font-size:11px; line-height:1.55; color:var(--color-neutral-700);">Your agency is the <strong style="color:var(--color-text);">Data Fiduciary</strong> for client and vendor data under DPDP. VivahSync processes it on your instruction — a Data Processing Agreement is signed at this step.</div>
+              </div>
+            </div>
+
+            <div>
+              <div style="font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--color-neutral-700);">Step 2 · Plan</div>
+              <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:10px;">
+                <sc-for list="{{ plans }}" as="p" hint-placeholder-count="3">
+                  <div onClick="{{ p.pick }}" style="{{ p.style }}">
+                    <div style="display:flex; align-items:center; justify-content:space-between;">
+                      <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700);">{{ p.kicker }}</div>
+                      <div style="{{ p.tagStyle }}">{{ p.tag }}</div>
+                    </div>
+                    <div style="margin-top:8px; font-size:16px; font-weight:700;">{{ p.name }}</div>
+                    <div style="margin-top:6px; display:flex; align-items:baseline; gap:5px;">
+                      <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:26px; font-weight:600; letter-spacing:-0.5px;">{{ p.price }}</div>
+                      <div style="font-size:12px; color:var(--color-neutral-700);">{{ p.unit }}</div>
+                    </div>
+                    <div style="margin-top:3px; font-family:var(--font-body); letter-spacing:0.01em; font-size:11px; color:var(--color-neutral-700);">{{ p.gst }}</div>
+                    <div style="margin-top:11px; display:flex; flex-direction:column; gap:5px;">
+                      <sc-for list="{{ p.features }}" as="f" hint-placeholder-count="3">
+                        <div style="display:flex; gap:7px; font-size:12px; line-height:1.4; color:var(--color-neutral-800);">
+                          <span style="color:var(--vs-gold); font-weight:700;">—</span><span>{{ f }}</span>
+                        </div>
+                      </sc-for>
+                    </div>
+                    <div style="{{ p.footStyle }}">{{ p.foot }}</div>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 300px; gap:12px; margin-top:14px; align-items:start;">
+                <div style="border:2px solid var(--color-divider); background:var(--color-surface); padding:14px;">
+                  <div style="font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">Step 3 · Pay via Cashfree</div>
+                  <div style="margin-top:8px; font-size:12px; color:var(--color-neutral-700); line-height:1.55;">One-time charge for the period, with an email reminder before renewal. Auto-debit mandates are not used. UPI renders a virtual QR inside VivahSync — no redirect, no lost session on event day.</div>
+                  <div style="display:flex; gap:8px; margin-top:12px;">
+                    <div style="padding:6px 10px; font-size:11px; font-weight:600; border:1px solid var(--color-neutral-400); background:var(--color-bg);">UPI QR (in-app)</div>
+                    <div style="padding:6px 10px; font-size:11px; font-weight:600; border:1px solid var(--color-neutral-400); background:var(--color-bg);">NEFT / RTGS / IMPS</div>
+                    <div style="padding:6px 10px; font-size:11px; font-weight:600; border:1px solid var(--color-neutral-400); background:var(--color-bg);">Card</div>
+                  </div>
+                </div>
+                <div style="border:1px solid var(--vs-maroon); background:var(--color-surface);">
+                  <div style="padding:9px 12px; background:var(--vs-maroon); color:var(--color-bg); font-size:10px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase;">Order summary</div>
+                  <div style="padding:12px;">
+                    <div style="display:flex; justify-content:space-between; font-size:12px; padding:4px 0;"><span style="color:var(--color-neutral-700);">{{ selPlanName }}</span><span style="font-family:var(--font-body); letter-spacing:0.01em;">{{ selPlanBase }}</span></div>
+                    <div style="display:flex; justify-content:space-between; font-size:12px; padding:4px 0; border-bottom:1px solid var(--color-neutral-300);"><span style="color:var(--color-neutral-700);">GST @ 18%</span><span style="font-family:var(--font-body); letter-spacing:0.01em;">{{ selPlanGst }}</span></div>
+                    <div style="display:flex; justify-content:space-between; align-items:baseline; padding:9px 0 0;"><span style="font-size:12px; font-weight:700;">Payable now</span><span style="font-family:var(--font-body); letter-spacing:0.01em; font-size:18px; font-weight:600;">{{ selPlanTotal }}</span></div>
+                    <button class="btn btn-primary btn-block" style="margin-top:11px; min-height:38px;">Continue to Cashfree</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:22px; display:flex; gap:26px; align-items:flex-start;">
+          <div style="width:390px; flex:0 0 390px; border:2px solid var(--color-divider); background:var(--color-surface); box-shadow:0 1px 0 var(--color-neutral-300);">
+            <div style="padding:12px 14px; background:var(--vs-maroon-800); color:var(--color-bg);">
+              <div style="display:flex; align-items:center; justify-content:space-between;">
+                <div style="font-size:9px; font-weight:700; letter-spacing:0.11em; text-transform:uppercase; color:var(--vs-maroon-300);">Event day · on ground</div>
+                <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:11px;">14 Feb · 18:42</div>
+              </div>
+              <div style="margin-top:5px; font-size:17px; font-weight:700;">Sangeet · Regal Ballroom</div>
+              <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:11px; color:var(--vs-maroon-300);">19:30 – 01:00 · 430 guests · owner Arjun</div>
+            </div>
+            <div style="padding:10px 14px; background:var(--vs-gold-100); border-bottom:1px solid var(--vs-gold-300);">
+              <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--vs-gold-800);">Now — next 90 minutes</div>
+            </div>
+            <sc-for list="{{ runSheet }}" as="r" hint-placeholder-count="6">
+              <div style="{{ r.rowStyle }}">
+                <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:13px; font-weight:600; width:52px;">{{ r.time }}</div>
+                <div style="flex:1;">
+                  <div style="font-size:14px; font-weight:600; line-height:1.3;">{{ r.title }}</div>
+                  <div style="font-size:12px; color:var(--color-neutral-700); line-height:1.4;">{{ r.who }}</div>
+                </div>
+                <button onClick="{{ r.act }}" style="{{ r.actStyle }}">{{ r.actLabel }}</button>
+              </div>
+            </sc-for>
+            <div style="padding:12px 14px; border-top:2px solid var(--color-divider); background:var(--color-bg);">
+              <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--color-neutral-700);">Key contacts</div>
+              <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
+                <sc-for list="{{ contacts }}" as="c" hint-placeholder-count="3">
+                  <div style="display:flex; align-items:center; justify-content:space-between; min-height:44px; padding:6px 10px; background:var(--color-surface); border:1px solid var(--color-neutral-300);">
+                    <div>
+                      <div style="font-size:13px; font-weight:600;">{{ c.name }}</div>
+                      <div style="font-size:11px; color:var(--color-neutral-700);">{{ c.role }}</div>
+                    </div>
+                    <div style="min-height:44px; display:flex; align-items:center; padding:0 12px; font-size:12px; font-weight:700; color:var(--vs-maroon);">Call</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <div style="max-width:420px;">
+            <div style="font-size:9px; font-weight:700; letter-spacing:0.11em; text-transform:uppercase; color:var(--color-neutral-700);">Why this view is different</div>
+            <div style="margin-top:8px; font-size:14px; line-height:1.6; color:var(--color-neutral-800);">On event day nobody browses. The mobile surface is a single ordered run-sheet with 44px+ targets, one action per row, and no money data — a phone in a crowded ballroom is the most likely device to be handed to someone else. Milestone evidence uploads happen here; media auto-purges at six months.</div>
+            <div style="margin-top:14px; padding:11px 12px; background:var(--color-surface); border:2px solid var(--color-divider);">
+              <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--color-neutral-700);">Traces</div>
+              <div style="margin-top:5px; font-family:var(--font-body); letter-spacing:0.01em; font-size:11px; color:var(--color-neutral-800); line-height:1.7;">FR-541.1 playbook · FR-581.1 evidence media · FR-581.2 six-month TTL</div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; right:18px; bottom:18px; max-width:380px; padding:11px 14px; background:var(--color-text); color:var(--color-bg); font-size:12px; line-height:1.5; box-shadow:0 6px 20px rgba(0,0,0,0.22);">{{ toast }}</div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;dashboardLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;A&quot;,&quot;B&quot;],&quot;default&quot;:&quot;B&quot;,&quot;tsType&quot;:&quot;'A' | 'B'&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;showSetupBuffers&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Timeline&quot;},&quot;demoConflict&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Timeline&quot;}}">
+const INR = n => '₹' + Math.round(n).toLocaleString('en-IN');
+const SHORT = n => n >= 100000 ? '₹' + (n / 100000).toFixed(n % 100000 === 0 ? 0 : 1) + 'L' : '₹' + Math.round(n / 1000) + 'k';
+const T = m => { const h = Math.floor(m / 60) % 24, mm = m % 60; return String(h).padStart(2, '0') + ':' + String(mm).padStart(2, '0'); };
+const DUR = m => (m >= 60 ? Math.floor(m / 60) + 'h' : '') + (m % 60 ? (m % 60) + 'm' : (m >= 60 ? '' : '0m'));
+
+const SPACES = [
+  { id: 'lawn', name: 'Mughal Lawn', cap: 600, type: 'Outdoor lawn' },
+  { id: 'ball', name: 'Regal Ballroom', cap: 450, type: 'Indoor ballroom' },
+  { id: 'terr', name: 'Amber Terrace', cap: 200, type: 'Open terrace' },
+  { id: 'pool', name: 'Poolside Court', cap: 150, type: 'Semi-open court' }
+];
+const DAYS = [
+  { dow: 'Fri', date: '12 Feb', full: 'Friday 12 Feb 2027' },
+  { dow: 'Sat', date: '13 Feb', full: 'Saturday 13 Feb 2027' },
+  { dow: 'Sun', date: '14 Feb', full: 'Sunday 14 Feb 2027' },
+  { dow: 'Mon', date: '15 Feb', full: 'Monday 15 Feb 2027' },
+  { dow: 'Tue', date: '16 Feb', full: 'Tuesday 16 Feb 2027' }
+];
+const HOLDS = [
+  { id: 'sb_0091', day: 2, spaceId: 'ball', start: 540, end: 900, label: 'Stage build & rigging — Blacklight Productions', kind: 'Vendor load-in hold' },
+  { id: 'sb_0074', day: 1, spaceId: 'lawn', start: 360, end: 690, label: 'Turf laying & irrigation — venue ops', kind: 'Venue maintenance hold' },
+  { id: 'sb_0102', day: 3, spaceId: 'terr', start: 480, end: 780, label: 'Floral prep staging — Blossom & Co', kind: 'Vendor load-in hold' }
+];
+const AXIS_START = 360, AXIS_SPAN = 1440;
+
+class Component extends DCLogic {
+  state = {
+    screen: 'dashboard',
+    dash: null,
+    buffers: null,
+    day: 2,
+    events: [
+      { id: 'ev_01', name: 'Ganesh Puja', day: 0, spaceId: 'terr', start: 540, end: 690, setup: 90, teardown: 45, guests: 60, owner: 'Arjun', vendors: 2 },
+      { id: 'ev_02', name: 'Haldi', day: 1, spaceId: 'pool', start: 600, end: 780, setup: 120, teardown: 60, guests: 140, owner: 'Priya', vendors: 3 },
+      { id: 'ev_03', name: 'Mehendi', day: 1, spaceId: 'lawn', start: 960, end: 1260, setup: 240, teardown: 90, guests: 320, owner: 'Arjun', vendors: 4 },
+      { id: 'ev_04', name: 'Sangeet', day: 2, spaceId: 'ball', start: 1170, end: 1500, setup: 240, teardown: 120, guests: 430, owner: 'Arjun', vendors: 5 },
+      { id: 'ev_05', name: 'Pheras & Baraat', day: 3, spaceId: 'lawn', start: 1200, end: 1560, setup: 480, teardown: 180, guests: 580, owner: 'Priya', vendors: 7 },
+      { id: 'ev_06', name: 'Reception', day: 4, spaceId: 'ball', start: 1140, end: 1410, setup: 300, teardown: 120, guests: 440, owner: 'Priya', vendors: 4 }
+    ],
+    sel: 'ev_04',
+    draft: null,
+    ms: [
+      { id: 'm1', name: 'Booking advance', pct: 30, due: '08 Jan 2027', trigger: 'Date-based · on signing', state: 'PAID' },
+      { id: 'm2', name: 'Pre-event balance', pct: 40, due: '05 Feb 2027', trigger: 'Date-based · T−9 days', state: 'DUE' },
+      { id: 'm3', name: 'On-day settlement', pct: 20, due: '14 Feb 2027', trigger: 'Event-based · Sangeet start', state: 'PENDING' }
+    ],
+    vendors: [
+      { id: 'v1', name: 'LensCraft Studios', orgNote: 'claimed org · raj@lenscraft.in', category: 'Photography', eventName: 'Sangeet', scope: '2 shooters, 1 cinematographer, same-night teaser', window: '17:00 → 02:00', amount: 320000, status: 'Accepted', statusMeta: 'locked 12 Jan 14:22' },
+      { id: 'v2', name: 'Saffron Catering', orgNote: 'claimed org · anita@saffron.in', category: 'Catering', eventName: 'Pheras & Baraat', scope: '580 pax, 3 live counters, Jain thali x40', window: '12:00 → 03:00', amount: 1240000, status: 'Confirmed', statusMeta: 'locked 09 Jan 11:05' },
+      { id: 'v3', name: 'Blacklight Productions', orgNote: 'FULL collaborator', category: 'Production / AV', eventName: 'Sangeet', scope: 'Stage, truss, line array, LED wall 24×10', window: '09:00 → 03:00', amount: 860000, status: 'Confirmed', statusMeta: 'locked 06 Jan 17:40' },
+      { id: 'v4', name: 'Blossom & Co', orgNote: 'claimed org', category: 'Décor & florals', eventName: 'Mehendi', scope: 'Marigold canopy, seating, 6 photo corners', window: '12:00 → 22:30', amount: 475000, status: 'Sent', statusMeta: 'sent 08 Jan · 6 days silent' },
+      { id: 'v5', name: 'Glow Makeup Studio', orgNote: 'claimed org', category: 'Hair & makeup', eventName: 'Haldi', scope: 'Bride + 4 family, on-site touch-ups', window: '07:00 → 13:00', amount: 65000, status: 'Rejected', statusMeta: 'reason: date clash' },
+      { id: 'v6', name: 'Royal Ghodi Wale', orgNote: 'unclaimed stub · planner-owned', category: 'Baraat transport', eventName: 'Pheras & Baraat', scope: 'Decorated mare, 2 handlers, band escort', window: '18:00 → 21:00', amount: 42000, status: 'Accepted', statusMeta: 'PLANNER_RECORDED 11 Jan' },
+      { id: 'v7', name: 'Ramesh Dhol Party', orgNote: 'unclaimed stub · planner-owned', category: 'Live music', eventName: 'Pheras & Baraat', scope: '6 dholis, 45-min baraat set', window: '18:00 → 20:00', amount: 18000, status: 'Draft', statusMeta: 'never sent' }
+    ],
+    ledger: [
+      { id: 'lg_1001', ts: '05 Jan 10:12', dir: 'IN', desc: 'Client advance — Mehra family', mode: 'Bank NEFT · client', amount: 1500000, ref: 'UTR HDFC0027714', day: -1 },
+      { id: 'lg_1002', ts: '08 Jan 16:40', dir: 'OUT', desc: 'LensCraft Studios — booking advance', mode: 'UPI · planner', amount: 96000, ref: 'milestone m1', day: -1 },
+      { id: 'lg_1003', ts: '10 Jan 12:03', dir: 'OUT', desc: 'Saffron Catering — 30% advance', mode: 'RTGS · planner', amount: 372000, ref: 'contract ct_0042', day: -1 },
+      { id: 'lg_1004', ts: '12 Jan 09:26', dir: 'OUT', desc: 'Blossom & Co — décor token', mode: 'Cash · planner', amount: 150000, ref: 'contract ct_0051', day: -1 },
+      { id: 'lg_1005', ts: '14 Jan 18:55', dir: 'IN', desc: 'Client tranche 2 — Mehra family', mode: 'Bank RTGS · client', amount: 800000, ref: 'UTR HDFC0031180', day: -1 }
+    ],
+    form: { dir: 'OUT', party: 'Blacklight Productions', mode: 'UPI · planner', amount: 250000 },
+    plan: 'monthly',
+    seq: 2000,
+    toast: null,
+    msSaved: false
+  };
+
+  componentDidMount() {
+    if (this.props.demoConflict) {
+      const e = this.state.events.find(x => x.id === 'ev_04');
+      this.setState({ screen: 'timeline', draft: { spaceId: e.spaceId, start: 1080, end: 1410, setup: e.setup, teardown: e.teardown, guests: e.guests } });
+    }
+  }
+
+  toast(msg) {
+    clearTimeout(this._t);
+    this.setState({ toast: msg });
+    this._t = setTimeout(() => this.setState({ toast: null }), 4200);
+  }
+  go(screen) { this.setState({ screen }); }
+  sel() { return this.state.events.find(e => e.id === this.state.sel); }
+  draft() {
+    const e = this.sel();
+    return this.state.draft || { spaceId: e.spaceId, start: e.start, end: e.end, setup: e.setup, teardown: e.teardown, guests: e.guests };
+  }
+  patch(p) { this.setState({ draft: Object.assign({}, this.draft(), p) }); }
+
+  violations() {
+    const e = this.sel(), d = this.draft(), out = [];
+    const winA = d.start - d.setup, winB = d.end + d.teardown;
+    const others = [];
+    this.state.events.forEach(o => { if (o.id !== e.id && o.day === e.day && o.spaceId === d.spaceId) others.push({ id: o.id, label: o.name + ' (ceremony)', a: o.start - o.setup, b: o.end + o.teardown, kind: 'Ceremony' }); });
+    HOLDS.forEach(h => { if (h.day === e.day && h.spaceId === d.spaceId) others.push({ id: h.id, label: h.label, a: h.start, b: h.end, kind: h.kind }); });
+    const space = SPACES.find(s => s.id === d.spaceId);
+    others.forEach(o => {
+      if (winA < o.b && o.a < winB) {
+        const ovA = Math.max(winA, o.a), ovB = Math.min(winB, o.b);
+        out.push({
+          code: 'FR-101.1 · 23P01',
+          rule: 'Space allocation overlap',
+          message: e.name + ' would occupy ' + space.name + ' from ' + T(winA) + ' to ' + T(winB) + ' including setup and teardown. That window collides with an existing booking for ' + DUR(ovB - ovA) + ' (' + T(ovA) + '–' + T(ovB) + ').',
+          offenderTitle: o.label,
+          offenderMeta: o.kind + ' · ' + T(o.a) + '–' + T(o.b) + ' · ' + space.name,
+          offenderId: 'space_bookings.' + o.id,
+          fix: 'Start ' + e.name + ' no earlier than ' + T(o.b + d.setup) + ' so setup begins after this hold releases — or move the ceremony to a free space.',
+          fixLabel: 'Shift start to ' + T(o.b + d.setup),
+          apply: () => { const shift = (o.b + d.setup) - d.start; this.patch({ start: d.start + shift, end: d.end + shift }); }
+        });
+      }
+    });
+    if (d.guests > space.cap) {
+      out.push({
+        code: 'FR-081.1',
+        rule: 'Sub-space capacity',
+        message: d.guests + ' expected guests exceed the ' + space.cap + '-person limit configured for ' + space.name + ' by ' + (d.guests - space.cap) + '.',
+        offenderTitle: space.name,
+        offenderMeta: space.type + ' · max capacity ' + space.cap,
+        offenderId: 'venue_spaces.' + space.id,
+        fix: 'Reassign to a larger space, split across adjoining spaces, or reduce the expected count.',
+        fixLabel: 'Reduce guests to ' + space.cap,
+        apply: () => this.patch({ guests: space.cap })
+      });
+    }
+    if (d.end <= d.start) {
+      out.push({ code: 'FR-121.1', rule: 'Chronology', message: 'End time is at or before start time.', offenderTitle: e.name, offenderMeta: T(d.start) + ' → ' + T(d.end), offenderId: 'events.' + e.id, fix: 'End must follow start.', fixLabel: 'Set end to ' + T(d.start + 180), apply: () => this.patch({ end: d.start + 180 }) });
+    }
+    return out;
+  }
+
+  msSum() { return this.state.ms.reduce((a, m) => a + m.pct, 0); }
+
+  renderVals() {
+    const st = this.state, S = this;
+    const CT = 320000;
+    const navBtn = (active) => ({ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', padding: '7px 14px 7px 12px', whiteSpace: 'nowrap', border: 'none', borderLeft: active ? '3px solid var(--vs-maroon)' : '3px solid transparent', background: active ? 'var(--vs-maroon-100)' : 'transparent', color: active ? 'var(--vs-maroon)' : 'var(--color-neutral-800)', fontSize: '12.5px', fontWeight: active ? 700 : 500, textAlign: 'left' });
+    const mk = (id, label, badge, badgeStyle) => ({ label, badge, go: () => S.go(id), style: navBtn(st.screen === id), badgeStyle: badgeStyle || { fontFamily: 'var(--font-body)', fontSize: '10px', color: 'var(--color-neutral-700)' } });
+    const dangerBadge = { fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 700, color: 'var(--color-surface)', background: 'var(--vs-maroon)', padding: '1px 5px' };
+
+    const e = this.sel(), d = this.draft(), viols = this.violations(), blocked = viols.length > 0;
+    const space = SPACES.find(s => s.id === d.spaceId);
+    const buffers = st.buffers === null ? (this.props.showSetupBuffers !== false) : st.buffers;
+
+    const pct = m => ((m - AXIS_START) / AXIS_SPAN) * 100;
+    const bar = (a, b, bg, color, border) => ({ position: 'absolute', left: Math.max(0, pct(a)) + '%', width: Math.min(100 - Math.max(0, pct(a)), pct(b) - Math.max(AXIS_START, a) === 0 ? 0.5 : pct(b) - pct(Math.max(AXIS_START, a))) + '%', top: '7px', bottom: '7px', background: bg, color: color, border: border, display: 'flex', alignItems: 'center', padding: '0 7px', fontSize: '11px', fontWeight: 600, overflow: 'hidden', whiteSpace: 'nowrap', cursor: 'pointer' });
+
+    const ganttRows = SPACES.map(s => {
+      const bars = [];
+      HOLDS.filter(h => h.day === st.day && h.spaceId === s.id).forEach(h => bars.push({ key: h.id, label: h.label, go: () => S.toast(h.kind + ': ' + h.label + ' · ' + T(h.start) + '–' + T(h.end)), style: Object.assign(bar(h.start, h.end, 'repeating-linear-gradient(45deg,var(--color-neutral-300) 0 6px,var(--color-neutral-300) 6px 12px)', 'var(--color-neutral-800)', '1px solid var(--color-neutral-400)'), { fontWeight: 500 }) }));
+      st.events.filter(x => x.day === st.day && x.spaceId === s.id).forEach(x => {
+        const live = x.id === e.id;
+        const dd = live ? d : x;
+        if (live && dd.spaceId !== s.id) return;
+        if (buffers) {
+          bars.push({ key: x.id + 'su', label: 'setup', go: () => S.setState({ sel: x.id, draft: null }), style: Object.assign(bar(dd.start - dd.setup, dd.start, 'var(--vs-gold-200)', 'var(--vs-gold-700)', '1px solid var(--vs-gold-300)'), { fontWeight: 500, fontSize: '10px' }) });
+          bars.push({ key: x.id + 'td', label: 'teardown', go: () => S.setState({ sel: x.id, draft: null }), style: Object.assign(bar(dd.end, dd.end + dd.teardown, 'var(--vs-gold-200)', 'var(--vs-gold-700)', '1px solid var(--vs-gold-300)'), { fontWeight: 500, fontSize: '10px' }) });
+        }
+        bars.push({ key: x.id, label: x.name + ' · ' + T(dd.start) + '–' + T(dd.end), go: () => S.setState({ sel: x.id, draft: null }), style: bar(dd.start, dd.end, live && blocked ? 'var(--vs-maroon-500)' : 'var(--vs-maroon)', 'var(--vs-maroon-100)', live ? '2px solid var(--color-text)' : '1px solid var(--vs-maroon)') });
+      });
+      if (e.day === st.day && d.spaceId === s.id && e.spaceId !== s.id) {
+        if (buffers) bars.push({ key: 'gsu', label: 'setup', go: () => {}, style: Object.assign(bar(d.start - d.setup, d.start, 'var(--vs-gold-200)', 'var(--vs-gold-700)', '1px solid var(--vs-gold-300)'), { fontSize: '10px', fontWeight: 500 }) });
+        bars.push({ key: 'ghost', label: e.name + ' · ' + T(d.start) + '–' + T(d.end), go: () => {}, style: bar(d.start, d.end, blocked ? 'var(--vs-maroon-500)' : 'var(--vs-maroon)', 'var(--vs-maroon-100)', '2px dashed var(--color-text)') });
+      }
+      return { name: s.name, cap: s.cap, type: s.type, bars };
+    });
+
+    const ticks = [];
+    for (let m = AXIS_START; m <= AXIS_START + AXIS_SPAN; m += 180) ticks.push({ label: T(m), style: { position: 'absolute', left: pct(m) + '%', top: '8px', fontFamily: 'var(--font-body)', fontSize: '10px', color: 'var(--color-neutral-700)', transform: m === AXIS_START ? 'none' : m >= AXIS_START + AXIS_SPAN ? 'translateX(-100%)' : 'translateX(-50%)' } });
+
+    const sum = this.msSum(), diff = 100 - sum;
+    const msRows = st.ms.map(m => ({
+      name: m.name, pctLabel: m.pct + '%', amountLabel: INR(CT * m.pct / 100), due: m.due, trigger: m.trigger, state: m.state,
+      stateStyle: { marginTop: '3px', background: m.state === 'PAID' ? 'var(--vs-gold-100)' : m.state === 'DUE' ? 'var(--vs-gold-100)' : 'var(--color-neutral-200)', color: m.state === 'PAID' ? 'var(--vs-gold-700)' : m.state === 'DUE' ? 'var(--vs-gold-700)' : 'var(--color-neutral-700)' },
+      inc: () => S.setState({ ms: st.ms.map(x => x.id === m.id ? Object.assign({}, x, { pct: Math.min(100, x.pct + 5) }) : x), msSaved: false }),
+      dec: () => S.setState({ ms: st.ms.map(x => x.id === m.id ? Object.assign({}, x, { pct: Math.max(0, x.pct - 5) }) : x), msSaved: false }),
+      remove: () => S.setState({ ms: st.ms.filter(x => x.id !== m.id), msSaved: false })
+    }));
+
+    const inflow = st.ledger.filter(l => l.dir === 'IN').reduce((a, l) => a + l.amount, 0);
+    const outflow = st.ledger.filter(l => l.dir === 'OUT').reduce((a, l) => a + l.amount, 0);
+    const paidLens = st.ledger.filter(l => l.desc.indexOf('LensCraft') === 0 || l.desc.indexOf('LensCraft') > -1).reduce((a, l) => a + (l.dir === 'OUT' ? l.amount : -l.amount), 0);
+
+    const cashSeed = [[0, 0], [1500000, 96000], [0, 372000], [0, 150000], [800000, 0], [0, 0], [0, 240000], [1200000, 310000], [0, 620000], [0, 980000], [0, 1450000], [0, 380000]];
+    const cashLabels = ['04', '05', '08', '10', '14', '11F', '12F', '13F', '14F', '15F', '16F', '17F'];
+    const maxCash = 1500000;
+    const cashDays = cashSeed.map((c, i) => ({
+      label: cashLabels[i],
+      inStyle: { flex: 1, height: Math.max(1, (c[0] / maxCash) * 100) + '%', background: 'var(--vs-gold-700)' },
+      outStyle: { flex: 1, height: Math.max(1, (c[1] / maxCash) * 100) + '%', background: 'var(--vs-maroon)' },
+      flag: i === 9 ? 'short' : '',
+      flagStyle: { textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, color: 'var(--vs-maroon)', minHeight: '12px' }
+    }));
+
+    const ledgerRows = st.ledger.slice().reverse().map(l => ({
+      ts: l.ts, desc: l.desc, ref: l.ref + (l.reversalOf ? ' · reverses ' + l.reversalOf : ''), mode: l.mode,
+      rowStyle: { display: 'grid', gridTemplateColumns: '110px 1fr 120px 130px 90px', padding: '10px 14px', borderBottom: '1px solid var(--color-neutral-300)', alignItems: 'center', background: l.reversed ? 'var(--vs-maroon-100)' : 'var(--color-surface)' },
+      descStyle: { fontSize: '12.5px', fontWeight: 600, textDecoration: l.reversed ? 'line-through' : 'none', color: l.reversed ? 'var(--color-neutral-700)' : 'var(--color-text)' },
+      amountLabel: (l.dir === 'IN' ? '+' : '−') + INR(l.amount),
+      amountStyle: { fontFamily: 'var(--font-body)', fontSize: '12.5px', fontWeight: 600, textAlign: 'right', color: l.dir === 'IN' ? 'var(--vs-gold-800)' : 'var(--vs-maroon)' },
+      actLabel: l.reversed ? 'reversed' : l.reversalOf ? 'reversal' : 'Reverse',
+      actStyle: { color: l.reversed || l.reversalOf ? 'var(--color-neutral-700)' : 'var(--vs-maroon)', borderColor: l.reversed || l.reversalOf ? 'var(--color-neutral-300)' : 'var(--vs-maroon-300)', cursor: l.reversed || l.reversalOf ? 'default' : 'pointer' },
+      act: () => {
+        if (l.reversed || l.reversalOf) return;
+        const id = 'lg_' + (st.seq + 1);
+        S.setState({
+          seq: st.seq + 1,
+          ledger: st.ledger.map(x => x.id === l.id ? Object.assign({}, x, { reversed: true }) : x).concat([{ id, ts: 'now', dir: l.dir === 'IN' ? 'OUT' : 'IN', desc: 'Reversal — ' + l.desc, mode: l.mode, amount: l.amount, ref: 'compensating entry', reversalOf: l.id }])
+        });
+        S.toast('Original entry kept and struck through. A compensating ' + (l.dir === 'IN' ? 'outflow' : 'inflow') + ' of ' + INR(l.amount) + ' was appended — nothing was deleted.');
+      }
+    }));
+
+    const dash = st.dash || this.props.dashboardLayout || 'A';
+    const tabBtn = active => ({ padding: '6px 11px', fontSize: '11px', fontWeight: 600, whiteSpace: 'nowrap', color: active ? 'var(--color-surface)' : 'var(--color-neutral-700)', background: active ? 'var(--vs-maroon)' : 'var(--color-surface)', border: '1px solid ' + (active ? 'var(--vs-maroon)' : 'var(--color-neutral-400)') });
+
+    const risks = [
+      { sev: 'CRITICAL', title: 'Décor vendor unconfirmed 19 days out', detail: 'Blossom & Co received the Mehendi booking request on 08 Jan and has not responded in 6 days. ₹4,75,000 of scope and the entire Mughal Lawn build depend on it.', meta: 'booking_requests.br_0051 · SENT · FR-181.1', cta: 'Chase', go: () => S.go('vendors') },
+      { sev: 'CRITICAL', title: 'Haldi has no makeup vendor', detail: 'Glow Makeup Studio rejected on 11 Jan citing a date clash. The requirement is unassigned and Haldi is in 32 days.', meta: 'vendor_requirements.vr_0033 · UNASSIGNED · FR-221.1', cta: 'Assign', go: () => S.go('vendors') },
+      { sev: 'HIGH', title: 'LensCraft milestone plan does not total 100%', detail: 'Three milestones allocate 90% of ₹3,20,000. ₹32,000 is unscheduled — the contract cannot be activated until the plan balances.', meta: 'vendor_contracts.ct_0038 · FR-2861.1', cta: 'Fix plan', go: () => S.go('contracts') },
+      { sev: 'MEDIUM', title: 'Pheras at 97% of Mughal Lawn capacity', detail: '580 expected against a 600 limit. Any late additions breach the space and force a re-allocation with 4 vendors already locked.', meta: 'events.ev_05 · FR-081.1', cta: 'Review', go: () => S.go('venues') },
+      { sev: 'MEDIUM', title: 'Projected cash short on 15 Feb', detail: 'Outflows of ₹9,80,000 fall due on the wedding day against ₹6,10,000 projected on hand. Client tranche 3 has no committed date.', meta: 'project_cash_flow · FR-3181.1', cta: 'Open ledger', go: () => S.go('ledger') }
+    ].map(r => Object.assign(r, {
+      sevStyle: { justifyContent: 'center', color: r.sev === 'CRITICAL' ? 'var(--color-bg)' : r.sev === 'HIGH' ? 'var(--vs-maroon-700)' : 'var(--vs-gold-800)', background: r.sev === 'CRITICAL' ? 'var(--vs-maroon)' : r.sev === 'HIGH' ? 'var(--vs-maroon-200)' : 'var(--vs-gold-200)' }
+    }));
+
+    const upcoming = st.events.map(x => {
+      const sp = SPACES.find(s => s.id === x.spaceId), ratio = x.guests / sp.cap;
+      return { dayLabel: DAYS[x.day].date, name: x.name, timeLabel: T(x.start) + '–' + T(x.end), spaceName: sp.name, capLabel: x.guests + '/' + sp.cap, capStyle: { fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 600, padding: '2px 6px', color: ratio > 0.95 ? 'var(--vs-maroon)' : 'var(--color-neutral-700)', background: ratio > 0.95 ? 'var(--vs-maroon-200)' : 'var(--color-neutral-200)' } };
+    });
+
+    const statusStyle = s => ({ color: s === 'Confirmed' || s === 'Accepted' ? 'var(--vs-gold-700)' : s === 'Rejected' ? 'var(--color-surface)' : s === 'Sent' ? 'var(--vs-gold-700)' : 'var(--color-neutral-700)', background: s === 'Confirmed' || s === 'Accepted' ? 'var(--vs-gold-100)' : s === 'Rejected' ? 'var(--vs-maroon)' : s === 'Sent' ? 'var(--vs-gold-100)' : 'var(--color-neutral-200)' });
+    const NEXT = { Draft: 'Sent', Sent: 'Accepted', Accepted: 'Confirmed' };
+    const vendorRows = st.vendors.map(v => ({
+      name: v.name, orgNote: v.orgNote, category: v.category, eventName: v.eventName, scope: v.scope, window: v.window,
+      amountLabel: INR(v.amount), status: v.status, statusMeta: v.statusMeta, statusStyle: statusStyle(v.status),
+      actLabel: v.status === 'Rejected' ? 'Replace vendor' : v.status === 'Confirmed' ? 'Locked' : 'Move to ' + NEXT[v.status],
+      actClass: v.status === 'Confirmed' ? 'btn btn-secondary btn-sm btn-block' : 'btn btn-primary btn-sm btn-block',
+      actStyle: { cursor: v.status === 'Confirmed' ? 'default' : 'pointer' },
+      act: () => {
+        if (v.status === 'Confirmed') return;
+        if (v.status === 'Rejected') { S.toast('Rejection reason is already recorded. Pick a replacement for the Haldi makeup requirement, or mark it unassigned — the requirement will not close silently.'); return; }
+        const nx = NEXT[v.status];
+        S.setState({ vendors: st.vendors.map(x => x.id === v.id ? Object.assign({}, x, { status: nx, statusMeta: nx === 'Accepted' ? 'locked just now · scope snapshot written' : nx === 'Confirmed' ? 'confirmed just now' : 'sent just now' }) : x) });
+        if (nx === 'Accepted') S.toast(v.name + ' accepted. The slot is locked and locked_scope is snapshotted — later edits to the requirement will not rewrite what was agreed.');
+      }
+    }));
+
+    const spaceCards = SPACES.map(s => {
+      const uses = st.events.filter(x => x.spaceId === s.id);
+      const peak = uses.reduce((a, x) => Math.max(a, x.guests), 0), ratio = peak / s.cap;
+      return {
+        name: s.name, cap: s.cap, type: s.type, peakLabel: peak + ' / ' + s.cap,
+        barStyle: { width: Math.min(100, ratio * 100) + '%', height: '100%', background: ratio > 0.95 ? 'var(--vs-maroon)' : ratio > 0.75 ? 'var(--vs-gold)' : 'var(--vs-gold-700)' },
+        uses: uses.map(x => ({ name: x.name, meta: DAYS[x.day].date + ' · ' + x.guests })),
+        flag: ratio > 1 ? 'Over capacity by ' + (peak - s.cap) + ' — must be resolved before confirmation' : ratio > 0.95 ? 'At ' + Math.round(ratio * 100) + '% — no headroom for late additions' : ratio > 0.75 ? 'Comfortable, monitor RSVPs' : 'Ample headroom',
+        flagStyle: { padding: '8px 12px', fontSize: '11px', fontWeight: ratio > 1 ? 700 : 600, borderTop: '1px solid var(--color-neutral-300)', color: ratio > 1 ? 'var(--color-surface)' : ratio > 0.95 ? 'var(--vs-maroon)' : ratio > 0.75 ? 'var(--vs-gold-700)' : 'var(--vs-gold-700)', background: ratio > 1 ? 'var(--vs-maroon)' : ratio > 0.95 ? 'var(--vs-maroon-100)' : ratio > 0.75 ? 'var(--vs-gold-100)' : 'var(--vs-gold-100)' }
+      };
+    });
+
+    const plans = [
+      { id: 'wedding', kicker: 'Pay as you go', name: 'Per wedding', price: '₹799', unit: '/ project', gst: '+ 18% GST = ₹942.82', tag: '', features: ['One wedding project, unlimited events', 'Unlimited vendors & collaborators', 'Ledger, milestones, playbooks', 'Charged when the project is created'], foot: 'Best under 8 weddings a year', base: 799 },
+      { id: 'monthly', kicker: 'Most agencies', name: 'Studio monthly', price: '₹5,999', unit: '/ month', gst: '+ 18% GST = ₹7,078.82', tag: 'Current', features: ['Unlimited concurrent projects', 'Team seats & role scoping', 'Risk dashboard across all weddings', 'Email renewal reminder, no auto-debit'], foot: 'Breaks even at 8 weddings a year', base: 5999 },
+      { id: 'halfyear', kicker: 'Season rate', name: '6-month season', price: '₹24,999', unit: '/ 6 months', gst: '+ 18% GST = ₹29,498.82', tag: 'Save 31%', features: ['Everything in Studio monthly', 'Covers one full muhurat season', 'Priority support during peak dates', 'One invoice for the season'], foot: 'For Nov–Feb heavy agencies', base: 24999 }
+    ].map(p => ({
+      kicker: p.kicker, name: p.name, price: p.price, unit: p.unit, gst: p.gst, tag: p.tag, features: p.features, foot: p.foot,
+      pick: () => S.setState({ plan: p.id }),
+      style: { padding: '14px', background: 'var(--color-surface)', border: st.plan === p.id ? '2px solid var(--vs-maroon)' : '2px solid var(--color-divider)', cursor: 'pointer', outline: st.plan === p.id ? 'none' : 'none' },
+      tagStyle: { fontSize: '9px', fontWeight: 700, letterSpacing: '0.09em', textTransform: 'uppercase', padding: p.tag ? '2px 6px' : '0', background: p.tag === 'Current' ? 'var(--vs-maroon)' : 'var(--vs-gold)', color: p.tag === 'Current' ? 'var(--color-surface)' : 'var(--vs-maroon-800)' },
+      footStyle: { marginTop: '12px', paddingTop: '9px', borderTop: '1px solid var(--color-neutral-300)', fontSize: '11px', color: 'var(--color-neutral-700)' }
+    }));
+    const selPlan = [{ id: 'wedding', n: 'Per wedding', b: 799 }, { id: 'monthly', n: 'Studio monthly', b: 5999 }, { id: 'halfyear', n: '6-month season', b: 24999 }].find(p => p.id === st.plan);
+
+    const runSheet = [
+      { time: '18:45', title: 'Guest entry opens · foyer', who: 'Ushers ×6 — Priya on floor', done: true },
+      { time: '19:00', title: 'Sound check complete', who: 'Blacklight Productions — Dev', done: true },
+      { time: '19:30', title: 'Sangeet begins · family entry', who: 'Arjun cues DJ', done: false },
+      { time: '20:15', title: 'LensCraft group portraits', who: 'Raj — 25 min in the atrium', done: false },
+      { time: '21:00', title: 'Dinner service opens', who: 'Saffron Catering — Anita', done: false },
+      { time: '23:30', title: 'On-day settlement due', who: '₹64,000 to LensCraft · needs photo proof', done: false }
+    ].map(r => ({
+      time: r.time, title: r.title, who: r.who,
+      rowStyle: { display: 'flex', gap: '11px', alignItems: 'center', padding: '11px 14px', borderBottom: '1px solid var(--color-neutral-300)', background: r.done ? 'var(--color-bg)' : 'var(--color-surface)', opacity: r.done ? 0.62 : 1 },
+      actLabel: r.done ? 'Done' : 'Mark',
+      actStyle: { minWidth: '64px', minHeight: '44px', fontSize: '12px', fontWeight: 700, color: r.done ? 'var(--color-neutral-700)' : 'var(--color-surface)', background: r.done ? 'var(--color-neutral-200)' : 'var(--vs-maroon)', border: '1px solid ' + (r.done ? 'var(--color-neutral-300)' : 'var(--vs-maroon)') },
+      act: () => S.toast(r.done ? 'Already marked complete at ' + r.time + '.' : 'Marked complete. Evidence upload is optional here and purges automatically after six months.')
+    }));
+
+    return {
+      daysOut: 31,
+      agencyNav: [mk('weddings', 'Weddings', '3'), mk('vendors', 'Vendor directory', '24'), mk('leads', 'Leads', 'v2'), mk('billing', 'Billing & plan', '')],
+      projectNav: [mk('dashboard', 'Dashboard', '5', dangerBadge), mk('timeline', 'Timeline & ceremonies', '6'), mk('venues', 'Venue & spaces', '4'), mk('vendors', 'Vendors & bookings', '2', dangerBadge), mk('contracts', 'Contracts & milestones', '', st.dash), mk('ledger', 'Ledger & cash flow', '')],
+      viewNav: [mk('mobile', 'Event-day (mobile)', ''), mk('billing', 'Subscription', '')],
+
+      isDashboard: st.screen === 'dashboard', isTimeline: st.screen === 'timeline', isVenues: st.screen === 'venues',
+      isVendors: st.screen === 'vendors' || st.screen === 'leads', isContracts: st.screen === 'contracts',
+      isLedger: st.screen === 'ledger', isWeddings: st.screen === 'weddings', isBilling: st.screen === 'billing', isMobile: st.screen === 'mobile',
+
+      setDashA: () => S.setState({ dash: 'A' }), setDashB: () => S.setState({ dash: 'B' }),
+      dashAStyle: tabBtn(dash === 'A'), dashBStyle: tabBtn(dash === 'B'),
+      dashGridStyle: dash === 'A'
+        ? { display: 'grid', gridTemplateColumns: '1.55fr 1fr', gap: '14px', marginTop: '14px', alignItems: 'start' }
+        : { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', marginTop: '14px', alignItems: 'start' },
+      kpis: [
+        { label: 'Ceremonies', value: '6', sub: 'across 5 days', valueStyle: { fontFamily: 'var(--font-body)', fontSize: '22px', fontWeight: 600, letterSpacing: '-0.5px' } },
+        { label: 'Open risks', value: '5', sub: '2 critical', valueStyle: { fontFamily: 'var(--font-body)', fontSize: '22px', fontWeight: 600, letterSpacing: '-0.5px', color: 'var(--vs-maroon)' } },
+        { label: 'Vendors locked', value: '4 / 7', sub: '1 rejected, unassigned', valueStyle: { fontFamily: 'var(--font-body)', fontSize: '22px', fontWeight: 600, letterSpacing: '-0.5px' } },
+        { label: 'Contracted', value: '₹30.2L', sub: 'across 7 contracts', valueStyle: { fontFamily: 'var(--font-body)', fontSize: '22px', fontWeight: 600, letterSpacing: '-0.5px' } },
+        { label: 'Cash on hand', value: SHORT(inflow - outflow), sub: 'client tranche 3 uncommitted', valueStyle: { fontFamily: 'var(--font-body)', fontSize: '22px', fontWeight: 600, letterSpacing: '-0.5px', color: 'var(--vs-gold-800)' } }
+      ],
+      risks, upcoming,
+      unconfirmed: st.vendors.filter(v => v.status !== 'Confirmed' && v.status !== 'Accepted').map(v => ({ name: v.name, category: v.category, eventName: v.eventName, amountLabel: INR(v.amount), status: v.status, statusStyle: statusStyle(v.status) })),
+      goVendors: () => S.go('vendors'),
+
+      dayTabs: DAYS.map((dd, i) => {
+        const n = st.events.filter(x => x.day === i).length;
+        return { dow: dd.dow, date: dd.date, summary: n + (n === 1 ? ' ceremony' : ' ceremonies'), go: () => S.setState({ day: i }), style: { flex: 1, padding: '9px 12px', textAlign: 'left', border: 'none', borderRight: '1px solid var(--color-neutral-300)', borderBottom: st.day === i ? '3px solid var(--vs-maroon)' : '3px solid transparent', background: st.day === i ? 'var(--vs-maroon-100)' : 'var(--color-surface)' } };
+      }),
+      ticks, ganttRows,
+      toggleBuffers: () => S.setState({ buffers: !buffers }),
+      bufferBtnStyle: tabBtn(buffers),
+      bufferBtnLabel: buffers ? 'Setup / teardown shown' : 'Setup / teardown hidden',
+      dayEvents: st.events.filter(x => x.day === st.day).map(x => ({
+        name: x.name, timeLabel: T(x.start) + '–' + T(x.end), spaceName: SPACES.find(s => s.id === x.spaceId).name,
+        guests: x.guests, owner: x.owner, vendorCount: x.vendors, setupLabel: DUR(x.setup), teardownLabel: DUR(x.teardown),
+        rowStyle: { display: 'grid', gridTemplateColumns: '110px 1fr auto 60px', gap: '12px', alignItems: 'center', padding: '11px 14px', borderBottom: '1px solid var(--color-neutral-300)', cursor: 'pointer', background: x.id === st.sel ? 'var(--vs-maroon-100)' : 'var(--color-surface)' },
+        go: () => S.setState({ sel: x.id, draft: null })
+      })),
+      noDayEvents: st.events.filter(x => x.day === st.day).length === 0,
+
+      draftName: e.name, draftDayLabel: DAYS[e.day].full + ' · owner ' + e.owner + ' · ' + e.vendors + ' vendors locked',
+      draftSpace: d.spaceId, spaceOptions: SPACES.map(s => ({ id: s.id, label: s.name + ' — cap ' + s.cap })),
+      onSpace: ev => S.patch({ spaceId: ev.target.value }),
+      draftStartLabel: T(d.start), draftEndLabel: T(d.end), draftSetupLabel: DUR(d.setup), draftTdLabel: DUR(d.teardown), draftGuests: d.guests,
+      startMinus: () => S.patch({ start: d.start - 30 }), startPlus: () => S.patch({ start: d.start + 30 }),
+      endMinus: () => S.patch({ end: d.end - 30 }), endPlus: () => S.patch({ end: d.end + 30 }),
+      setupMinus: () => S.patch({ setup: Math.max(0, d.setup - 30) }), setupPlus: () => S.patch({ setup: d.setup + 30 }),
+      tdMinus: () => S.patch({ teardown: Math.max(0, d.teardown - 30) }), tdPlus: () => S.patch({ teardown: d.teardown + 30 }),
+      guestMinus: () => S.patch({ guests: Math.max(0, d.guests - 10) }), guestPlus: () => S.patch({ guests: d.guests + 10 }),
+      draftWindowLabel: T(d.start - d.setup) + ' → ' + T(d.end + d.teardown) + ' in ' + space.name,
+
+      violations: viols,
+      blockPanelStyle: { margin: '0 14px', padding: '12px', background: blocked ? 'var(--vs-maroon-100)' : 'var(--vs-gold-100)', border: '1px solid ' + (blocked ? 'var(--vs-maroon-300)' : 'var(--vs-gold-300)') },
+      blockDotStyle: { width: '8px', height: '8px', background: blocked ? 'var(--vs-maroon)' : 'var(--vs-gold-700)' },
+      blockTitle: blocked ? 'Why this cannot be saved' : 'Clear to save',
+      blockLede: blocked
+        ? 'The database will refuse this write, so the form refuses it first. Each rule below names the exact record in the way and what changes to make.'
+        : 'No overlap in ' + space.name + ', capacity is within limits, and the chronology holds. Saving will re-notify locked vendors.',
+      hasImpacted: !blocked && (d.start !== e.start || d.end !== e.end || d.spaceId !== e.spaceId),
+      impacted: [
+        { name: 'LensCraft Studios', detail: 'arrival 17:00 → shifts with the ceremony' },
+        { name: 'Blacklight Productions', detail: 'load-in window must be re-checked' }
+      ],
+      applyDraft: () => {
+        if (viols.length) { S.toast('Still blocked — resolve ' + viols.length + ' rule violation' + (viols.length > 1 ? 's' : '') + ' above.'); return; }
+        S.setState({ events: st.events.map(x => x.id === e.id ? Object.assign({}, x, d) : x), draft: null });
+        S.toast('Saved. ' + e.name + ' now runs ' + T(d.start) + '–' + T(d.end) + ' in ' + space.name + '. Change acknowledgements were sent to 2 locked vendors.');
+      },
+      resetDraft: () => S.setState({ draft: null }),
+      saveBtnClass: blocked ? 'btn btn-secondary' : 'btn btn-primary',
+      saveBtnStyle: { flex: 1, minHeight: '36px', fontWeight: 700, color: blocked ? 'var(--color-neutral-700)' : undefined, cursor: blocked ? 'not-allowed' : 'pointer' },
+      saveLabel: blocked ? 'Blocked · ' + viols.length + ' rule' + (viols.length > 1 ? 's' : '') : 'Save & notify vendors',
+      saveHint: blocked ? 'Enforced by an exclusion constraint on space_bookings.period, not by client validation.' : 'Writes events + space_bookings in one transaction; vendor acknowledgements are queued to the worker.',
+
+      contractTotalLabel: INR(CT), payableLabel: INR(CT * 1.18), paidLabel: INR(96000),
+      milestoneRows: msRows,
+      sumLabel: sum + '% · ' + INR(CT * sum / 100),
+      sumStyle: { fontFamily: 'var(--font-body)', fontSize: '17px', fontWeight: 600, color: sum === 100 ? 'var(--vs-gold-800)' : 'var(--vs-maroon)' },
+      sumBarStyle: { width: Math.min(100, sum) + '%', height: '100%', background: sum === 100 ? 'var(--vs-gold-700)' : sum > 100 ? 'var(--vs-maroon-500)' : 'var(--vs-gold)' },
+      addMilestone: () => S.setState({ ms: st.ms.concat([{ id: 'm' + (st.seq + 1), name: 'Post-delivery balance', pct: 0, due: '28 Feb 2027', trigger: 'Event-based · album delivery', state: 'PENDING' }]), seq: st.seq + 1, msSaved: false }),
+      msBlocked: sum !== 100,
+      msPanelStyle: { padding: '14px', background: sum === 100 ? 'var(--vs-gold-100)' : 'var(--vs-maroon-100)', border: '1px solid ' + (sum === 100 ? 'var(--vs-gold-300)' : 'var(--vs-maroon-300)') },
+      msDotStyle: { width: '8px', height: '8px', background: sum === 100 ? 'var(--vs-gold-800)' : 'var(--vs-maroon)' },
+      msTitle: sum === 100 ? 'Plan balances' : 'Why this cannot be saved',
+      msLede: sum === 100 ? 'Milestones total exactly the contract obligation. The plan can be activated and the worker will move each milestone to DUE on its trigger date.' : 'A milestone plan must account for every rupee of the contract. Anything else is the 93%-discovered-post-event failure this product exists to prevent.',
+      msSumAmountLabel: INR(CT * sum / 100),
+      msDiffLabel: (diff > 0 ? '−' : diff < 0 ? '+' : '') + INR(Math.abs(CT * diff / 100)) + ' (' + (diff > 0 ? diff + '% short' : diff < 0 ? Math.abs(diff) + '% over' : 'balanced') + ')',
+      msDiffStyle: { fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 700, color: diff === 0 ? 'var(--vs-gold-800)' : 'var(--vs-maroon)' },
+      msFix: diff > 0 ? 'Add ' + diff + '% (' + INR(CT * diff / 100) + ') to an existing milestone, or add a post-delivery milestone for the balance.' : 'Remove ' + Math.abs(diff) + '% (' + INR(CT * Math.abs(diff) / 100) + ') from a milestone — the plan currently promises more than the contract.',
+      balanceMilestones: () => {
+        if (!st.ms.length) return;
+        const last = st.ms[st.ms.length - 1];
+        S.setState({ ms: st.ms.map((x, i) => i === st.ms.length - 1 ? Object.assign({}, x, { pct: Math.max(0, x.pct + diff) }) : x), msSaved: false });
+        S.toast(last.name + ' adjusted to absorb the ' + Math.abs(diff) + '% difference.');
+      },
+      saveMilestones: () => {
+        if (sum !== 100) { S.toast('Rejected by payment_milestones_sum_100 — the plan totals ' + sum + '%, not 100%.'); return; }
+        S.setState({ msSaved: true });
+        S.toast('Milestone plan activated for LensCraft Studios. ₹3,20,000 fully scheduled across ' + st.ms.length + ' milestones.');
+      },
+      msSaveClass: sum === 100 ? 'btn btn-primary btn-block' : 'btn btn-secondary btn-block',
+      msSaveStyle: { marginTop: '12px', minHeight: '38px', fontWeight: 700, color: sum === 100 ? undefined : 'var(--color-neutral-700)', cursor: sum === 100 ? 'pointer' : 'not-allowed' },
+      msSaveLabel: st.msSaved && sum === 100 ? 'Plan active ✓' : sum === 100 ? 'Activate milestone plan' : 'Blocked · plan is ' + sum + '%',
+      msSaveHint: 'The trigger takes FOR UPDATE on the contract row, so two planners editing the same plan cannot both squeeze past 100%.',
+
+      inflowLabel: INR(inflow), outflowLabel: INR(outflow), balanceLabel: INR(inflow - outflow), committedLabel: INR(2380000),
+      cashDays, ledgerRows,
+      formParty: st.form.party, formMode: st.form.mode, formAmountLabel: INR(st.form.amount),
+      partyOptions: ['Mehra family (client)', 'Blacklight Productions', 'Saffron Catering', 'LensCraft Studios', 'Blossom & Co', 'Fairmont Jaipur'],
+      modeOptions: ['UPI · planner', 'Bank NEFT · client', 'RTGS · planner', 'Cash · planner', 'Card · planner'],
+      onParty: ev => S.setState({ form: Object.assign({}, st.form, { party: ev.target.value }) }),
+      onMode: ev => S.setState({ form: Object.assign({}, st.form, { mode: ev.target.value }) }),
+      setIn: () => S.setState({ form: Object.assign({}, st.form, { dir: 'IN' }) }),
+      setOut: () => S.setState({ form: Object.assign({}, st.form, { dir: 'OUT' }) }),
+      inBtnStyle: { flex: 1, padding: '7px', fontSize: '11px', fontWeight: 700, color: st.form.dir === 'IN' ? 'var(--color-surface)' : 'var(--color-neutral-700)', background: st.form.dir === 'IN' ? 'var(--vs-gold-700)' : 'var(--color-surface)', border: '1px solid ' + (st.form.dir === 'IN' ? 'var(--vs-gold-700)' : 'var(--color-neutral-400)') },
+      outBtnStyle: { flex: 1, padding: '7px', fontSize: '11px', fontWeight: 700, color: st.form.dir === 'OUT' ? 'var(--color-surface)' : 'var(--color-neutral-700)', background: st.form.dir === 'OUT' ? 'var(--vs-maroon)' : 'var(--color-surface)', border: '1px solid ' + (st.form.dir === 'OUT' ? 'var(--vs-maroon)' : 'var(--color-neutral-400)') },
+      amtMinus: () => S.setState({ form: Object.assign({}, st.form, { amount: Math.max(0, st.form.amount - 25000) }) }),
+      amtPlus: () => S.setState({ form: Object.assign({}, st.form, { amount: st.form.amount + 25000 }) }),
+      addEntry: () => {
+        const id = 'lg_' + (st.seq + 1);
+        S.setState({ seq: st.seq + 1, ledger: st.ledger.concat([{ id, ts: 'now', dir: st.form.dir, desc: (st.form.dir === 'IN' ? 'Receipt — ' : 'Payment — ') + st.form.party, mode: st.form.mode, amount: st.form.amount, ref: 'manual entry · ' + id }]) });
+        S.toast('Appended ' + INR(st.form.amount) + '. This row can never be edited or deleted — only reversed.');
+      },
+
+      weddingRows: [
+        { name: 'Mehra–Kapoor', shape: '5-day full · Jaipur', dates: '12–16 Feb 27', venue: 'Fairmont Jaipur', guests: '580', value: '₹30.2L', risks: '2 critical', level: 2, open: () => S.go('dashboard') },
+        { name: 'Sharma–Iyer', shape: '2-day compact · Delhi', dates: '04–05 Mar 27', venue: 'The Ashok', guests: '260', value: '₹11.4L', risks: '1 high', level: 1, open: () => S.toast('Demo shows the Mehra–Kapoor project only.') },
+        { name: 'Khanna–Bose', shape: 'Reception only · Kolkata', dates: '19 Apr 27', venue: 'Taj Bengal', guests: '400', value: '₹8.9L', risks: 'clear', level: 0, open: () => S.toast('Demo shows the Mehra–Kapoor project only.') },
+        { name: 'Verma–Rao', shape: '3-day · Udaipur · closed', dates: '22–24 Nov 26', venue: 'Trident Udaipur', guests: '310', value: '₹18.6L', risks: 'closed', level: 0, open: () => S.toast('Closed project — read-only archive.') }
+      ].map(w => Object.assign(w, { riskStyle: { fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 700, color: w.level === 2 ? 'var(--vs-maroon)' : w.level === 1 ? 'var(--vs-gold-700)' : 'var(--color-neutral-700)' } })),
+
+      statusCols: ['Draft', 'Sent', 'Accepted', 'Confirmed', 'Rejected'].map(s => ({
+        label: s, count: String(st.vendors.filter(v => v.status === s).length),
+        sub: s === 'Draft' ? 'never sent' : s === 'Sent' ? 'awaiting vendor' : s === 'Accepted' ? 'slot locked' : s === 'Confirmed' ? 'contract signed' : 'needs replacement'
+      })).concat([{ label: 'Total value', count: SHORT(st.vendors.reduce((a, v) => a + v.amount, 0)), sub: 'across 7 engagements' }]),
+      vendorRows,
+      spaceCards,
+      overrides: [
+        { rule: 'Noise curfew 01:00', rationale: 'Sangeet DJ extended to 01:30 — written permission from venue GM, ₹40,000 surcharge accepted by client.', scope: 'Sangeet · Regal Ballroom', logged: 'Priya · 09 Jan 15:02' },
+        { rule: 'No open flame indoors', rationale: 'Havan kund permitted with a fire marshal on standby and a 3m clearance; venue safety officer signed off.', scope: 'Pheras · Mughal Lawn', logged: 'Arjun · 11 Jan 10:44' },
+        { rule: 'Load-in from 08:00', rationale: 'LED wall rigging needs 06:00 access to clear the ballroom before guest movement.', scope: 'Sangeet · Regal Ballroom', logged: 'Priya · 06 Jan 18:20' }
+      ],
+
+      plans, selPlanName: selPlan.n, selPlanBase: INR(selPlan.b), selPlanGst: INR(selPlan.b * 0.18), selPlanTotal: '₹' + (selPlan.b * 1.18).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+
+      runSheet,
+      contacts: [
+        { name: 'Dev Malhotra', role: 'Blacklight — production lead' },
+        { name: 'Raj Sethi', role: 'LensCraft — lead photographer' },
+        { name: 'Vikram Rathore', role: 'Fairmont — banquet manager' }
+      ],
+
+      hasToast: !!st.toast, toast: st.toast
+    };
+  }
+}
+
+</script>
+</body>
+</html>

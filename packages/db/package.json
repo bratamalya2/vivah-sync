@@ -1,0 +1,25 @@
+{
+  "name": "@vivahsync/db",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./jobs": "./src/jobs/index.ts",
+    "./storage": "./src/storage.ts"
+  },
+  "scripts": {
+    "check": "node scripts/capability-check.mjs",
+    "apply": "node scripts/apply.mjs",
+    "test": "node --import tsx --test tests/*.test.ts"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.110.8",
+    "@vivahsync/core": "*",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.11.10"
+  }
+}

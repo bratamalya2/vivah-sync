@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="_ds/modernist-c5829d3f-7748-4bf4-aa11-afb50e5f4b73/styles.css">
+<script src="_ds/modernist-c5829d3f-7748-4bf4-aa11-afb50e5f4b73/_ds_bundle.js"></script>
+<style>
+  :root, #dc-root, .sc-host {
+    --vs-maroon:#6B1226;
+    --vs-maroon-100:#FCF3F5; --vs-maroon-200:#F6E4E8; --vs-maroon-300:#E5C6CD;
+    --vs-maroon-400:#C07084; --vs-maroon-500:#8E1B32; --vs-maroon-600:#6B1226;
+    --vs-maroon-700:#55101F; --vs-maroon-800:#3E0A16; --vs-maroon-900:#2A070F;
+    --vs-gold:#D99A2B;
+    --vs-gold-100:#FBF6EE; --vs-gold-200:#F3E6D2; --vs-gold-300:#E3D0AE;
+    --vs-gold-400:#E3C07A; --vs-gold-500:#D99A2B; --vs-gold-600:#B57C1C;
+    --vs-gold-700:#8A6A22; --vs-gold-800:#614A18; --vs-gold-900:#3F300F;
+    --color-accent: #6B1226;
+  }
+  *{ box-sizing:border-box; }
+  html, body { margin:0; padding:0; }
+  body { font-variant-numeric: tabular-nums; -webkit-font-smoothing:antialiased; background: var(--color-neutral-200); }
+  a { color: var(--vs-maroon-700); text-decoration:none; text-underline-offset:3px; }
+  a:hover { color: var(--vs-maroon); text-decoration:underline; }
+  button { font-family:inherit; cursor:pointer; border-radius:0; -webkit-tap-highlight-color: transparent; }
+  button:focus-visible { outline:2px solid var(--vs-maroon); outline-offset:2px; }
+  select, input { font-family:inherit; border-radius:0; }
+  /* Touch sizing only — .btn / .input / .seg / .tag visuals stay the system's. */
+  .btn { min-height:44px; font-size:13px; font-weight:700; }
+  .btn-block { margin-top:0; }
+  .btn-icon { width:44px; height:44px; }
+  .input { min-height:44px; font-size:14px; }
+  .seg { display:flex; width:100%; }
+  .seg-opt { flex:1; justify-content:center; min-height:44px; font-size:13px; font-weight:700; }
+  .tag { text-transform:uppercase; letter-spacing:0.08em; font-size:9px; font-weight:700; }
+  ::-webkit-scrollbar { width:0; height:0; }
+</style>
+</helmet>
+
+<div style="height:100vh; overflow:hidden; display:flex; justify-content:center; background:var(--color-neutral-200);">
+<div style="width:100%; max-width:430px; height:100vh; max-height:100vh; display:flex; flex-direction:column; background:var(--color-bg); border-left:2px solid var(--color-divider); border-right:2px solid var(--color-divider); font-size:14px; color:var(--color-text); position:relative; overflow:hidden;">
+
+  <div style="flex:0 0 auto; padding:12px 14px 10px; background:var(--vs-maroon-800); color:var(--color-bg);">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+      <div style="display:flex; align-items:center; gap:8px; min-width:0;">
+        <div style="width:24px; height:24px; flex:0 0 24px; display:grid; place-items:center; background:var(--vs-gold); color:var(--vs-maroon-800); font-size:14px; font-weight:700; line-height:1;">∞</div>
+        <div style="min-width:0;">
+          <div style="font-size:14px; font-weight:700; letter-spacing:-0.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Mehra–Kapoor</div>
+          <div style="font-size:11px; color:var(--vs-maroon-300); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">12–16 Feb 2027 · Fairmont Jaipur</div>
+        </div>
+      </div>
+      <div style="text-align:right; flex:0 0 auto;">
+        <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--vs-maroon-300);">{{ headerKicker }}</div>
+        <div style="font-size:13px; font-weight:700;">{{ headerValue }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="flex:1; min-height:0; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch;">
+
+    <sc-if value="{{ isToday }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <div style="padding:12px 14px; background:var(--vs-gold-100); border-bottom:2px solid var(--vs-gold-300);">
+          <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--vs-gold-800);">On ground now · 14 Feb, 18:42</div>
+          <div style="margin-top:4px; font-size:17px; font-weight:700; letter-spacing:-0.3px;">Sangeet · Regal Ballroom</div>
+          <div style="margin-top:2px; font-size:12px; color:var(--color-neutral-700);">19:30 – 01:00 · 430 guests · owner Arjun</div>
+        </div>
+        <sc-for list="{{ runSheet }}" as="r" hint-placeholder-count="6">
+          <div style="{{ r.rowStyle }}">
+            <div style="width:50px; flex:0 0 50px; font-size:14px; font-weight:700;">{{ r.time }}</div>
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:14px; font-weight:600; line-height:1.3;">{{ r.title }}</div>
+              <div style="margin-top:2px; font-size:12px; color:var(--color-neutral-700); line-height:1.35;">{{ r.who }}</div>
+            </div>
+            <button onClick="{{ r.act }}" class="{{ r.actClass }}" style="{{ r.actStyle }}">{{ r.actLabel }}</button>
+          </div>
+        </sc-for>
+        <div style="padding:12px 14px; border-top:2px solid var(--color-divider); background:var(--color-surface);">
+          <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--color-neutral-700);">Key contacts</div>
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:9px;">
+            <sc-for list="{{ contacts }}" as="c" hint-placeholder-count="3">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:52px; padding:7px 10px; border:1px solid var(--color-neutral-300);">
+                <div style="min-width:0;">
+                  <div style="font-size:14px; font-weight:600;">{{ c.name }}</div>
+                  <div style="font-size:12px; color:var(--color-neutral-700);">{{ c.role }}</div>
+                </div>
+                <button onClick="{{ c.call }}" class="btn btn-primary" style="min-width:84px; flex:0 0 auto;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg>
+                  Call
+                </button>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:12px; padding:10px; background:var(--color-neutral-200); font-size:11px; line-height:1.5; color:var(--color-neutral-700);">Money is hidden on this tab by design — a phone on the floor gets handed around. Switch to Money deliberately.</div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isRisks }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div style="padding:12px 14px; border-bottom:2px solid var(--color-divider); background:var(--color-surface);">
+          <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--color-neutral-700);">Computed live · never stored</div>
+          <div style="margin-top:3px; font-size:17px; font-weight:700; letter-spacing:-0.3px;">5 open risks · 2 critical</div>
+        </div>
+        <sc-for list="{{ risks }}" as="r" hint-placeholder-count="5">
+          <div style="padding:12px 14px; border-bottom:1px solid var(--color-neutral-300); background:var(--color-surface);">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div class="tag" style="{{ r.sevStyle }}">{{ r.sev }}</div>
+              <div style="font-size:11px; color:var(--color-neutral-700);">{{ r.metaShort }}</div>
+            </div>
+            <div style="margin-top:7px; font-size:15px; font-weight:600; line-height:1.3;">{{ r.title }}</div>
+            <div style="margin-top:4px; font-size:13px; line-height:1.5; color:var(--color-neutral-800);">{{ r.detail }}</div>
+            <button onClick="{{ r.go }}" class="btn btn-primary btn-block" style="margin-top:10px;">{{ r.cta }}</button>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isSchedule }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div style="display:flex; gap:0; border-bottom:2px solid var(--color-divider); background:var(--color-surface); overflow-x:auto;">
+          <sc-for list="{{ dayTabs }}" as="d" hint-placeholder-count="5">
+            <button onClick="{{ d.go }}" style="{{ d.style }}">
+              <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--color-neutral-700);">{{ d.dow }}</div>
+              <div style="margin-top:2px; font-size:14px; font-weight:700;">{{ d.date }}</div>
+              <div style="margin-top:1px; font-size:10px; color:var(--color-neutral-700);">{{ d.count }}</div>
+            </button>
+          </sc-for>
+        </div>
+        <sc-for list="{{ dayEvents }}" as="e" hint-placeholder-count="2">
+          <div style="padding:12px 14px; border-bottom:1px solid var(--color-neutral-300); background:var(--color-surface);">
+            <div style="display:flex; align-items:baseline; justify-content:space-between; gap:10px;">
+              <div style="font-size:16px; font-weight:700; letter-spacing:-0.2px;">{{ e.name }}</div>
+              <div style="font-size:14px; font-weight:700;">{{ e.timeLabel }}</div>
+            </div>
+            <div style="margin-top:3px; font-size:12px; color:var(--color-neutral-700);">{{ e.spaceName }} · {{ e.guests }} guests · owner {{ e.owner }}</div>
+            <div style="margin-top:8px; height:24px; position:relative; background:var(--color-neutral-200);">
+              <div style="{{ e.setupBarStyle }}"></div>
+              <div style="{{ e.barStyle }}">{{ e.barLabel }}</div>
+              <div style="{{ e.tdBarStyle }}"></div>
+            </div>
+            <div style="margin-top:5px; display:flex; justify-content:space-between; font-size:10px; color:var(--color-neutral-700);">
+              <span>setup {{ e.setupLabel }} · occupies {{ e.windowLabel }}</span>
+              <span>{{ e.vendorCount }} vendors locked</span>
+            </div>
+            <button onClick="{{ e.go }}" class="btn btn-secondary btn-block" style="margin-top:10px; color:var(--vs-maroon); border-color:var(--vs-maroon-300);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"></path></svg>
+              Reschedule
+            </button>
+          </div>
+        </sc-for>
+        <sc-if value="{{ noDayEvents }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:28px 16px; text-align:center; font-size:13px; color:var(--color-neutral-700); line-height:1.5;">No ceremonies this day. Vendor load-in holds may still occupy spaces.</div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isVendors }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div style="display:flex; gap:6px; padding:11px 14px; border-bottom:2px solid var(--color-divider); background:var(--color-surface); overflow-x:auto;">
+          <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+            <button onClick="{{ f.go }}" class="{{ f.class }}" style="flex:0 0 auto;">{{ f.label }}</button>
+          </sc-for>
+        </div>
+        <sc-for list="{{ vendorRows }}" as="v" hint-placeholder-count="7">
+          <div style="padding:12px 14px; border-bottom:1px solid var(--color-neutral-300); background:var(--color-surface);">
+            <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px;">
+              <div style="min-width:0;">
+                <div style="font-size:15px; font-weight:700; letter-spacing:-0.2px;">{{ v.name }}</div>
+                <div style="margin-top:2px; font-size:12px; color:var(--color-neutral-700);">{{ v.category }} · {{ v.eventName }}</div>
+              </div>
+              <div class="tag" style="{{ v.statusStyle }}">{{ v.status }}</div>
+            </div>
+            <div style="margin-top:7px; font-size:12px; line-height:1.45; color:var(--color-neutral-800);">{{ v.scope }}</div>
+            <div style="margin-top:7px; display:flex; justify-content:space-between; font-size:12px;">
+              <span style="color:var(--color-neutral-700);">{{ v.window }}</span>
+              <span style="font-weight:700;">{{ v.amountLabel }}</span>
+            </div>
+            <div style="margin-top:3px; font-size:10px; color:var(--color-neutral-700);">{{ v.statusMeta }}</div>
+            <div style="display:flex; gap:7px; margin-top:10px;">
+              <button onClick="{{ v.act }}" class="{{ v.actClass }}" style="{{ v.actStyle }}">{{ v.actLabel }}</button>
+              <sc-if value="{{ v.hasPlan }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ v.openPlan }}" class="{{ v.planClass }}" style="flex:1;">{{ v.planLabel }}</button>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isMoney }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; background:var(--color-surface); border-bottom:2px solid var(--color-divider);">
+          <sc-for list="{{ moneyKpis }}" as="k" hint-placeholder-count="4">
+            <div style="padding:11px 14px; border-right:1px solid var(--color-neutral-300); border-bottom:1px solid var(--color-neutral-300);">
+              <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700);">{{ k.label }}</div>
+              <div style="{{ k.style }}">{{ k.value }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="padding:12px 14px; background:var(--color-surface); border-bottom:2px solid var(--color-divider);">
+          <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--color-neutral-700);">Record a movement</div>
+          <div class="seg" role="radiogroup" aria-label="Direction" style="margin-top:9px;">
+            <label class="seg-opt"><input type="radio" name="vs-dir" checked="{{ dirIn }}" onChange="{{ setIn }}" style="position:absolute; opacity:0; width:1px; height:1px;">Inflow</label>
+            <label class="seg-opt"><input type="radio" name="vs-dir" checked="{{ dirOut }}" onChange="{{ setOut }}" style="position:absolute; opacity:0; width:1px; height:1px;">Outflow</label>
+          </div>
+          <select value="{{ formParty }}" onChange="{{ onParty }}" class="input" style="margin-top:9px;">
+            <sc-for list="{{ partyOptions }}" as="p" hint-placeholder-count="5">
+              <option value="{{ p }}">{{ p }}</option>
+            </sc-for>
+          </select>
+          <div style="display:flex; align-items:stretch; margin-top:9px; border:1px solid var(--color-neutral-400);">
+            <button onClick="{{ amtMinus }}" aria-label="Decrease amount" class="btn btn-secondary btn-icon" style="width:56px; height:48px; border:none; border-right:1px solid var(--color-divider);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"></path></svg>
+            </button>
+            <div style="flex:1; display:grid; place-items:center; font-size:17px; font-weight:700;">{{ formAmountLabel }}</div>
+            <button onClick="{{ amtPlus }}" aria-label="Increase amount" class="btn btn-secondary btn-icon" style="width:56px; height:48px; border:none; border-left:1px solid var(--color-divider);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+            </button>
+          </div>
+          <button onClick="{{ addEntry }}" class="btn btn-primary btn-block" style="margin-top:9px; min-height:48px;">Append entry</button>
+        </div>
+
+        <div style="padding:10px 14px; background:var(--color-neutral-200); font-size:10px; letter-spacing:0.02em; color:var(--color-neutral-700);">Append-only · corrections are reversals, never edits</div>
+        <sc-for list="{{ ledgerRows }}" as="l" hint-placeholder-count="6">
+          <div style="{{ l.rowStyle }}">
+            <div style="display:flex; align-items:baseline; justify-content:space-between; gap:10px;">
+              <div style="{{ l.descStyle }}">{{ l.desc }}</div>
+              <div style="{{ l.amountStyle }}">{{ l.amountLabel }}</div>
+            </div>
+            <div style="margin-top:3px; display:flex; justify-content:space-between; gap:10px; font-size:11px; color:var(--color-neutral-700);">
+              <span>{{ l.mode }}</span><span>{{ l.ts }}</span>
+            </div>
+            <div style="margin-top:2px; font-size:10px; color:var(--color-neutral-700);">{{ l.ref }}</div>
+            <button onClick="{{ l.act }}" class="{{ l.actClass }}" style="{{ l.actStyle }}">{{ l.actLabel }}</button>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ moneyLocked }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:34px 20px; text-align:center;">
+        <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--color-neutral-700);">Scope: SCHEDULE_ONLY</div>
+        <div style="margin-top:8px; font-size:16px; font-weight:700; line-height:1.35;">Money is not available to your role on mobile</div>
+        <div style="margin-top:7px; font-size:13px; line-height:1.55; color:var(--color-neutral-700);">Ledger, contracts and milestones require FULL scope. Ask Priya Mehta to widen your access, or open the desk app.</div>
+      </div>
+    </sc-if>
+
+  </div>
+
+  <sc-if value="{{ sheetOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute; inset:0; z-index:20; background:rgba(32,30,29,0.5); display:flex; flex-direction:column; justify-content:flex-end;">
+      <button onClick="{{ closeSheet }}" aria-label="Close" style="flex:1; border:none; background:transparent;"></button>
+      <div style="max-height:88%; overflow-y:auto; overflow-x:hidden; background:var(--color-surface); border-top:2px solid var(--vs-maroon);">
+
+        <div style="position:sticky; top:0; display:flex; align-items:flex-start; justify-content:space-between; gap:10px; padding:12px 14px; background:var(--color-surface); border-bottom:2px solid var(--color-divider);">
+          <div>
+            <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--color-neutral-700);">{{ sheetKicker }}</div>
+            <div style="margin-top:3px; font-size:17px; font-weight:700; letter-spacing:-0.3px;">{{ sheetTitle }}</div>
+            <div style="margin-top:2px; font-size:12px; color:var(--color-neutral-700);">{{ sheetSub }}</div>
+          </div>
+          <button onClick="{{ closeSheet }}" aria-label="Close" class="btn btn-secondary btn-icon" style="flex:0 0 44px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+          </button>
+        </div>
+
+        <sc-if value="{{ sheetIsEvent }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="padding:12px 14px; display:flex; flex-direction:column; gap:12px; border-bottom:2px solid var(--color-divider);">
+              <div>
+                <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:6px;">Venue space</div>
+                <select value="{{ draftSpace }}" onChange="{{ onSpace }}" class="input">
+                  <sc-for list="{{ spaceOptions }}" as="s" hint-placeholder-count="4">
+                    <option value="{{ s.id }}">{{ s.label }}</option>
+                  </sc-for>
+                </select>
+              </div>
+              <sc-for list="{{ steppers }}" as="s" hint-placeholder-count="5">
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <div style="flex:1; min-width:0;">
+                    <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700);">{{ s.label }}</div>
+                    <div style="margin-top:2px; font-size:17px; font-weight:700;">{{ s.value }}</div>
+                  </div>
+                  <div style="display:flex; align-items:stretch; border:1px solid var(--color-neutral-400);">
+                    <button onClick="{{ s.minus }}" aria-label="Decrease" class="btn btn-secondary btn-icon" style="width:52px; height:48px; border:none; border-right:1px solid var(--color-divider);">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"></path></svg>
+                    </button>
+                    <button onClick="{{ s.plus }}" aria-label="Increase" class="btn btn-secondary btn-icon" style="width:52px; height:48px; border:none;">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+                    </button>
+                  </div>
+                </div>
+              </sc-for>
+              <div style="font-size:11px; line-height:1.5; color:var(--color-neutral-700);">Occupies {{ draftWindowLabel }} — setup through teardown. This is the window checked against the space.</div>
+            </div>
+
+            <div style="{{ blockPanelStyle }}">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div style="{{ blockDotStyle }}"></div>
+                <div style="font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">{{ blockTitle }}</div>
+              </div>
+              <div style="margin-top:6px; font-size:13px; line-height:1.5; color:var(--color-neutral-800);">{{ blockLede }}</div>
+              <sc-for list="{{ violations }}" as="v" hint-placeholder-count="0">
+                <div style="margin-top:11px; background:var(--color-surface); border:1px solid var(--vs-maroon-300);">
+                  <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 10px; background:var(--vs-maroon-100); border-bottom:1px solid var(--vs-maroon-200);">
+                    <div style="font-size:12px; font-weight:700; color:var(--vs-maroon-700);">{{ v.rule }}</div>
+                    <div style="font-size:10px; color:var(--color-neutral-700);">{{ v.code }}</div>
+                  </div>
+                  <div style="padding:10px;">
+                    <div style="font-size:13px; line-height:1.5;">{{ v.message }}</div>
+                    <div style="margin-top:9px; padding:9px; background:var(--color-neutral-200); border-left:2px solid var(--vs-maroon);">
+                      <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--color-neutral-700);">Offending record</div>
+                      <div style="margin-top:3px; font-size:13px; font-weight:600; line-height:1.35;">{{ v.offenderTitle }}</div>
+                      <div style="margin-top:2px; font-size:12px; color:var(--color-neutral-700);">{{ v.offenderMeta }}</div>
+                      <div style="margin-top:3px; font-size:10px; color:var(--color-neutral-700);">{{ v.offenderId }}</div>
+                    </div>
+                    <div style="margin-top:9px; font-size:13px; line-height:1.5; color:var(--color-neutral-800);"><strong style="color:var(--color-text);">Fix:</strong> {{ v.fix }}</div>
+                    <button onClick="{{ v.apply }}" class="btn btn-primary btn-block" style="margin-top:10px;">{{ v.fixLabel }}</button>
+                  </div>
+                </div>
+              </sc-for>
+              <sc-if value="{{ hasImpacted }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:11px; padding:10px; background:var(--vs-gold-100); border:1px solid var(--vs-gold-300);">
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--vs-gold-800);">Locked vendors will be re-notified</div>
+                  <sc-for list="{{ impacted }}" as="i" hint-placeholder-count="2">
+                    <div style="margin-top:5px; font-size:12px;">{{ i.name }} — {{ i.detail }}</div>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+
+            <div style="padding:12px 14px 18px; display:flex; flex-direction:column; gap:8px;">
+              <button onClick="{{ applyDraft }}" class="{{ saveBtnClass }}" style="{{ saveBtnStyle }}">{{ saveLabel }}</button>
+              <button onClick="{{ resetDraft }}" class="btn btn-secondary btn-block">Reset</button>
+              <div style="font-size:10px; line-height:1.6; color:var(--color-neutral-700);">{{ saveHint }}</div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ sheetIsPlan }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; border-bottom:2px solid var(--color-divider);">
+              <div style="padding:11px 14px; border-right:1px solid var(--color-neutral-300);">
+                <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700);">Contract value</div>
+                <div style="font-size:17px; font-weight:700;">{{ contractTotalLabel }}</div>
+              </div>
+              <div style="padding:11px 14px;">
+                <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700);">Paid to date</div>
+                <div style="font-size:17px; font-weight:700; color:var(--vs-gold-800);">{{ paidLabel }}</div>
+              </div>
+            </div>
+            <sc-for list="{{ milestoneRows }}" as="m" hint-placeholder-count="3">
+              <div style="padding:11px 14px; border-bottom:1px solid var(--color-neutral-300);">
+                <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px;">
+                  <div style="min-width:0;">
+                    <div style="font-size:14px; font-weight:700;">{{ m.name }}</div>
+                    <div style="margin-top:3px; font-size:11px; color:var(--color-neutral-700);">{{ m.due }} · {{ m.trigger }}</div>
+                    <div class="tag" style="{{ m.stateStyle }}">{{ m.state }}</div>
+                  </div>
+                  <div style="text-align:right; flex:0 0 auto;">
+                    <div style="font-size:17px; font-weight:700;">{{ m.pctLabel }}</div>
+                    <div style="font-size:12px; color:var(--color-neutral-700);">{{ m.amountLabel }}</div>
+                  </div>
+                </div>
+                <div style="display:flex; gap:7px; margin-top:9px;">
+                  <button onClick="{{ m.dec }}" aria-label="Decrease share" class="btn btn-secondary" style="flex:1;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"></path></svg>
+                  </button>
+                  <button onClick="{{ m.inc }}" aria-label="Increase share" class="btn btn-secondary" style="flex:1;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+                  </button>
+                  <button onClick="{{ m.remove }}" class="btn btn-secondary" style="flex:1;">Remove</button>
+                </div>
+              </div>
+            </sc-for>
+
+            <div style="padding:12px 14px; border-bottom:2px solid var(--color-divider);">
+              <button onClick="{{ addMilestone }}" class="btn btn-secondary btn-block" style="color:var(--vs-maroon); border-style:dashed; border-color:var(--vs-maroon-300);">+ Add milestone</button>
+              <div style="display:flex; align-items:baseline; justify-content:space-between; margin-top:12px;">
+                <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700);">Allocated</div>
+                <div style="{{ sumStyle }}">{{ sumLabel }}</div>
+              </div>
+              <div style="margin-top:7px; height:8px; background:var(--color-neutral-300); position:relative;">
+                <div style="{{ sumBarStyle }}"></div>
+                <div style="position:absolute; left:100%; top:-4px; width:2px; height:16px; background:var(--color-text);"></div>
+              </div>
+            </div>
+
+            <div style="{{ msPanelStyle }}">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div style="{{ msDotStyle }}"></div>
+                <div style="font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">{{ msTitle }}</div>
+              </div>
+              <div style="margin-top:6px; font-size:13px; line-height:1.55; color:var(--color-neutral-800);">{{ msLede }}</div>
+              <div style="margin-top:11px; background:var(--color-surface); border:1px solid var(--color-neutral-300);">
+                <div style="display:flex; justify-content:space-between; padding:9px 10px; border-bottom:1px solid var(--color-neutral-300); font-size:13px;">
+                  <span style="color:var(--color-neutral-700);">Milestones sum</span><span style="font-weight:700;">{{ msSumAmountLabel }}</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding:9px 10px; font-size:13px;">
+                  <span style="color:var(--color-neutral-700);">Difference</span><span style="{{ msDiffStyle }}">{{ msDiffLabel }}</span>
+                </div>
+              </div>
+              <sc-if value="{{ msBlocked }}" hint-placeholder-val="{{ true }}">
+                <div style="margin-top:11px; padding:10px; background:var(--color-surface); border-left:2px solid var(--vs-maroon);">
+                  <div style="font-size:9px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; color:var(--color-neutral-700);">Enforcing constraint</div>
+                  <div style="margin-top:3px; font-size:11px; line-height:1.5; color:var(--color-neutral-800);">payment_milestones_sum_100 · deferrable constraint trigger</div>
+                  <div style="margin-top:7px; font-size:13px; line-height:1.5;"><strong>Fix:</strong> {{ msFix }}</div>
+                  <button onClick="{{ balanceMilestones }}" class="btn btn-primary btn-block" style="margin-top:10px;">Absorb into final milestone</button>
+                </div>
+              </sc-if>
+            </div>
+
+            <div style="padding:12px 14px 18px;">
+              <button onClick="{{ saveMilestones }}" class="{{ msSaveClass }}" style="{{ msSaveStyle }}">{{ msSaveLabel }}</button>
+              <div style="margin-top:8px; font-size:10px; line-height:1.6; color:var(--color-neutral-700);">{{ msSaveHint }}</div>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute; left:10px; right:10px; bottom:76px; padding:11px 13px; background:var(--color-text); color:var(--color-bg); font-size:12px; line-height:1.5;">{{ toast }}</div>
+  </sc-if>
+
+  <div style="flex:0 0 auto; display:grid; grid-template-columns:repeat(5,1fr); background:var(--color-surface); border-top:2px solid var(--color-divider);">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+      <button onClick="{{ t.go }}" style="{{ t.style }}">
+        <div style="position:relative; display:grid; place-items:center;">
+          <div style="{{ t.iconStyle }}">{{ t.icon }}</div>
+          <sc-if value="{{ t.badge }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; top:-3px; right:-9px; min-width:15px; padding:0 3px; font-size:9px; font-weight:700; line-height:15px; text-align:center; color:var(--color-surface); background:var(--vs-maroon);">{{ t.badgeLabel }}</div>
+          </sc-if>
+        </div>
+        <div style="{{ t.labelStyle }}">{{ t.label }}</div>
+      </button>
+    </sc-for>
+  </div>
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:880},&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;today&quot;,&quot;risks&quot;,&quot;schedule&quot;,&quot;vendors&quot;,&quot;money&quot;],&quot;default&quot;:&quot;today&quot;,&quot;tsType&quot;:&quot;'today' | 'risks' | 'schedule' | 'vendors' | 'money'&quot;,&quot;section&quot;:&quot;Navigation&quot;},&quot;showMoney&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Role scope&quot;},&quot;demoConflict&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Demo&quot;}}">
+const INR = n => '₹' + Math.round(n).toLocaleString('en-IN');
+const SHORT = n => n >= 100000 ? '₹' + (n / 100000).toFixed(n % 100000 === 0 ? 0 : 1) + 'L' : '₹' + Math.round(n / 1000) + 'k';
+const T = m => { const h = Math.floor(m / 60) % 24, mm = m % 60; return String(h).padStart(2, '0') + ':' + String(mm).padStart(2, '0'); };
+const DUR = m => (m >= 60 ? Math.floor(m / 60) + 'h' : '') + (m % 60 ? (m % 60) + 'm' : (m >= 60 ? '' : '0m'));
+const ICON = { today: 'M8 2v4M16 2v4M3 10h18M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z', risks: 'M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z', schedule: 'M12 6v6l4 2M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z', vendors: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 7a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75', money: 'M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' };
+
+const SPACES = [
+  { id: 'lawn', name: 'Mughal Lawn', cap: 600, type: 'Outdoor lawn' },
+  { id: 'ball', name: 'Regal Ballroom', cap: 450, type: 'Indoor ballroom' },
+  { id: 'terr', name: 'Amber Terrace', cap: 200, type: 'Open terrace' },
+  { id: 'pool', name: 'Poolside Court', cap: 150, type: 'Semi-open court' }
+];
+const DAYS = [
+  { dow: 'Fri', date: '12 Feb', full: 'Friday 12 Feb 2027' },
+  { dow: 'Sat', date: '13 Feb', full: 'Saturday 13 Feb 2027' },
+  { dow: 'Sun', date: '14 Feb', full: 'Sunday 14 Feb 2027' },
+  { dow: 'Mon', date: '15 Feb', full: 'Monday 15 Feb 2027' },
+  { dow: 'Tue', date: '16 Feb', full: 'Tuesday 16 Feb 2027' }
+];
+const HOLDS = [
+  { id: 'sb_0091', day: 2, spaceId: 'ball', start: 540, end: 900, label: 'Stage build & rigging — Blacklight Productions', kind: 'Vendor load-in hold' },
+  { id: 'sb_0074', day: 1, spaceId: 'lawn', start: 360, end: 690, label: 'Turf laying & irrigation — venue ops', kind: 'Venue maintenance hold' },
+  { id: 'sb_0102', day: 3, spaceId: 'terr', start: 480, end: 780, label: 'Floral prep staging — Blossom & Co', kind: 'Vendor load-in hold' }
+];
+const AXIS_START = 360, AXIS_SPAN = 1440;
+
+class Component extends DCLogic {
+  state = {
+    screen: null,
+    sheet: null,
+    day: 2,
+    filter: 'All',
+    events: [
+      { id: 'ev_01', name: 'Ganesh Puja', day: 0, spaceId: 'terr', start: 540, end: 690, setup: 90, teardown: 45, guests: 60, owner: 'Arjun', vendors: 2 },
+      { id: 'ev_02', name: 'Haldi', day: 1, spaceId: 'pool', start: 600, end: 780, setup: 120, teardown: 60, guests: 140, owner: 'Priya', vendors: 3 },
+      { id: 'ev_03', name: 'Mehendi', day: 1, spaceId: 'lawn', start: 960, end: 1260, setup: 240, teardown: 90, guests: 320, owner: 'Arjun', vendors: 4 },
+      { id: 'ev_04', name: 'Sangeet', day: 2, spaceId: 'ball', start: 1170, end: 1500, setup: 240, teardown: 120, guests: 430, owner: 'Arjun', vendors: 5 },
+      { id: 'ev_05', name: 'Pheras & Baraat', day: 3, spaceId: 'lawn', start: 1200, end: 1560, setup: 480, teardown: 180, guests: 580, owner: 'Priya', vendors: 7 },
+      { id: 'ev_06', name: 'Reception', day: 4, spaceId: 'ball', start: 1140, end: 1410, setup: 300, teardown: 120, guests: 440, owner: 'Priya', vendors: 4 }
+    ],
+    sel: 'ev_04',
+    draft: null,
+    ms: [
+      { id: 'm1', name: 'Booking advance', pct: 30, due: '08 Jan 2027', trigger: 'on signing', state: 'PAID' },
+      { id: 'm2', name: 'Pre-event balance', pct: 40, due: '05 Feb 2027', trigger: 'T−9 days', state: 'DUE' },
+      { id: 'm3', name: 'On-day settlement', pct: 20, due: '14 Feb 2027', trigger: 'Sangeet start', state: 'PENDING' }
+    ],
+    vendors: [
+      { id: 'v1', name: 'LensCraft Studios', category: 'Photography', eventName: 'Sangeet', scope: '2 shooters, 1 cinematographer, same-night teaser', window: '17:00 → 02:00', amount: 320000, status: 'Accepted', statusMeta: 'locked 12 Jan 14:22', plan: true },
+      { id: 'v2', name: 'Saffron Catering', category: 'Catering', eventName: 'Pheras & Baraat', scope: '580 pax, 3 live counters, Jain thali ×40', window: '12:00 → 03:00', amount: 1240000, status: 'Confirmed', statusMeta: 'locked 09 Jan 11:05' },
+      { id: 'v3', name: 'Blacklight Productions', category: 'Production / AV', eventName: 'Sangeet', scope: 'Stage, truss, line array, LED wall 24×10', window: '09:00 → 03:00', amount: 860000, status: 'Confirmed', statusMeta: 'locked 06 Jan 17:40' },
+      { id: 'v4', name: 'Blossom & Co', category: 'Décor & florals', eventName: 'Mehendi', scope: 'Marigold canopy, seating, 6 photo corners', window: '12:00 → 22:30', amount: 475000, status: 'Sent', statusMeta: 'sent 08 Jan · 6 days silent' },
+      { id: 'v5', name: 'Glow Makeup Studio', category: 'Hair & makeup', eventName: 'Haldi', scope: 'Bride + 4 family, on-site touch-ups', window: '07:00 → 13:00', amount: 65000, status: 'Rejected', statusMeta: 'reason: date clash' },
+      { id: 'v6', name: 'Royal Ghodi Wale', category: 'Baraat transport', eventName: 'Pheras & Baraat', scope: 'Decorated mare, 2 handlers, band escort', window: '18:00 → 21:00', amount: 42000, status: 'Accepted', statusMeta: 'PLANNER_RECORDED 11 Jan' },
+      { id: 'v7', name: 'Ramesh Dhol Party', category: 'Live music', eventName: 'Pheras & Baraat', scope: '6 dholis, 45-min baraat set', window: '18:00 → 20:00', amount: 18000, status: 'Draft', statusMeta: 'never sent' }
+    ],
+    ledger: [
+      { id: 'lg_1001', ts: '05 Jan 10:12', dir: 'IN', desc: 'Client advance — Mehra family', mode: 'Bank NEFT · client', amount: 1500000, ref: 'UTR HDFC0027714' },
+      { id: 'lg_1002', ts: '08 Jan 16:40', dir: 'OUT', desc: 'LensCraft — booking advance', mode: 'UPI · planner', amount: 96000, ref: 'milestone m1' },
+      { id: 'lg_1003', ts: '10 Jan 12:03', dir: 'OUT', desc: 'Saffron Catering — 30% advance', mode: 'RTGS · planner', amount: 372000, ref: 'contract ct_0042' },
+      { id: 'lg_1004', ts: '12 Jan 09:26', dir: 'OUT', desc: 'Blossom & Co — décor token', mode: 'Cash · planner', amount: 150000, ref: 'contract ct_0051' },
+      { id: 'lg_1005', ts: '14 Jan 18:55', dir: 'IN', desc: 'Client tranche 2 — Mehra family', mode: 'Bank RTGS · client', amount: 800000, ref: 'UTR HDFC0031180' }
+    ],
+    form: { dir: 'OUT', party: 'Blacklight Productions', amount: 250000 },
+    done: { '18:45': true, '19:00': true },
+    seq: 3000,
+    toast: null,
+    msSaved: false
+  };
+
+  componentDidMount() {
+    if (this.props.demoConflict) {
+      const e = this.state.events.find(x => x.id === 'ev_04');
+      this.setState({ screen: 'schedule', sheet: 'event', sel: 'ev_04', draft: { spaceId: e.spaceId, start: 1080, end: 1410, setup: e.setup, teardown: e.teardown, guests: e.guests } });
+    }
+  }
+
+  toast(msg) { clearTimeout(this._t); this.setState({ toast: msg }); this._t = setTimeout(() => this.setState({ toast: null }), 4200); }
+  screen() { return this.state.screen || this.props.startScreen || 'today'; }
+  go(s) { this.setState({ screen: s, sheet: null }); }
+  sel() { return this.state.events.find(e => e.id === this.state.sel); }
+  draft() { const e = this.sel(); return this.state.draft || { spaceId: e.spaceId, start: e.start, end: e.end, setup: e.setup, teardown: e.teardown, guests: e.guests }; }
+  patch(p) { this.setState({ draft: Object.assign({}, this.draft(), p) }); }
+
+  violations() {
+    const e = this.sel(), d = this.draft(), out = [];
+    const winA = d.start - d.setup, winB = d.end + d.teardown;
+    const others = [];
+    this.state.events.forEach(o => { if (o.id !== e.id && o.day === e.day && o.spaceId === d.spaceId) others.push({ id: o.id, label: o.name + ' (ceremony)', a: o.start - o.setup, b: o.end + o.teardown, kind: 'Ceremony' }); });
+    HOLDS.forEach(h => { if (h.day === e.day && h.spaceId === d.spaceId) others.push({ id: h.id, label: h.label, a: h.start, b: h.end, kind: h.kind }); });
+    const space = SPACES.find(s => s.id === d.spaceId);
+    others.forEach(o => {
+      if (winA < o.b && o.a < winB) {
+        const ovA = Math.max(winA, o.a), ovB = Math.min(winB, o.b);
+        out.push({
+          code: 'FR-101.1', rule: 'Space overlap',
+          message: e.name + ' would hold ' + space.name + ' from ' + T(winA) + ' to ' + T(winB) + ' including setup and teardown — colliding for ' + DUR(ovB - ovA) + ' (' + T(ovA) + '–' + T(ovB) + ').',
+          offenderTitle: o.label, offenderMeta: o.kind + ' · ' + T(o.a) + '–' + T(o.b), offenderId: 'space_bookings.' + o.id,
+          fix: 'Start no earlier than ' + T(o.b + d.setup) + ' so setup begins after this hold releases — or move to a free space.',
+          fixLabel: 'Shift start to ' + T(o.b + d.setup),
+          apply: () => { const shift = (o.b + d.setup) - d.start; this.patch({ start: d.start + shift, end: d.end + shift }); }
+        });
+      }
+    });
+    if (d.guests > space.cap) out.push({
+      code: 'FR-081.1', rule: 'Space capacity',
+      message: d.guests + ' expected guests exceed the ' + space.cap + '-person limit for ' + space.name + ' by ' + (d.guests - space.cap) + '.',
+      offenderTitle: space.name, offenderMeta: space.type + ' · max ' + space.cap, offenderId: 'venue_spaces.' + space.id,
+      fix: 'Move to a larger space, split across adjoining spaces, or reduce the expected count.',
+      fixLabel: 'Reduce guests to ' + space.cap, apply: () => this.patch({ guests: space.cap })
+    });
+    if (d.end <= d.start) out.push({
+      code: 'FR-121.1', rule: 'Chronology', message: 'End time is at or before start time.',
+      offenderTitle: e.name, offenderMeta: T(d.start) + ' → ' + T(d.end), offenderId: 'events.' + e.id,
+      fix: 'End must follow start.', fixLabel: 'Set end to ' + T(d.start + 180), apply: () => this.patch({ end: d.start + 180 })
+    });
+    return out;
+  }
+
+  renderVals() {
+    const st = this.state, S = this, CT = 320000;
+    const screen = this.screen();
+    const moneyOn = this.props.showMoney !== false;
+    const e = this.sel(), d = this.draft(), viols = this.violations(), blocked = viols.length > 0;
+    const space = SPACES.find(s => s.id === d.spaceId);
+    const sum = st.ms.reduce((a, m) => a + m.pct, 0), diff = 100 - sum;
+    const inflow = st.ledger.filter(l => l.dir === 'IN').reduce((a, l) => a + l.amount, 0);
+    const outflow = st.ledger.filter(l => l.dir === 'OUT').reduce((a, l) => a + l.amount, 0);
+    const svg = p => React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true }, p.split('M').filter(Boolean).map((seg, i) => React.createElement('path', { key: i, d: 'M' + seg })));
+
+    const statusStyle = s => ({ flex: '0 0 auto', color: s === 'Rejected' ? 'var(--color-bg)' : s === 'Draft' ? 'var(--color-neutral-800)' : 'var(--vs-gold-800)', background: s === 'Rejected' ? 'var(--vs-maroon)' : s === 'Draft' ? 'var(--color-neutral-200)' : s === 'Sent' ? 'var(--vs-gold-100)' : 'var(--vs-gold-200)' });
+    const NEXT = { Draft: 'Sent', Sent: 'Accepted', Accepted: 'Confirmed' };
+
+    const tabs = [
+      { id: 'today', label: 'Today', icon: ICON.today },
+      { id: 'risks', label: 'Risks', icon: ICON.risks, badge: 5 },
+      { id: 'schedule', label: 'Schedule', icon: ICON.schedule },
+      { id: 'vendors', label: 'Vendors', icon: ICON.vendors, badge: 2 },
+      { id: 'money', label: 'Money', icon: ICON.money }
+    ].map(t => {
+      const active = screen === t.id;
+      return {
+        label: t.label, icon: svg(t.icon), badge: !!t.badge, badgeLabel: String(t.badge || ''),
+        go: () => S.go(t.id),
+        style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', padding: '9px 4px 10px', minHeight: '58px', border: 'none', borderTop: active ? '3px solid var(--vs-maroon)' : '3px solid transparent', marginTop: '-2px', background: active ? 'var(--vs-maroon-100)' : 'var(--color-surface)' },
+        iconStyle: { display: 'grid', placeItems: 'center', color: active ? 'var(--vs-maroon)' : 'var(--color-neutral-700)' },
+        labelStyle: { fontSize: '10px', fontWeight: active ? 700 : 500, letterSpacing: '0.02em', color: active ? 'var(--vs-maroon)' : 'var(--color-neutral-700)' }
+      };
+    });
+
+    const runSheet = [
+      { time: '18:45', title: 'Guest entry opens · foyer', who: 'Ushers ×6 — Priya on floor' },
+      { time: '19:00', title: 'Sound check complete', who: 'Blacklight Productions — Dev' },
+      { time: '19:30', title: 'Sangeet begins · family entry', who: 'Arjun cues DJ' },
+      { time: '20:15', title: 'LensCraft group portraits', who: 'Raj — 25 min in the atrium' },
+      { time: '21:00', title: 'Dinner service opens', who: 'Saffron Catering — Anita' },
+      { time: '23:30', title: 'On-day settlement due', who: '₹64,000 to LensCraft · needs photo proof' }
+    ].map(r => {
+      const done = !!st.done[r.time];
+      return {
+        time: r.time, title: r.title, who: r.who,
+        rowStyle: { display: 'flex', gap: '11px', alignItems: 'center', padding: '12px 14px', borderBottom: '1px solid var(--color-neutral-300)', background: done ? 'var(--color-neutral-200)' : 'var(--color-surface)', opacity: done ? 0.65 : 1 },
+        actLabel: done ? 'Done' : 'Mark',
+        actClass: done ? 'btn btn-secondary' : 'btn btn-primary',
+        actStyle: { flex: '0 0 auto', minWidth: '72px' },
+        act: () => {
+          if (done) { S.toast('Already marked complete at ' + r.time + '.'); return; }
+          S.setState({ done: Object.assign({}, st.done, { [r.time]: true }) });
+          S.toast('Marked complete. Evidence upload is optional and purges automatically after six months.');
+        }
+      };
+    });
+
+    const risks = [
+      { sev: 'CRITICAL', metaShort: 'br_0051 · SENT', title: 'Décor vendor unconfirmed 19 days out', detail: 'Blossom & Co got the Mehendi request on 08 Jan and has been silent 6 days. ₹4,75,000 of scope and the whole Mughal Lawn build depend on it.', cta: 'Chase Blossom & Co', target: 'vendors' },
+      { sev: 'CRITICAL', metaShort: 'vr_0033 · UNASSIGNED', title: 'Haldi has no makeup vendor', detail: 'Glow Makeup Studio rejected on 11 Jan citing a date clash. The requirement is unassigned and Haldi is in 32 days.', cta: 'Assign a vendor', target: 'vendors' },
+      { sev: 'HIGH', metaShort: 'ct_0038 · FR-2861.1', title: 'LensCraft plan does not total 100%', detail: 'Three milestones allocate 90% of ₹3,20,000. ₹32,000 is unscheduled — the contract cannot activate until it balances.', cta: 'Fix the plan', target: 'plan' },
+      { sev: 'MEDIUM', metaShort: 'ev_05 · FR-081.1', title: 'Pheras at 97% of Mughal Lawn capacity', detail: '580 expected against a 600 limit. Late additions breach the space and force a re-allocation with 7 vendors locked.', cta: 'Open 15 Feb', target: 'day3' },
+      { sev: 'MEDIUM', metaShort: 'project_cash_flow', title: 'Projected cash short on 15 Feb', detail: 'Outflows of ₹9,80,000 fall due on the wedding day against ₹6,10,000 projected on hand. Client tranche 3 has no committed date.', cta: 'Open ledger', target: 'money' }
+    ].map(r => Object.assign({}, r, {
+      sevStyle: { flex: '0 0 auto', color: r.sev === 'CRITICAL' ? 'var(--color-bg)' : r.sev === 'HIGH' ? 'var(--vs-maroon-700)' : 'var(--vs-gold-800)', background: r.sev === 'CRITICAL' ? 'var(--vs-maroon)' : r.sev === 'HIGH' ? 'var(--vs-maroon-200)' : 'var(--vs-gold-200)' },
+      go: () => {
+        if (r.target === 'plan') { S.setState({ screen: 'vendors', sheet: 'plan' }); return; }
+        if (r.target === 'day3') { S.setState({ screen: 'schedule', day: 3, sheet: null }); return; }
+        if (r.target === 'money' && !moneyOn) { S.toast('Money needs FULL scope on this device.'); return; }
+        S.go(r.target);
+      }
+    }));
+
+    const pctOf = m => ((m - AXIS_START) / AXIS_SPAN) * 100;
+    const seg = (a, b, style) => Object.assign({ position: 'absolute', top: 0, bottom: 0, left: Math.max(0, pctOf(a)) + '%', width: Math.max(0.6, pctOf(b) - pctOf(a)) + '%' }, style);
+    const dayEvents = st.events.filter(x => x.day === st.day).map(x => ({
+      name: x.name, timeLabel: T(x.start) + '–' + T(x.end), spaceName: SPACES.find(s => s.id === x.spaceId).name,
+      guests: x.guests, owner: x.owner, vendorCount: x.vendors, setupLabel: DUR(x.setup),
+      windowLabel: T(x.start - x.setup) + '–' + T(x.end + x.teardown),
+      setupBarStyle: seg(x.start - x.setup, x.start, { background: 'var(--vs-gold-200)' }),
+      tdBarStyle: seg(x.end, x.end + x.teardown, { background: 'var(--vs-gold-200)' }),
+      barStyle: seg(x.start, x.end, { background: 'var(--vs-maroon)', color: 'var(--vs-maroon-100)', display: 'flex', alignItems: 'center', padding: '0 6px', fontSize: '10px', fontWeight: 600, overflow: 'hidden', whiteSpace: 'nowrap' }),
+      barLabel: x.name,
+      go: () => S.setState({ sel: x.id, draft: null, sheet: 'event' })
+    }));
+
+    const vendorRows = st.vendors.filter(v => st.filter === 'All' || (st.filter === 'Open' ? (v.status !== 'Confirmed' && v.status !== 'Accepted') : v.status === st.filter)).map(v => ({
+      name: v.name, category: v.category, eventName: v.eventName, scope: v.scope, window: v.window,
+      amountLabel: INR(v.amount), status: v.status, statusMeta: v.statusMeta, statusStyle: statusStyle(v.status),
+      hasPlan: !!v.plan, planLabel: 'Milestones', planClass: 'btn btn-secondary',
+      openPlan: () => S.setState({ sheet: 'plan' }),
+      actLabel: v.status === 'Rejected' ? 'Replace' : v.status === 'Confirmed' ? 'Locked' : 'Move to ' + NEXT[v.status],
+      actClass: v.status === 'Confirmed' ? 'btn btn-secondary' : 'btn btn-primary',
+      actStyle: { flex: v.plan ? 1.4 : 1 },
+      act: () => {
+        if (v.status === 'Confirmed') return;
+        if (v.status === 'Rejected') { S.toast('Rejection reason is recorded. Pick a replacement for the Haldi makeup requirement — it will not close silently.'); return; }
+        const nx = NEXT[v.status];
+        S.setState({ vendors: st.vendors.map(x => x.id === v.id ? Object.assign({}, x, { status: nx, statusMeta: nx === 'Accepted' ? 'locked just now · scope snapshot written' : nx === 'Confirmed' ? 'confirmed just now' : 'sent just now' }) : x) });
+        if (nx === 'Accepted') S.toast(v.name + ' accepted. Slot locked and locked_scope snapshotted — later edits will not rewrite what was agreed.');
+      }
+    }));
+
+    const ledgerRows = st.ledger.slice().reverse().map(l => ({
+      ts: l.ts, desc: l.desc, mode: l.mode, ref: l.ref + (l.reversalOf ? ' · reverses ' + l.reversalOf : ''),
+      rowStyle: { padding: '11px 14px', borderBottom: '1px solid var(--color-neutral-300)', background: l.reversed ? 'var(--vs-maroon-100)' : 'var(--color-surface)' },
+      descStyle: { fontSize: '14px', fontWeight: 600, lineHeight: 1.3, textDecoration: l.reversed ? 'line-through' : 'none', color: l.reversed ? 'var(--color-neutral-700)' : 'var(--color-text)' },
+      amountLabel: (l.dir === 'IN' ? '+' : '−') + INR(l.amount),
+      amountStyle: { flex: '0 0 auto', fontSize: '14px', fontWeight: 700, color: l.dir === 'IN' ? 'var(--vs-gold-800)' : 'var(--vs-maroon)' },
+      actLabel: l.reversed ? 'Reversed' : l.reversalOf ? 'Reversal entry' : 'Reverse this entry',
+      actClass: 'btn btn-secondary btn-block',
+      actStyle: { marginTop: '9px', color: l.reversed || l.reversalOf ? 'var(--color-neutral-700)' : 'var(--vs-maroon)', borderColor: l.reversed || l.reversalOf ? 'var(--color-neutral-300)' : 'var(--vs-maroon-300)', cursor: l.reversed || l.reversalOf ? 'default' : 'pointer' },
+      act: () => {
+        if (l.reversed || l.reversalOf) return;
+        S.setState({ seq: st.seq + 1, ledger: st.ledger.map(x => x.id === l.id ? Object.assign({}, x, { reversed: true }) : x).concat([{ id: 'lg_' + (st.seq + 1), ts: 'now', dir: l.dir === 'IN' ? 'OUT' : 'IN', desc: 'Reversal — ' + l.desc, mode: l.mode, amount: l.amount, ref: 'compensating entry', reversalOf: l.id }]) });
+        S.toast('Original kept and struck through. A compensating ' + (l.dir === 'IN' ? 'outflow' : 'inflow') + ' of ' + INR(l.amount) + ' was appended — nothing deleted.');
+      }
+    }));
+
+    const msRows = st.ms.map(m => ({
+      name: m.name, pctLabel: m.pct + '%', amountLabel: INR(CT * m.pct / 100), due: m.due, trigger: m.trigger, state: m.state,
+      stateStyle: { marginTop: '5px', background: m.state === 'PAID' ? 'var(--vs-gold-200)' : m.state === 'DUE' ? 'var(--vs-gold-100)' : 'var(--color-neutral-200)', color: m.state === 'PENDING' ? 'var(--color-neutral-800)' : 'var(--vs-gold-800)' },
+      inc: () => S.setState({ ms: st.ms.map(x => x.id === m.id ? Object.assign({}, x, { pct: Math.min(100, x.pct + 5) }) : x), msSaved: false }),
+      dec: () => S.setState({ ms: st.ms.map(x => x.id === m.id ? Object.assign({}, x, { pct: Math.max(0, x.pct - 5) }) : x), msSaved: false }),
+      remove: () => S.setState({ ms: st.ms.filter(x => x.id !== m.id), msSaved: false })
+    }));
+
+    const headers = {
+      today: ['Event day', 'T−0'], risks: ['Open risks', '5'], schedule: ['Days out', 'T−31'],
+      vendors: ['Locked', '4 / 7'], money: ['Cash on hand', SHORT(inflow - outflow)]
+    };
+    const hdr = headers[screen] || headers.today;
+
+    return {
+      headerKicker: hdr[0], headerValue: hdr[1], tabs,
+      isToday: screen === 'today', isRisks: screen === 'risks', isSchedule: screen === 'schedule',
+      isVendors: screen === 'vendors', isMoney: screen === 'money' && moneyOn,
+      moneyLocked: screen === 'money' && !moneyOn,
+
+      runSheet,
+      contacts: [
+        { name: 'Dev Malhotra', role: 'Blacklight — production lead' },
+        { name: 'Raj Sethi', role: 'LensCraft — lead photographer' },
+        { name: 'Vikram Rathore', role: 'Fairmont — banquet manager' }
+      ].map(c => Object.assign({}, c, { call: () => S.toast('Dialling ' + c.name + ' — the number is never shown to family-scope users.') })),
+      risks,
+
+      dayTabs: DAYS.map((dd, i) => {
+        const n = st.events.filter(x => x.day === i).length;
+        return { dow: dd.dow, date: dd.date, count: n === 0 ? '—' : n + (n === 1 ? ' ev' : ' evs'), go: () => S.setState({ day: i }), style: { flex: '1 0 78px', minHeight: '58px', padding: '8px 6px', textAlign: 'left', border: 'none', borderRight: '1px solid var(--color-neutral-300)', borderBottom: st.day === i ? '3px solid var(--vs-maroon)' : '3px solid transparent', background: st.day === i ? 'var(--vs-maroon-100)' : 'var(--color-surface)' } };
+      }),
+      dayEvents, noDayEvents: dayEvents.length === 0,
+
+      filters: ['All', 'Open', 'Sent', 'Rejected'].map(f => ({ label: f, go: () => S.setState({ filter: f }), class: st.filter === f ? 'btn btn-primary' : 'btn btn-secondary' })),
+      vendorRows,
+
+      moneyKpis: [
+        { label: 'Inflow', value: INR(inflow), style: { fontSize: '17px', fontWeight: 700, color: 'var(--vs-gold-800)' } },
+        { label: 'Outflow', value: INR(outflow), style: { fontSize: '17px', fontWeight: 700, color: 'var(--vs-maroon)' } },
+        { label: 'Cash on hand', value: INR(inflow - outflow), style: { fontSize: '17px', fontWeight: 700 } },
+        { label: 'Committed, unpaid', value: INR(2380000), style: { fontSize: '17px', fontWeight: 700, color: 'var(--vs-gold-800)' } }
+      ],
+      formParty: st.form.party, formAmountLabel: INR(st.form.amount),
+      partyOptions: ['Mehra family (client)', 'Blacklight Productions', 'Saffron Catering', 'LensCraft Studios', 'Blossom & Co', 'Fairmont Jaipur'],
+      onParty: ev => S.setState({ form: Object.assign({}, st.form, { party: ev.target.value }) }),
+      dirIn: st.form.dir === 'IN', dirOut: st.form.dir === 'OUT',
+      setIn: () => S.setState({ form: Object.assign({}, st.form, { dir: 'IN' }) }),
+      setOut: () => S.setState({ form: Object.assign({}, st.form, { dir: 'OUT' }) }),
+      amtMinus: () => S.setState({ form: Object.assign({}, st.form, { amount: Math.max(0, st.form.amount - 25000) }) }),
+      amtPlus: () => S.setState({ form: Object.assign({}, st.form, { amount: st.form.amount + 25000 }) }),
+      addEntry: () => {
+        S.setState({ seq: st.seq + 1, ledger: st.ledger.concat([{ id: 'lg_' + (st.seq + 1), ts: 'now', dir: st.form.dir, desc: (st.form.dir === 'IN' ? 'Receipt — ' : 'Payment — ') + st.form.party, mode: st.form.dir === 'IN' ? 'Bank NEFT · client' : 'UPI · planner', amount: st.form.amount, ref: 'manual entry · mobile' }]) });
+        S.toast('Appended ' + INR(st.form.amount) + '. This row can never be edited or deleted — only reversed.');
+      },
+      ledgerRows,
+
+      sheetOpen: !!st.sheet, sheetIsEvent: st.sheet === 'event', sheetIsPlan: st.sheet === 'plan',
+      closeSheet: () => S.setState({ sheet: null }),
+      sheetKicker: st.sheet === 'plan' ? 'Milestone plan · FR-2861.1' : 'Rescheduling ceremony',
+      sheetTitle: st.sheet === 'plan' ? 'LensCraft Studios' : e.name,
+      sheetSub: st.sheet === 'plan' ? 'Photography & cinematography · ct_0038' : DAYS[e.day].full + ' · ' + e.vendors + ' vendors locked',
+
+      draftSpace: d.spaceId, spaceOptions: SPACES.map(s => ({ id: s.id, label: s.name + ' — cap ' + s.cap })),
+      onSpace: ev => S.patch({ spaceId: ev.target.value }),
+      steppers: [
+        { label: 'Start', value: T(d.start), minus: () => S.patch({ start: d.start - 30 }), plus: () => S.patch({ start: d.start + 30 }) },
+        { label: 'End', value: T(d.end), minus: () => S.patch({ end: d.end - 30 }), plus: () => S.patch({ end: d.end + 30 }) },
+        { label: 'Setup', value: DUR(d.setup), minus: () => S.patch({ setup: Math.max(0, d.setup - 30) }), plus: () => S.patch({ setup: d.setup + 30 }) },
+        { label: 'Teardown', value: DUR(d.teardown), minus: () => S.patch({ teardown: Math.max(0, d.teardown - 30) }), plus: () => S.patch({ teardown: d.teardown + 30 }) },
+        { label: 'Expected guests', value: String(d.guests), minus: () => S.patch({ guests: Math.max(0, d.guests - 10) }), plus: () => S.patch({ guests: d.guests + 10 }) }
+      ],
+      draftWindowLabel: T(d.start - d.setup) + ' → ' + T(d.end + d.teardown) + ' in ' + space.name,
+      violations: viols,
+      blockPanelStyle: { margin: '12px 14px', padding: '12px', background: blocked ? 'var(--vs-maroon-100)' : 'var(--vs-gold-100)', border: '1px solid ' + (blocked ? 'var(--vs-maroon-300)' : 'var(--vs-gold-300)') },
+      blockDotStyle: { width: '8px', height: '8px', flex: '0 0 8px', background: blocked ? 'var(--vs-maroon)' : 'var(--vs-gold-700)' },
+      blockTitle: blocked ? 'Why this cannot be saved' : 'Clear to save',
+      blockLede: blocked ? 'The database will refuse this write, so the form refuses it first. Each rule names the record in the way and what to change.' : 'No overlap in ' + space.name + ', capacity is within limits, and the chronology holds.',
+      hasImpacted: !blocked && (d.start !== e.start || d.end !== e.end || d.spaceId !== e.spaceId),
+      impacted: [{ name: 'LensCraft Studios', detail: 'arrival 17:00 shifts with the ceremony' }, { name: 'Blacklight Productions', detail: 'load-in window must be re-checked' }],
+      applyDraft: () => {
+        if (viols.length) { S.toast('Still blocked — resolve ' + viols.length + ' rule violation' + (viols.length > 1 ? 's' : '') + ' above.'); return; }
+        S.setState({ events: st.events.map(x => x.id === e.id ? Object.assign({}, x, d) : x), draft: null, sheet: null });
+        S.toast('Saved. ' + e.name + ' now runs ' + T(d.start) + '–' + T(d.end) + ' in ' + space.name + '. 2 locked vendors were re-notified.');
+      },
+      resetDraft: () => S.setState({ draft: null }),
+      saveBtnClass: blocked ? 'btn btn-secondary btn-block' : 'btn btn-primary btn-block',
+      saveBtnStyle: { minHeight: '50px', fontSize: '14px', color: blocked ? 'var(--color-neutral-700)' : undefined, cursor: blocked ? 'not-allowed' : 'pointer' },
+      saveLabel: blocked ? 'Blocked · ' + viols.length + ' rule' + (viols.length > 1 ? 's' : '') : 'Save & notify vendors',
+      saveHint: blocked ? 'Enforced by an exclusion constraint on space_bookings.period, not by client validation.' : 'Writes events + space_bookings in one transaction; acknowledgements are queued to the worker.',
+
+      contractTotalLabel: INR(CT), paidLabel: INR(96000), milestoneRows: msRows,
+      sumLabel: sum + '% · ' + INR(CT * sum / 100),
+      sumStyle: { fontSize: '17px', fontWeight: 700, color: sum === 100 ? 'var(--vs-gold-800)' : 'var(--vs-maroon)' },
+      sumBarStyle: { width: Math.min(100, sum) + '%', height: '100%', background: sum === 100 ? 'var(--vs-gold-700)' : sum > 100 ? 'var(--vs-maroon-500)' : 'var(--vs-gold)' },
+      addMilestone: () => S.setState({ ms: st.ms.concat([{ id: 'm' + (st.seq + 1), name: 'Post-delivery balance', pct: 0, due: '28 Feb 2027', trigger: 'album delivery', state: 'PENDING' }]), seq: st.seq + 1, msSaved: false }),
+      msBlocked: sum !== 100,
+      msPanelStyle: { margin: '12px 14px 0', padding: '12px', background: sum === 100 ? 'var(--vs-gold-100)' : 'var(--vs-maroon-100)', border: '1px solid ' + (sum === 100 ? 'var(--vs-gold-300)' : 'var(--vs-maroon-300)') },
+      msDotStyle: { width: '8px', height: '8px', flex: '0 0 8px', background: sum === 100 ? 'var(--vs-gold-800)' : 'var(--vs-maroon)' },
+      msTitle: sum === 100 ? 'Plan balances' : 'Why this cannot be saved',
+      msLede: sum === 100 ? 'Milestones total exactly the contract obligation. The plan can be activated.' : 'A milestone plan must account for every rupee of the contract. Anything else is the 93%-discovered-post-event failure this product exists to prevent.',
+      msSumAmountLabel: INR(CT * sum / 100),
+      msDiffLabel: (diff > 0 ? '−' : diff < 0 ? '+' : '') + INR(Math.abs(CT * diff / 100)) + ' (' + (diff > 0 ? diff + '% short' : diff < 0 ? Math.abs(diff) + '% over' : 'balanced') + ')',
+      msDiffStyle: { fontWeight: 700, color: diff === 0 ? 'var(--vs-gold-800)' : 'var(--vs-maroon)' },
+      msFix: diff > 0 ? 'Add ' + diff + '% (' + INR(CT * diff / 100) + ') to a milestone, or add a post-delivery one for the balance.' : 'Remove ' + Math.abs(diff) + '% (' + INR(CT * Math.abs(diff) / 100) + ') — the plan promises more than the contract.',
+      balanceMilestones: () => {
+        if (!st.ms.length) return;
+        S.setState({ ms: st.ms.map((x, i) => i === st.ms.length - 1 ? Object.assign({}, x, { pct: Math.max(0, x.pct + diff) }) : x), msSaved: false });
+        S.toast(st.ms[st.ms.length - 1].name + ' adjusted to absorb the ' + Math.abs(diff) + '% difference.');
+      },
+      saveMilestones: () => {
+        if (sum !== 100) { S.toast('Rejected by payment_milestones_sum_100 — the plan totals ' + sum + '%, not 100%.'); return; }
+        S.setState({ msSaved: true });
+        S.toast('Plan activated. ₹3,20,000 fully scheduled across ' + st.ms.length + ' milestones.');
+      },
+      msSaveClass: sum === 100 ? 'btn btn-primary btn-block' : 'btn btn-secondary btn-block',
+      msSaveStyle: { minHeight: '50px', fontSize: '14px', color: sum === 100 ? undefined : 'var(--color-neutral-700)', cursor: sum === 100 ? 'pointer' : 'not-allowed' },
+      msSaveLabel: st.msSaved && sum === 100 ? 'Plan active ✓' : sum === 100 ? 'Activate milestone plan' : 'Blocked · plan is ' + sum + '%',
+      msSaveHint: 'The trigger takes FOR UPDATE on the contract row, so two planners cannot both squeeze past 100%.',
+
+      hasToast: !!st.toast, toast: st.toast
+    };
+  }
+}
+
+</script>
+</body>
+</html>

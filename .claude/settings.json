@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd \"d:/Bratamalya/New folder/VivahSync\" && sed -i 's/^NEXT_PUBLIC_SUPABASE_PASSWORD=/SUPABASE_DB_PASSWORD=/' .env && echo \"Renamed NEXT_PUBLIC_SUPABASE_PASSWORD -> SUPABASE_DB_PASSWORD\" && grep -qE '^SUPABASE_DB_PASSWORD=' .env && echo \"verified: SUPABASE_DB_PASSWORD present\" && ! grep -qE '^NEXT_PUBLIC_SUPABASE_PASSWORD=' .env && echo \"verified: NEXT_PUBLIC_SUPABASE_PASSWORD removed\")",
+      "Bash(npm install *)",
+      "Bash(node packages/db/scripts/capability-check.mjs)",
+      "Bash(node \"C:/Users/lenovo/AppData/Local/Temp/claude/d--Bratamalya-New-folder-VivahSync/a3b7bceb-565e-437d-b91d-ce45473340bb/scratchpad/supabase-info.mjs\")",
+      "Bash(node packages/db/scripts/apply.mjs)",
+      "Bash(node --import tsx -e \"console.log\\('tsx-import-ok', typeof process.version\\)\")",
+      "Bash(node --import tsx --test packages/db/tests/rls-tenancy.test.ts)",
+      "Bash(node \"C:/Users/lenovo/AppData/Local/Temp/claude/d--Bratamalya-New-folder-VivahSync/a3b7bceb-565e-437d-b91d-ce45473340bb/scratchpad/diag.mjs\")",
+      "Bash(cp \"C:/Users/lenovo/AppData/Local/Temp/claude/d--Bratamalya-New-folder-VivahSync/a3b7bceb-565e-437d-b91d-ce45473340bb/scratchpad/diag.mjs\" \"d:/Bratamalya/New folder/VivahSync/packages/db/scripts/_diag.mjs\")",
+      "Bash(node packages/db/scripts/_diag.mjs)",
+      "Bash(rm -f \"d:/Bratamalya/New folder/VivahSync/packages/db/scripts/_diag.mjs\")",
+      "Bash(npm run *)",
+      "Bash(curl --retry 20 --retry-delay 1 --retry-connrefused -s http://localhost:3000/api/health)",
+      "Read(//tmp/**)",
+      "Bash(node packages/db/scripts/verify-service-key.mjs)",
+      "Bash(node \"C:/Users/lenovo/AppData/Local/Temp/claude/d--Bratamalya-New-folder-VivahSync/a3b7bceb-565e-437d-b91d-ce45473340bb/scratchpad/autoconfirm.mjs\")",
+      "Bash(node --import tsx --test packages/db/tests/m1-flow.test.ts)",
+      "Bash(npm test *)",
+      "Bash(cd \"d:/Bratamalya/New folder/VivahSync\" && echo \"=== server log ===\" && cat /tmp/vivah-web2.log 2>/dev/null | head -30 && echo \"\" && echo \"=== built route manifest ===\" && ls apps/web/.next/server/app/ 2>/dev/null && echo \"--- \\(auth\\) group ---\" && ls apps/web/.next/server/app/\\\\\\(auth\\\\\\)/ 2>/dev/null)",
+      "Bash(curl --retry 40 --retry-delay 1 --retry-connrefused -s -o /dev/null http://localhost:3200/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3200/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3200/login)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3200/signup)",
+      "Bash(curl -s -o /dev/null -w \"status=%{http_code} loc=%{redirect_url}\\\\n\" http://localhost:3200/dashboard)",
+      "Bash(node --import tsx --test packages/db/tests/scheduling.test.ts)",
+      "Bash(node --import tsx --test packages/db/tests/vendor-lifecycle.test.ts)",
+      "Bash(node --import tsx --test packages/db/tests/schedule-change.test.ts)",
+      "Bash(node --import tsx --test packages/db/tests/playbook.test.ts)",
+      "Bash(node --import tsx --test packages/db/tests/risk.test.ts)",
+      "Bash(node --import tsx --test packages/db/tests/playbook-pdf.test.ts)",
+      "Bash(timeout 9 node --import tsx src/index.ts)",
+      "Bash(node --import tsx --test packages/db/tests/venue-rules.test.ts)",
+      "Bash(node --import tsx --test packages/db/tests/dashboard.test.ts)"
+    ],
+    "additionalDirectories": [
+      "d:\\Bratamalya\\New folder\\VivahSync"
+    ]
+  }
+}
