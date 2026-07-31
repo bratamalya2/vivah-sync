@@ -87,6 +87,18 @@ export async function getEvidenceStoragePath(userId: string, mediaId: string): P
   })
 }
 
+/**
+ * Storage path resolved by ANY access route — project_access (planner/family) or
+ * a vendor booked on the media's ceremony. Backs the shared /media/[id] route so
+ * family and vendors can view evidence, not just operational planner members.
+ */
+export async function getSharedEvidencePath(userId: string, mediaId: string): Promise<string | null> {
+  return withUser(userId, async (tx) => {
+    const r = await tx.query<{ p: string | null }>('select app.my_evidence_path($1) as p', [mediaId])
+    return r.rows[0]?.p ?? null
+  })
+}
+
 /** Delete a media record (FULL scope). Returns the storage path so the caller removes the object. */
 export async function deleteEvidence(userId: string, mediaId: string): Promise<string | null> {
   return withUser(userId, async (tx) => {

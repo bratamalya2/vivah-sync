@@ -25,6 +25,7 @@ export default async function DashboardPage() {
   const ctx = await getMyContext(user.id)
   if (!ctx.onboarded || !ctx.org) redirect('/onboarding')
   if (ctx.org.type === 'FAMILY') redirect('/family')
+  if (ctx.org.type === 'VENDOR') redirect('/vendor')
 
   const [projects, facts] = await Promise.all([
     listProjects(user.id),

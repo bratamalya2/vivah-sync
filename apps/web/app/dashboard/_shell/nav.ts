@@ -83,3 +83,32 @@ export function familyTabs(id?: string): NavItem[] {
   if (id) items.push({ label: 'Schedule', href: `/family/${id}`, icon: 'calendar', match: 'exact' })
   return items
 }
+
+export function vendorGroups(pending?: number): NavGroup[] {
+  return [
+    {
+      label: 'Vendor',
+      items: [
+        {
+          label: 'My bookings',
+          href: '/vendor',
+          icon: 'calendar',
+          match: 'exact',
+          badge: pending && pending > 0 ? String(pending) : undefined,
+        },
+      ],
+    },
+  ]
+}
+
+export function vendorTabs(pending?: number): NavItem[] {
+  return [
+    {
+      label: 'Bookings',
+      href: '/vendor',
+      icon: 'calendar',
+      match: 'exact',
+      badge: pending && pending > 0 ? String(pending) : undefined,
+    },
+  ]
+}

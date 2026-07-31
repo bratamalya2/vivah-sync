@@ -3,10 +3,31 @@
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { getUser } from '@/lib/auth'
-import { getMyContext, createVendor, type VendorCategory } from '@vivahsync/db'
+import { getMyContext, createVendor, inviteVendor, type VendorCategory } from '@vivahsync/db'
 import { translateDbError } from '@vivahsync/core'
 
 export type FormState = { error?: string; ok?: boolean } | null
+
+/** Invite a roster vendor to the self-service portal by email. */
+export async function inviteVendorToPortal(formData: FormData): Promise<void> {
+  const user = await getUser()
+  if (!user) redirect('/login')
+
+  const vendorId = String(formData.get('vendorId') ?? '')
+  const email = String(formData.get('email') ?? '').trim()
+
+  let target: string
+  try {
+    await inviteVendor(user.id, { vendorId, email })
+    target = `/dashboard/vendors?msg=${encodeURIComponent(`Portal invitation sent to ${email}.`)}`
+  } catch (e) {
+    target = `/dashboard/vendors?err=${encodeURIComponent(
+      translateDbError(e)?.message ?? 'Could not send the invitation.',
+    )}`
+  }
+  revalidatePath('/dashboard/vendors')
+  redirect(target)
+}
 
 export async function addVendor(_prev: FormState, formData: FormData): Promise<FormState> {
   const user = await getUser()

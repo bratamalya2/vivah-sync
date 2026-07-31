@@ -7,7 +7,7 @@ export default function Sidebar({
   scope,
 }: {
   groups: NavGroup[]
-  scope: 'agency' | 'project' | 'family'
+  scope: 'agency' | 'project' | 'family' | 'vendor'
 }) {
   return (
     <aside className="shell-sidebar">
@@ -26,6 +26,15 @@ export default function Sidebar({
           <div className="h">Read-only</div>
           <div className="b">
             You can see the <strong>schedule</strong>. Money and vendor operations stay hidden.
+          </div>
+        </div>
+      )}
+      {scope === 'vendor' && (
+        <div className="shell-scope">
+          <div className="h">Your view</div>
+          <div className="b">
+            You see only bookings assigned to <strong>you</strong> — never other vendors, pricing, or
+            planner details.
           </div>
         </div>
       )}

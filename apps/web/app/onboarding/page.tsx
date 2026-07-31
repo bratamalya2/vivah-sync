@@ -11,6 +11,7 @@ export default async function OnboardingPage() {
 
   const ctx = await getMyContext(user.id)
   if (ctx.org?.type === 'FAMILY') redirect('/family')
+  if (ctx.org?.type === 'VENDOR') redirect('/vendor')
   if (ctx.onboarded) redirect('/dashboard')
 
   const defaultFullName =

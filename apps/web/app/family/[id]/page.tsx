@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { redirect, notFound } from 'next/navigation'
 import { getUser } from '@/lib/auth'
 import { familyRunsheet, type FamilyRunsheet } from '@vivahsync/db'
@@ -74,6 +75,30 @@ export default async function FamilyRunsheetPage({ params }: { params: Promise<{
                             </li>
                           ))}
                         </ul>
+                      )}
+                      {e.media.length > 0 && (
+                        <>
+                          <div className="evmeta" style={{ marginTop: '0.5rem', fontWeight: 600 }}>
+                            Setup photos
+                          </div>
+                          <ul className="evidencelist" style={{ marginTop: '0.3rem' }}>
+                            {e.media.map((m) => (
+                              <li key={m.id}>
+                                <a href={`/media/${m.id}`} target="_blank" rel="noopener noreferrer">
+                                  {m.content_type?.startsWith('image/') ? (
+                                    <img
+                                      src={`/media/${m.id}`}
+                                      alt={m.file_name ?? 'photo'}
+                                      className="evthumb"
+                                    />
+                                  ) : (
+                                    <span className="evfile">📎 {m.file_name ?? 'file'}</span>
+                                  )}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        </>
                       )}
                     </div>
                   </li>

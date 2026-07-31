@@ -6,14 +6,18 @@
 //
 // Run:  npm run db:seed
 
+import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 import { createClient } from '@supabase/supabase-js'
 import {
   withSystem, closePools,
   onboardPlanner, createProject, createVenue, createSpace, scheduleEvent,
   createVendor, addRequirement, createBooking, transitionBooking,
-  setEventSpaces, addVenueOverride, generatePlaybook,
+  setEventSpaces, addVenueOverride, generatePlaybook, rescheduleEvent,
   inviteFamily, claimFamilyInvitations, recordLedgerEntry,
+  inviteVendor, claimVendorInvitations, vendorRecordEvidence,
 } from '@vivahsync/db'
+import { ensureEvidenceBucket, uploadEvidence } from '@vivahsync/db/storage'
 import { renderPendingPlaybooks } from '@vivahsync/db/jobs'
 
 const admin = createClient(
@@ -27,6 +31,7 @@ const EMAILS = {
   planner: 'priya@vivahsync.dev',
   family: 'aunt@vivahsync.dev',
   rival: 'sunil@vivahsync.dev',
+  vendor: 'raj@lenscraft.dev',
 }
 
 const dayMs = 86_400_000
@@ -65,10 +70,19 @@ async function cleanup() {
 
   await withSystem(async (tx) => {
     if (orgIds.length) {
+      // Teardown must get past the intentional immutability guards — the
+      // locked-ceremony delete block (trg_event_delete_guard) and the append-only
+      // ledger — which fire even on a cascading delete. Disable just those two
+      // tables' user triggers for the length of this (atomic) transaction; the FK
+      // cascades themselves still fire.
+      await tx.query('alter table public.events disable trigger user')
+      await tx.query('alter table public.ledger_entries disable trigger user')
       await tx.query('delete from projects where owner_org_id = any($1)', [orgIds])
       await tx.query('delete from venues where owner_org_id = any($1)', [orgIds])
       await tx.query('delete from vendor_profiles where created_by_org_id = any($1)', [orgIds])
       await tx.query('delete from organizations where id = any($1)', [orgIds])
+      await tx.query('alter table public.ledger_entries enable trigger user')
+      await tx.query('alter table public.events enable trigger user')
     }
   })
   for (const id of ids) await admin.auth.admin.deleteUser(id).catch(() => {})
@@ -123,7 +137,6 @@ async function main() {
   })).id
 
   void mehndi
-  void wedding
 
   // vendor roster
   const lenscraft = (await createVendor(priya, { ownerOrgId: org, name: 'LensCraft Studios', category: 'PHOTOGRAPHY', contactName: 'Raj', contactPhone: '+91 90000 11111' })).id
@@ -153,6 +166,8 @@ async function main() {
   await req(reception, 'MAKEUP', 'Bridal + family touch-ups', '15:00', '20:00', 7)
   // Haldi: photographer confirmed
   await book(await req(haldi, 'PHOTOGRAPHY', 'Morning candids', '08:30', '12:30', 5), lenscraft, 'ACCEPTED')
+  // Wedding: photographer request still pending → LensCraft accepts/declines it in the portal
+  await book(await req(wedding, 'PHOTOGRAPHY', 'Full wedding-day coverage', '10:00', '14:30', 7), lenscraft, 'SENT')
   void glow
 
   // multi-space showcase: Sangeet spills onto the terrace too
@@ -187,6 +202,28 @@ async function main() {
   await claimFamilyInvitations(aunt)
 
   // ========================================================================
+  // Vendor: LensCraft Studios — Raj (self-service portal)
+  // ========================================================================
+  const raj = await createUser(EMAILS.vendor)
+  await inviteVendor(priya, { vendorId: lenscraft, email: EMAILS.vendor })
+  await claimVendorInvitations(raj)
+  // Propose moving Haldi (LensCraft is locked on it) so the vendor has a
+  // schedule change waiting to acknowledge in the portal.
+  await rescheduleEvent(priya, { eventId: haldi, newStartsAt: at(5, '10:00'), newEndsAt: at(5, '13:00') })
+  // A setup photo the vendor captured on the Haldi — surfaces in the vendor
+  // portal AND on the family's read-only schedule.
+  const photo = readFileSync(
+    fileURLToPath(new URL('../../../apps/web/public/img/ceremony-fire.jpg', import.meta.url)),
+  )
+  const evId = crypto.randomUUID()
+  await ensureEvidenceBucket()
+  await uploadEvidence(`${project}/${evId}.jpg`, photo, 'image/jpeg')
+  await vendorRecordEvidence(raj, {
+    id: evId, eventId: haldi, storagePath: `${project}/${evId}.jpg`,
+    contentType: 'image/jpeg', fileName: 'haldi-setup.jpg', byteSize: photo.length,
+  })
+
+  // ========================================================================
   // Rival agency: Bandhan Events — Sunil (proves cross-agency isolation)
   // ========================================================================
   const sunil = await createUser(EMAILS.rival)
@@ -206,6 +243,7 @@ async function main() {
   console.log('  ┌─────────────────────────────────────────────────────────────')
   console.log(`  │ ${EMAILS.planner}   Planner (Shubh Muhurat) — the rich Mehra–Kapoor wedding`)
   console.log(`  │ ${EMAILS.family}      Family — read-only portal for Mehra–Kapoor`)
+  console.log(`  │ ${EMAILS.vendor}     Vendor (LensCraft Studios) — self-service portal, own bookings only`)
   console.log(`  │ ${EMAILS.rival}     Rival planner (Bandhan Events) — sees only its own wedding`)
   console.log('  └─────────────────────────────────────────────────────────────\n')
 }

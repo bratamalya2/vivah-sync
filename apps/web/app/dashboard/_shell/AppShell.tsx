@@ -7,9 +7,11 @@ import {
   agencyGroups,
   projectGroups,
   familyGroups,
+  vendorGroups,
   agencyTabs,
   projectTabs,
   familyTabs,
+  vendorTabs,
   type NavGroup,
   type NavItem,
   type RiskCount,
@@ -37,14 +39,16 @@ export default function AppShell({
   project,
   tMinus,
   risks,
+  pending,
   children,
 }: {
-  scope: 'agency' | 'project' | 'family'
+  scope: 'agency' | 'project' | 'family' | 'vendor'
   user: User
   org: OrgLite | null
   project?: ProjectLite | null
   tMinus?: string | null
   risks?: RiskCount
+  pending?: number
   children: ReactNode
 }) {
   let groups: NavGroup[]
@@ -55,6 +59,9 @@ export default function AppShell({
   } else if (scope === 'family') {
     groups = familyGroups(project?.id)
     tabs = familyTabs(project?.id)
+  } else if (scope === 'vendor') {
+    groups = vendorGroups(pending)
+    tabs = vendorTabs(pending)
   } else {
     groups = agencyGroups()
     tabs = agencyTabs()
@@ -65,7 +72,7 @@ export default function AppShell({
       <TopBar
         user={user}
         org={org}
-        project={scope === 'agency' ? null : project}
+        project={scope === 'project' || scope === 'family' ? project : null}
         tMinus={scope === 'project' ? tMinus : null}
       />
       <div className="shell-body">

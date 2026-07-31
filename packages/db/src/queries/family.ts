@@ -58,6 +58,7 @@ export interface FamilyRunsheet {
       ends_at: string
       spaces: { venue: string; space: string }[]
       vendors: { category: string; name: string; arrival: string; completion: string }[]
+      media: { id: string; file_name: string | null; content_type: string | null }[]
     }[]
   }[]
 }

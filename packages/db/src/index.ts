@@ -91,10 +91,25 @@ export {
   type FamilyRunsheet,
 } from './queries/family.js'
 export {
+  inviteVendor,
+  claimVendorInvitations,
+  vendorBookings,
+  vendorRespondBooking,
+  vendorAcknowledge,
+  listVendorPortalInvites,
+  vendorEventProject,
+  vendorRecordEvidence,
+  vendorEvidence,
+  type VendorBooking,
+  type VendorPortalInvite,
+  type VendorEvidence,
+} from './queries/vendorPortal.js'
+export {
   getEventForUpload,
   recordEvidence,
   listProjectEvidence,
   getEvidenceStoragePath,
+  getSharedEvidencePath,
   deleteEvidence,
   type EvidenceRow,
 } from './queries/evidence.js'

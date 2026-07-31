@@ -15,7 +15,7 @@ import {
   withUser, withSystem, closePools,
   onboardPlanner, createProject, createVenue, createSpace, scheduleEvent,
   createVendor, addRequirement, createBooking, transitionBooking,
-  addVenueOverride, generatePlaybook, listProjects,
+  addVenueOverride, generatePlaybook, listProjects, recordEvidence, getSharedEvidencePath,
   inviteFamily, listProjectInvitations, claimFamilyInvitations, familyRunsheet,
 } from '@vivahsync/db'
 
@@ -34,7 +34,7 @@ async function count(userId: string, table: string): Promise<number> {
 
 const tag = crypto.randomUUID().slice(0, 8)
 const famEmail = `fam-${tag}@example.com`
-const s = { planner: '', family: '', org: '', project: '' }
+const s = { planner: '', family: '', org: '', project: '', evId: '' }
 
 before(async () => {
   s.planner = await signUp(`plan-${tag}@example.com`)
@@ -62,6 +62,12 @@ before(async () => {
     eventId: event, ruleKey: 'ACCESS_CLOSE', overrideValue: '02:00', rationale: 'internal note',
   })
   await generatePlaybook(s.planner, s.project)
+  s.evId = crypto.randomUUID()
+  await recordEvidence(s.planner, {
+    id: s.evId, projectId: s.project, entityType: 'event', entityId: event,
+    storagePath: `${s.project}/${s.evId}.jpg`, contentType: 'image/jpeg',
+    fileName: 'sangeet-setup.jpg', byteSize: 2048,
+  })
 })
 
 after(async () => {
@@ -123,9 +129,20 @@ test('family reads ZERO rows from every operational/commercial/audit table', asy
     'playbooks',
     'space_bookings',
     'schedule_change_proposals',
+    'evidence_media',
   ]) {
     assert.equal(await count(s.family, table), 0, `family must not read ${table}`)
   }
+})
+
+test('family sees setup photos in the run-sheet and can resolve them for viewing', async () => {
+  const rs = await familyRunsheet(s.family, s.project)
+  const ev = rs.days.flatMap((d) => d.events).find((e) => e.name === 'Sangeet')!
+  assert.equal(ev.media.length, 1)
+  assert.equal(ev.media[0].id, s.evId)
+  // the byte path resolves for the family — this is what backs the signed-URL /media route
+  const path = await getSharedEvidencePath(s.family, s.evId)
+  assert.ok(path && path.length > 0, 'family must resolve the evidence path')
 })
 
 test('the planner (FULL) is completely unaffected', async () => {
