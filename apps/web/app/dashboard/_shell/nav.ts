@@ -32,7 +32,12 @@ export function projectGroups(id: string, projectName: string, risks?: RiskCount
       label: projectName || 'Project',
       items: [
         { label: 'Run of show', href: base, icon: 'calendar', match: 'exact' },
+        { label: 'Guests', href: `${base}/guests`, icon: 'vendors', match: 'startsWith' },
+        { label: 'Travel', href: `${base}/travel`, icon: 'arrow', match: 'startsWith' },
+        { label: 'Hotels', href: `${base}/hotels`, icon: 'venue', match: 'startsWith' },
+        { label: 'Messaging', href: `${base}/broadcast`, icon: 'message', match: 'startsWith' },
         { label: 'Vendors', href: `${base}/vendors`, icon: 'vendors', match: 'startsWith' },
+        { label: 'Contracts', href: `${base}/contracts`, icon: 'file', match: 'startsWith' },
         { label: 'Ledger', href: `${base}/ledger`, icon: 'rupee', match: 'startsWith' },
         {
           label: 'Risks',

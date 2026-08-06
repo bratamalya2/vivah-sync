@@ -28,7 +28,15 @@ export default function ScheduleForm({
   return (
     <form action={action} ref={ref} className="newform">
       <input type="hidden" name="projectId" value={projectId} />
-      {state?.error && <p className="err">{state.error}</p>}
+      {state?.error &&
+        (state.intervention ? (
+          <p className="prevented">
+            {state.headline ? <strong>{state.headline} — </strong> : null}
+            {state.error}
+          </p>
+        ) : (
+          <p className="err">{state.error}</p>
+        ))}
       {state?.ok && <p className="ok">Ceremony scheduled.</p>}
 
       <label>

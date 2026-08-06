@@ -11,6 +11,7 @@ import {
 import { categoryLabel } from '@/lib/categories'
 import AppShell from '@/app/dashboard/_shell/AppShell'
 import PageHeader from '@/app/dashboard/_shell/PageHeader'
+import SubmitButton from '@/app/_components/SubmitButton'
 import { respondBookingAction, acknowledgeChangeAction, uploadVendorEvidenceAction } from './actions'
 
 export const dynamic = 'force-dynamic'
@@ -120,9 +121,9 @@ export default async function VendorPortal({
                               . Please acknowledge so it can be applied.
                               <form action={acknowledgeChangeAction} style={{ marginTop: '0.45rem' }}>
                                 <input type="hidden" name="ackId" value={b.pending_ack_id} />
-                                <button className="mini" type="submit">
+                                <SubmitButton className="mini" pendingLabel="Saving…">
                                   Acknowledge change
-                                </button>
+                                </SubmitButton>
                               </form>
                             </div>
                           )}
@@ -132,17 +133,17 @@ export default async function VendorPortal({
                               <form action={respondBookingAction} className="inlineform">
                                 <input type="hidden" name="bookingId" value={b.booking_id} />
                                 <input type="hidden" name="accept" value="accept" />
-                                <button className="mini" type="submit">
+                                <SubmitButton className="mini" pendingLabel="Accepting…">
                                   Accept
-                                </button>
+                                </SubmitButton>
                               </form>
                               <form action={respondBookingAction} className="inlineform rejectform">
                                 <input type="hidden" name="bookingId" value={b.booking_id} />
                                 <input type="hidden" name="accept" value="decline" />
                                 <input name="reason" placeholder="reason to decline…" required />
-                                <button className="mini ghostmini" type="submit">
+                                <SubmitButton className="mini ghostmini" pendingLabel="Declining…">
                                   Decline
-                                </button>
+                                </SubmitButton>
                               </form>
                             </div>
                           )}
@@ -177,9 +178,9 @@ export default async function VendorPortal({
                               >
                                 <input type="hidden" name="eventId" value={b.event_id} />
                                 <input type="file" name="file" accept="image/*,video/*" required />
-                                <button className="mini" type="submit">
+                                <SubmitButton className="mini" pendingLabel="Uploading…">
                                   Upload proof
-                                </button>
+                                </SubmitButton>
                               </form>
                             </details>
                           )}

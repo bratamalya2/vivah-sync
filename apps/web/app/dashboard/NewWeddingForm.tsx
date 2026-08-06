@@ -3,7 +3,11 @@
 import { useActionState, useEffect, useRef } from 'react'
 import { createWedding, type FormState } from './actions'
 
-export default function NewWeddingForm() {
+export default function NewWeddingForm({
+  templates,
+}: {
+  templates: { key: string; label: string; description: string; ceremonies: number }[]
+}) {
   const [state, action, pending] = useActionState<FormState, FormData>(createWedding, null)
   const formRef = useRef<HTMLFormElement>(null)
 
@@ -36,6 +40,20 @@ export default function NewWeddingForm() {
       <label>
         Expected guests
         <input name="guestCount" type="number" min={0} placeholder="400" />
+      </label>
+      <label>
+        Start from a template
+        <select name="template" defaultValue="">
+          <option value="">Start blank</option>
+          {templates.map((t) => (
+            <option key={t.key} value={t.key}>
+              {t.label} · {t.ceremonies} ceremonies
+            </option>
+          ))}
+        </select>
+        <span className="hint">
+          Pre-fills the ceremonies &amp; default vendor categories — delete what you don&rsquo;t need.
+        </span>
       </label>
       <button type="submit" disabled={pending}>
         {pending ? 'Adding…' : 'Add wedding'}

@@ -1,5 +1,5 @@
 export { brand, formatInr, inr, type BrandColor } from './brand.js'
-export { translateDbError, type RuleViolation } from './errors.js'
+export { translateDbError, describeActionError, type RuleViolation } from './errors.js'
 export {
   computeRisks,
   type Risk,

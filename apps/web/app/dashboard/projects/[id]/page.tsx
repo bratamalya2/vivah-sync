@@ -38,10 +38,10 @@ export default async function ProjectPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>
-  searchParams: Promise<{ err?: string; msg?: string }>
+  searchParams: Promise<{ err?: string; msg?: string; prevented?: string }>
 }) {
   const { id } = await params
-  const { err, msg } = await searchParams
+  const { err, msg, prevented } = await searchParams
   const user = await getUserCached()
   if (!user) redirect('/login')
 
@@ -92,6 +92,7 @@ export default async function ProjectPage({
         <span className={`badge ${project.status.toLowerCase()}`}>{project.status}</span>
       </div>
 
+      {prevented && <p className="prevented banner">{prevented}</p>}
       {err && <p className="err banner">{err}</p>}
       {msg && <p className="ok banner">{msg}</p>}
 

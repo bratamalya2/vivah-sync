@@ -69,6 +69,91 @@ export {
 } from './queries/playbook.js'
 export { getRiskFacts, getDashboardFacts, type RiskFacts, type DashboardFacts } from './queries/risk.js'
 export {
+  applyWeddingTemplate,
+  WEDDING_TEMPLATES,
+  WEDDING_TEMPLATE_OPTIONS,
+  type WeddingTemplate,
+  type TemplateCeremony,
+} from './queries/templates.js'
+export {
+  createContract,
+  listProjectContracts,
+  getContract,
+  saveMilestones,
+  activateContract,
+  setContractDraft,
+  deleteContract,
+  markMilestonePaid,
+  pendingVendorPayments,
+  type ContractRow,
+  type ContractDetail,
+  type MilestoneRow,
+  type MilestoneInput,
+  type PendingPayment,
+} from './queries/contracts.js'
+export {
+  createParty,
+  listProjectParties,
+  getParty,
+  addGuest,
+  updateGuest,
+  deleteGuest,
+  setPartyInvites,
+  updatePartyContact,
+  deleteParty,
+  guestStats,
+  loadRsvp,
+  submitRsvp,
+  type PartyRow,
+  type PartyDetail,
+  type GuestRow,
+  type RsvpEvent,
+  type GuestStats,
+  type RsvpLoad,
+  type RsvpGuestInput,
+  type RsvpStatus,
+} from './queries/guests.js'
+export {
+  listProjectTravel,
+  addTravel,
+  updateTravelStatus,
+  setDispatch,
+  deleteTravel,
+  type TravelRow,
+} from './queries/travel.js'
+export {
+  createHotel,
+  addRoomBlock,
+  deleteRoomBlock,
+  deleteHotel,
+  listHotelsMatrix,
+  listAllocations,
+  allocateRoom,
+  setStayStatus,
+  setAllocationFlags,
+  deleteAllocation,
+  hotelStats,
+  type HotelMatrix,
+  type RoomBlock,
+  type AllocationRow,
+  type HotelStats,
+} from './queries/hotels.js'
+export {
+  sendBroadcast,
+  listBroadcasts,
+  audienceCounts,
+  type BroadcastRow,
+  type BroadcastChannel,
+  type Audience,
+} from './queries/broadcasts.js'
+export {
+  loadItinerary,
+  type Itinerary,
+  type ItineraryEvent,
+  type ItineraryTravel,
+  type ItineraryRoom,
+} from './queries/itinerary.js'
+export {
   getRenderStatus,
   getRenderedPdf,
   listRenderStatuses,

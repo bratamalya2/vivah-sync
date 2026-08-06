@@ -15,10 +15,18 @@ export interface RuleViolation {
   kind: 'RULE_VIOLATION'
   /** SQLSTATE, e.g. '23P01'. */
   code: string
-  /** Safe to show to a planner verbatim. */
+  /** Safe to show to a planner verbatim — the actionable detail. */
   message: string
   /** True for lock/serialization contention — the caller may retry. */
   retryable: boolean
+  /**
+   * True when a deliberate guardrail caught a costly mistake (a double-booking,
+   * an over-capacity room, an unbalanced payment plan…). The UI reframes these
+   * as positive system interventions rather than scary failures.
+   */
+  intervention: boolean
+  /** For interventions, a positive one-line headline (e.g. "VivahSync prevented a double-booking"). */
+  headline?: string
 }
 
 const RETRYABLE = new Set(['40P01', '40001', '55P03']) // deadlock, serialization, lock_not_available
@@ -28,6 +36,26 @@ const FRIENDLY: Record<string, string> = {
   '23505': 'That record already exists.',
   '23503': 'A referenced record was not found.',
   '42501': 'You do not have access to do that.',
+}
+
+// Guardrail interventions — a rule the database enforces on purpose. Matched on
+// the message so the UI can celebrate the catch ("VivahSync just prevented …")
+// instead of scolding the planner. Order matters; first match wins.
+const INTERVENTIONS: { re: RegExp; headline: string }[] = [
+  { re: /already booked|overlapping|double-book/i, headline: 'VivahSync prevented a double-booking' },
+  { re: /capacity|exceeds|beyond assigned|over the legal/i, headline: 'VivahSync prevented an over-capacity booking' },
+  { re: /100%|payment plan|must total|does not add up|unbalanced/i, headline: 'VivahSync kept the payment plan balanced' },
+  { re: /locked vendor commitment|reschedule it through|locked by an accepted|formal exception/i, headline: 'VivahSync protected a locked vendor commitment' },
+  { re: /ledger|reversing entry|cannot be deleted|locked \(over 15|append-only/i, headline: 'VivahSync kept the ledger tamper-evident' },
+  { re: /out of sequence|must start as|rejection reason is required/i, headline: 'VivahSync kept the booking lifecycle valid' },
+  { re: /rationale|audit/i, headline: 'VivahSync recorded an accountable change' },
+]
+
+function classifyIntervention(code: string, source: string): { intervention: boolean; headline?: string } {
+  const hit = INTERVENTIONS.find((i) => i.re.test(source))
+  if (hit) return { intervention: true, headline: hit.headline }
+  if (code === '23P01') return { intervention: true, headline: 'VivahSync prevented a double-booking' }
+  return { intervention: false }
 }
 
 /** Pull SQLSTATE + message out of a Prisma "unknown request" error string. */
@@ -64,5 +92,17 @@ export function translateDbError(err: unknown): RuleViolation | null {
     (RETRYABLE.has(code) ? 'Another change is in progress. Please try again.' : null)
 
   if (!message) return null
-  return { kind: 'RULE_VIOLATION', code, message, retryable: RETRYABLE.has(code) }
+  const { intervention, headline } = classifyIntervention(code, dbMessage || message)
+  return { kind: 'RULE_VIOLATION', code, message, retryable: RETRYABLE.has(code), intervention, headline }
+}
+
+/**
+ * For a caught server-action error, split it into a positive "intervention"
+ * line (a guardrail catch, shown as a win) or a plain error line. Lets an action
+ * redirect with `?prevented=` vs `?err=` so the UI can style them differently.
+ */
+export function describeActionError(err: unknown, fallback: string): { prevented?: string; err?: string } {
+  const v = translateDbError(err)
+  if (v?.intervention && v.headline) return { prevented: `${v.headline} — ${v.message}` }
+  return { err: v?.message ?? fallback }
 }

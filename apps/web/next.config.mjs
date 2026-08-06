@@ -15,7 +15,7 @@ const nextConfig = {
   // Workspace packages are TS source — Next must transpile them.
   transpilePackages: ['@vivahsync/db', '@vivahsync/core'],
   // Server-only packages; never bundle for the client.
-  serverExternalPackages: ['pg', '@supabase/supabase-js'],
+  serverExternalPackages: ['pg', '@supabase/supabase-js', 'unpdf', 'qrcode'],
   env: {
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,

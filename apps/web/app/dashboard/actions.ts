@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { getUser } from '@/lib/auth'
-import { getMyContext, createProject } from '@vivahsync/db'
+import { getMyContext, createProject, applyWeddingTemplate } from '@vivahsync/db'
 import { translateDbError } from '@vivahsync/core'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 
@@ -35,8 +35,9 @@ export async function createWedding(_prev: FormState, formData: FormData): Promi
     }
   }
 
+  const template = String(formData.get('template') ?? '').trim()
   try {
-    await createProject(user.id, {
+    const project = await createProject(user.id, {
       ownerOrgId: ctx.org.id,
       name,
       city,
@@ -44,6 +45,9 @@ export async function createWedding(_prev: FormState, formData: FormData): Promi
       endDate,
       guestCount,
     })
+    if (template) {
+      await applyWeddingTemplate(user.id, { projectId: project.id, templateKey: template })
+    }
   } catch (e) {
     return { error: translateDbError(e)?.message ?? 'Could not create the wedding. Please retry.' }
   }

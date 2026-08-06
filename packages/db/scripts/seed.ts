@@ -16,6 +16,11 @@ import {
   setEventSpaces, addVenueOverride, generatePlaybook, rescheduleEvent,
   inviteFamily, claimFamilyInvitations, recordLedgerEntry,
   inviteVendor, claimVendorInvitations, vendorRecordEvidence,
+  createContract, activateContract, getContract, markMilestonePaid,
+  createParty, loadRsvp, submitRsvp,
+  addTravel, setDispatch, updateTravelStatus, listProjectTravel,
+  createHotel, addRoomBlock, allocateRoom, setStayStatus, setAllocationFlags, listAllocations,
+  sendBroadcast,
 } from '@vivahsync/db'
 import { ensureEvidenceBucket, uploadEvidence } from '@vivahsync/db/storage'
 import { renderPendingPlaybooks } from '@vivahsync/db/jobs'
@@ -222,6 +227,75 @@ async function main() {
     id: evId, eventId: haldi, storagePath: `${project}/${evId}.jpg`,
     contentType: 'image/jpeg', fileName: 'haldi-setup.jpg', byteSize: photo.length,
   })
+
+  // A photographer contract with a 100%-balanced payment plan: advance already
+  // paid, the event-day instalment due this week (lights up the dashboard money
+  // tracker), final on album delivery.
+  const contract = (await createContract(priya, {
+    projectId: project, vendorId: lenscraft, title: 'Photography & videography', totalAmount: 250000,
+    milestones: [
+      { label: 'Booking advance', amount: 100000, dueDate: dateOnly(-2) },
+      { label: 'Event-day instalment', amount: 100000, dueDate: dateOnly(4) },
+      { label: 'Final album delivery', amount: 50000, dueDate: dateOnly(25) },
+    ],
+  })).id
+  await activateContract(priya, contract)
+  const cdetail = await getContract(priya, contract)
+  const advance = cdetail?.milestones.find((m) => m.label === 'Booking advance')
+  if (advance) await markMilestonePaid(priya, { milestoneId: advance.id, paid: true })
+
+  // ========================================================================
+  // Guest hospitality — parties, RSVPs, travel/dispatch, hotel rooms, broadcast
+  // ========================================================================
+  // Three households. createParty auto-invites every ceremony + seeds a primary
+  // guest; each gets a no-login RSVP + itinerary link.
+  const sharma = await createParty(priya, { projectId: project, name: 'The Sharma Family', contactName: 'Anil Sharma', contactPhone: '+91 98100 10001', contactEmail: 'anil@example.com', plusOnesAllowed: 2 })
+  const iyer = await createParty(priya, { projectId: project, name: 'Iyer Household', contactName: 'Lakshmi Iyer', contactPhone: '+91 98100 10002', plusOnesAllowed: 1 })
+  const nair = await createParty(priya, { projectId: project, name: 'Nair Family', contactName: 'Ravi Nair', contactPhone: '+91 98100 10003', plusOnesAllowed: 0 })
+
+  // Sharma respond YES across the board and bring a plus-one; Nair are tentative.
+  const sr = (await loadRsvp(sharma.token))!
+  const yesAll = sr.events.map((e) => ({ eventId: e.id, status: 'YES' as const }))
+  await submitRsvp(sharma.token, [
+    { id: sr.guests[0].id, name: 'Anil Sharma', isChild: false, isPlusOne: false, dietary: 'Jain (no onion/garlic)', assistance: null, rsvps: yesAll },
+    { id: null, name: 'Meera Sharma', isChild: false, isPlusOne: true, dietary: null, assistance: 'Wheelchair access at Wedding', rsvps: yesAll },
+  ])
+  const nr = (await loadRsvp(nair.token))!
+  await submitRsvp(nair.token, [
+    {
+      id: nr.guests[0].id, name: 'Ravi Nair', isChild: false, isPlusOne: false, dietary: null, assistance: null,
+      rsvps: nr.events.map((e) => ({ eventId: e.id, status: e.name === 'Wedding' ? ('YES' as const) : ('MAYBE' as const) })),
+    },
+  ])
+  void iyer // Iyer stay pending → shows on the "awaiting RSVP" segment
+
+  // Travel: Sharma fly in together (arrival + assigned car); a delayed train too.
+  await addTravel(priya, { partyId: sharma.id, direction: 'ARRIVAL', mode: 'FLIGHT', carrierNumber: '6E-203', scheduledAt: at(4, '14:05'), location: 'Jaipur (JAI) T2', hotel: 'Taj Rambagh', headcount: 2 })
+  await addTravel(priya, { partyId: nair.id, direction: 'ARRIVAL', mode: 'TRAIN', carrierNumber: '12956 Shatabdi', scheduledAt: at(4, '14:20'), location: 'Jaipur Jn', hotel: 'Taj Rambagh', headcount: 1 })
+  await addTravel(priya, { partyId: sharma.id, direction: 'DEPARTURE', mode: 'FLIGHT', carrierNumber: 'AI-865', scheduledAt: at(8, '09:30'), location: 'Jaipur (JAI)', hotel: null, headcount: 2 })
+  // Dispatch a driver to the Sharma arrival and flag the train delayed.
+  const legs = await listProjectTravel(priya, project)
+  const sharmaArrival = legs.find((l) => l.carrier_number === '6E-203')
+  const nairTrain = legs.find((l) => l.carrier_number?.startsWith('12956'))
+  if (sharmaArrival) await setDispatch(priya, { id: sharmaArrival.id, driverName: 'Ramesh', driverPhone: '+91 90000 90001', vehicle: 'Toyota Innova · RJ14 CX 2201' })
+  if (nairTrain) await updateTravelStatus(priya, { id: nairTrain.id, status: 'DELAYED', delayNote: 'Running ~40 min late' })
+
+  // Hotel room block + allocations; check the Sharma family in with a welcome kit.
+  const hotel = await createHotel(priya, { projectId: project, name: 'Taj Rambagh', address: 'Bhawani Singh Rd, Jaipur', phone: '+91 141 2211919' })
+  await addRoomBlock(priya, { hotelId: hotel, roomType: 'Palace Room', totalRooms: 20, rate: 18500 })
+  await addRoomBlock(priya, { hotelId: hotel, roomType: 'Historic Suite', totalRooms: 4, rate: 45000 })
+  await allocateRoom(priya, { hotelId: hotel, partyId: sharma.id, roomType: 'Historic Suite', roomNumber: '110', occupancy: 2, checkInDate: dateOnly(4), checkOutDate: dateOnly(8), notes: 'Early check-in requested' })
+  await allocateRoom(priya, { hotelId: hotel, partyId: nair.id, roomType: 'Palace Room', roomNumber: '204', occupancy: 1, checkInDate: dateOnly(4), checkOutDate: dateOnly(8), notes: null })
+  const allocs = await listAllocations(priya, project)
+  const sharmaRoom = allocs.find((a) => a.party_name === 'The Sharma Family')
+  if (sharmaRoom) {
+    await setStayStatus(priya, { id: sharmaRoom.id, status: 'CHECKED_IN' })
+    await setAllocationFlags(priya, { id: sharmaRoom.id, welcomeKit: true })
+  }
+
+  // Broadcast log (stub send): a reminder to the pending party + a welcome note.
+  await sendBroadcast(priya, { projectId: project, channel: 'WHATSAPP', audience: 'PENDING_RSVP', subject: null, body: 'Namaste! A gentle reminder to RSVP for the Mehra–Kapoor wedding festivities. Tap your link to confirm 🙏' })
+  await sendBroadcast(priya, { projectId: project, channel: 'WHATSAPP', audience: 'ARRIVING', subject: null, body: 'Welcome to Jaipur! Your driver details and room are on your itinerary link. See you at Taj Rambagh ✨' })
 
   // ========================================================================
   // Rival agency: Bandhan Events — Sunil (proves cross-agency isolation)

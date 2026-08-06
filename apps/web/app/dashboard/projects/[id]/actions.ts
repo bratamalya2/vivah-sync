@@ -18,7 +18,7 @@ import {
   type VenueRuleKey,
 } from '@vivahsync/db'
 import { ensureEvidenceBucket, uploadEvidence, deleteEvidenceObject } from '@vivahsync/db/storage'
-import { translateDbError } from '@vivahsync/core'
+import { translateDbError, describeActionError } from '@vivahsync/core'
 
 function projBase(projectId: string) {
   return `/dashboard/projects/${projectId}`
@@ -29,7 +29,21 @@ async function requireUser() {
   return user
 }
 
-export type FormState = { error?: string; ok?: boolean; retryable?: boolean } | null
+/** Query string for a caught error: `prevented=…` for a guardrail catch, else `err=…`. */
+function errParam(e: unknown, fallback: string): string {
+  const d = describeActionError(e, fallback)
+  return d.prevented
+    ? `prevented=${encodeURIComponent(d.prevented)}`
+    : `err=${encodeURIComponent(d.err ?? fallback)}`
+}
+
+export type FormState = {
+  error?: string
+  ok?: boolean
+  retryable?: boolean
+  intervention?: boolean
+  headline?: string
+} | null
 
 export async function scheduleCeremony(_prev: FormState, formData: FormData): Promise<FormState> {
   const user = await getUser()
@@ -72,7 +86,12 @@ export async function scheduleCeremony(_prev: FormState, formData: FormData): Pr
     })
   } catch (e) {
     const rv = translateDbError(e)
-    return { error: rv?.message ?? 'Could not schedule the ceremony.', retryable: rv?.retryable }
+    return {
+      error: rv?.message ?? 'Could not schedule the ceremony.',
+      retryable: rv?.retryable,
+      intervention: rv?.intervention,
+      headline: rv?.headline,
+    }
   }
 
   revalidatePath(`/dashboard/projects/${projectId}`)
@@ -109,7 +128,7 @@ export async function rescheduleAction(formData: FormData): Promise<void> {
       : `Change proposed — ${r.impacted} vendor(s) must acknowledge before it applies.`
     target = `${projBase(projectId)}?msg=${encodeURIComponent(msg)}`
   } catch (e) {
-    target = `${projBase(projectId)}?err=${encodeURIComponent(translateDbError(e)?.message ?? 'Could not reschedule.')}`
+    target = `${projBase(projectId)}?${errParam(e, 'Could not reschedule.')}`
   }
   redirect(target)
 }
@@ -121,7 +140,7 @@ export async function acknowledgeAction(formData: FormData): Promise<void> {
   try {
     await acknowledgeChange(user.id, ackId)
   } catch (e) {
-    redirect(`${projBase(projectId)}?err=${encodeURIComponent(translateDbError(e)?.message ?? 'Could not record acknowledgement.')}`)
+    redirect(`${projBase(projectId)}?${errParam(e, 'Could not record acknowledgement.')}`)
   }
   revalidatePath(projBase(projectId))
   redirect(projBase(projectId))
@@ -134,7 +153,7 @@ export async function finalizeAction(formData: FormData): Promise<void> {
   try {
     await finalizeProposal(user.id, proposalId)
   } catch (e) {
-    redirect(`${projBase(projectId)}?err=${encodeURIComponent(translateDbError(e)?.message ?? 'Could not apply the change.')}`)
+    redirect(`${projBase(projectId)}?${errParam(e, 'Could not apply the change.')}`)
   }
   revalidatePath(projBase(projectId))
   redirect(`${projBase(projectId)}?msg=${encodeURIComponent('Schedule change applied.')}`)
@@ -153,7 +172,7 @@ export async function editEventAction(formData: FormData): Promise<void> {
   try {
     await editEvent(user.id, { eventId, name, guestCount, setupMinutes, teardownMinutes })
   } catch (e) {
-    redirect(`${projBase(projectId)}?err=${encodeURIComponent(translateDbError(e)?.message ?? 'Could not update the ceremony.')}`)
+    redirect(`${projBase(projectId)}?${errParam(e, 'Could not update the ceremony.')}`)
   }
   revalidatePath(projBase(projectId))
   redirect(`${projBase(projectId)}?msg=${encodeURIComponent('Ceremony updated.')}`)
@@ -166,7 +185,7 @@ export async function deleteEventAction(formData: FormData): Promise<void> {
   try {
     await deleteEvent(user.id, eventId)
   } catch (e) {
-    redirect(`${projBase(projectId)}?err=${encodeURIComponent(translateDbError(e)?.message ?? 'Could not delete the ceremony.')}`)
+    redirect(`${projBase(projectId)}?${errParam(e, 'Could not delete the ceremony.')}`)
   }
   revalidatePath(projBase(projectId))
   redirect(`${projBase(projectId)}?msg=${encodeURIComponent('Ceremony deleted.')}`)
@@ -180,7 +199,7 @@ export async function setEventSpacesAction(formData: FormData): Promise<void> {
   try {
     await setEventSpaces(user.id, { eventId, spaceIds })
   } catch (e) {
-    redirect(`${projBase(projectId)}?err=${encodeURIComponent(translateDbError(e)?.message ?? 'Could not update the spaces.')}`)
+    redirect(`${projBase(projectId)}?${errParam(e, 'Could not update the spaces.')}`)
   }
   revalidatePath(projBase(projectId))
   redirect(`${projBase(projectId)}?msg=${encodeURIComponent('Spaces updated.')}`)

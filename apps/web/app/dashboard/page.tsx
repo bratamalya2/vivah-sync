@@ -1,7 +1,13 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { getUser } from '@/lib/auth'
-import { getMyContext, listProjects, getDashboardFacts } from '@vivahsync/db'
+import {
+  getMyContext,
+  listProjects,
+  getDashboardFacts,
+  pendingVendorPayments,
+  WEDDING_TEMPLATE_OPTIONS,
+} from '@vivahsync/db'
 import { computeRisks, type Risk } from '@vivahsync/core'
 import { categoryLabel } from '@/lib/categories'
 import NewWeddingForm from './NewWeddingForm'
@@ -27,10 +33,14 @@ export default async function DashboardPage() {
   if (ctx.org.type === 'FAMILY') redirect('/family')
   if (ctx.org.type === 'VENDOR') redirect('/vendor')
 
-  const [projects, facts] = await Promise.all([
+  const [projects, facts, pending] = await Promise.all([
     listProjects(user.id),
     getDashboardFacts(user.id, PROXIMITY),
+    pendingVendorPayments(user.id, 7),
   ])
+  const inr = (n: number) => `₹${new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 }).format(n)}`
+  const pendingTotal = pending.reduce((sum, p) => sum + p.amount, 0)
+  const overdue = pending.filter((p) => p.overdue).length
 
   // group the cross-project facts by wedding and score each with the shared engine
   const byProject = new Map<
@@ -64,6 +74,33 @@ export default async function DashboardPage() {
     <AppShell scope="agency" user={user} org={ctx.org}>
       <main className="dash">
         <PageHeader kicker="Agency workspace · computed live" title={ctx.org.name} />
+
+        {pending.length > 0 && (
+          <section className="fintrack">
+            <div className="fintrack-head">
+              <div>
+                <span className="ft-amt">{inr(pendingTotal)}</span>
+                <span className="ft-label"> in vendor payments due this week</span>
+              </div>
+              <span className="ft-count">
+                {pending.length} due{overdue > 0 ? ` · ${overdue} overdue` : ''}
+              </span>
+            </div>
+            <ul className="ft-list">
+              {pending.slice(0, 5).map((p) => (
+                <li key={p.milestone_id}>
+                  <Link href={`/dashboard/projects/${p.project_id}/contracts/${p.contract_id}`}>
+                    <span className={`ft-due${p.overdue ? ' overdue' : ''}`}>{p.due_date}</span>
+                    <span className="ft-item">
+                      {p.label} <span className="muted">· {p.vendor_name} · {p.project_name}</span>
+                    </span>
+                    <span className="ft-money">{inr(p.amount)}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {projects.length > 0 && (
         <section className="summaryrow">
@@ -167,7 +204,7 @@ export default async function DashboardPage() {
 
         <aside className="col-side">
           <h3>New wedding</h3>
-          <NewWeddingForm />
+          <NewWeddingForm templates={WEDDING_TEMPLATE_OPTIONS} />
         </aside>
       </section>
       </main>
