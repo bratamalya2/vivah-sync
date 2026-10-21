@@ -2,6 +2,7 @@
 
 import { useActionState } from 'react'
 import { createAgency, type FormState } from './actions'
+import BrandLogo from '@/app/_components/BrandLogo'
 
 export default function OnboardingForm({ defaultFullName }: { defaultFullName: string }) {
   const [state, action, pending] = useActionState<FormState, FormData>(createAgency, null)
@@ -9,9 +10,7 @@ export default function OnboardingForm({ defaultFullName }: { defaultFullName: s
   return (
     <main className="authwrap">
       <form action={action} className="authcard">
-        <div className="authbrand">
-          Vivah<span>Sync</span>
-        </div>
+        <BrandLogo className="auth-logo" />
         <h1>Set up your agency</h1>
         <p className="muted">
           This creates your workspace. You&apos;ll be able to invite teammates and add weddings

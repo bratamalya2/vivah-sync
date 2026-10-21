@@ -75,6 +75,18 @@ body {
   line-height: 1.55;
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Shared lockup used by every branded surface. The source is intentionally
+   kept whole: it contains both the symbol and the wordmark/tagline. */
+.brand-logo {
+  display: block;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  flex: 0 0 auto;
 }
 
 h1,
@@ -274,17 +286,11 @@ footer {
   flex-direction: column;
   gap: 0.85rem;
 }
-.authbrand {
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 1.15rem;
-  letter-spacing: -0.02em;
+.auth-logo {
+  width: 112px;
+  height: 100px;
+  align-self: flex-start;
   margin-bottom: 0.15rem;
-  padding-bottom: 0.85rem;
-  border-bottom: 2px solid var(--border);
-}
-.authbrand span {
-  color: var(--maroon);
 }
 .authcard h1 {
   font-size: 1.4rem;
@@ -1547,22 +1553,9 @@ button.mini.ghostmini:hover {
   gap: 9px;
   flex: 0 0 auto;
 }
-.shell-logo .mark {
-  width: 26px;
-  height: 26px;
-  display: grid;
-  place-items: center;
-  background: var(--vs-gold);
-  color: var(--vs-maroon-800);
-  font-size: 15px;
-  font-weight: 800;
-  line-height: 1;
-}
-.shell-logo .word {
-  font-family: var(--font-heading);
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+.shell-logo-image {
+  width: 42px;
+  height: 38px;
 }
 .shell-div {
   width: 1px;
@@ -2140,20 +2133,17 @@ button.mini.ghostmini:hover {
   background: var(--vs-maroon-800);
   color: var(--paper);
 }
-.rsvp-mark {
-  width: 26px;
-  height: 26px;
-  display: grid;
-  place-items: center;
-  background: var(--vs-gold);
-  color: var(--vs-maroon-800);
-  font-weight: 800;
-  font-size: 15px;
+.rsvp-logo {
+  width: 48px;
+  height: 43px;
 }
-.rsvp-brand {
-  font-family: var(--font-heading);
-  font-weight: 800;
-  letter-spacing: -0.02em;
+.rsvp-header-copy {
+  min-width: 0;
+}
+.rsvp-foot-logo {
+  width: 72px;
+  height: 64px;
+  margin-inline: auto;
 }
 .rsvp-main {
   max-width: 640px;
@@ -2616,25 +2606,9 @@ video {
   text-decoration: none;
   color: var(--ink);
 }
-.lp-mark {
-  width: 30px;
-  height: 30px;
-  display: grid;
-  place-items: center;
-  background: var(--vs-gold);
-  color: var(--vs-maroon-800);
-  font-size: 18px;
-  font-weight: 800;
-  line-height: 1;
-}
-.lp-word {
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 18px;
-  letter-spacing: -0.02em;
-}
-.lp-word span {
-  color: var(--maroon);
+.lp-logo {
+  width: 66px;
+  height: 59px;
 }
 .lp-navlinks {
   margin-left: auto;
@@ -3250,17 +3224,6 @@ video {
   position: relative;
   overflow: hidden;
 }
-.lp-poster::before {
-  content: '∞';
-  position: absolute;
-  right: -30px;
-  top: -60px;
-  font-size: 340px;
-  line-height: 1;
-  color: var(--vs-maroon-700);
-  font-weight: 800;
-  pointer-events: none;
-}
 .lp-poster-in {
   position: relative;
   max-width: var(--lp-max);
@@ -3310,13 +3273,9 @@ video {
   gap: 22px 48px;
   justify-content: space-between;
 }
-.lp-foot-brand {
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 16px;
-}
-.lp-foot-brand span {
-  color: var(--maroon);
+.lp-foot-logo {
+  width: 102px;
+  height: 91px;
 }
 .lp-foot-tag {
   font-size: 12px;
@@ -3837,4 +3796,375 @@ video {
   font-family: var(--font-heading);
   font-weight: 800;
   letter-spacing: 0.04em;
+}
+
+/* =========================================================================
+   Final responsive hardening. These rules apply after the feature-specific
+   styles above so route-level additions inherit the same small-screen rules.
+   ========================================================================= */
+@media (max-width: 900px) {
+  .shell-topbar {
+    gap: 10px;
+    padding-inline: 12px;
+  }
+
+  .shell-logo-image {
+    width: 40px;
+    height: 36px;
+  }
+
+  .shell-agency {
+    max-width: 22vw;
+  }
+
+  .pagehead {
+    align-items: flex-start;
+  }
+
+  .pagehead h1 {
+    overflow-wrap: anywhere;
+  }
+
+  .mgrid {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mgrid-head,
+  .mgrid-row {
+    min-width: 560px;
+  }
+
+  .htmatrix {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .htmatrix thead,
+  .htmatrix tbody {
+    min-width: 520px;
+    display: table;
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .authwrap {
+    padding: 1rem;
+    place-items: start center;
+  }
+
+  .authcard {
+    max-width: none;
+    margin-top: 2vh;
+    padding: 1.25rem 1rem 1.4rem;
+  }
+
+  .auth-logo {
+    width: 88px;
+    height: 79px;
+  }
+
+  .shell-topbar {
+    flex-basis: 48px;
+    height: 48px;
+  }
+
+  .shell-logo-image {
+    width: 36px;
+    height: 32px;
+  }
+
+  .shell-div,
+  .shell-agency,
+  .shell-projbox,
+  .shell-signout {
+    display: none;
+  }
+
+  .shell-user {
+    margin-left: auto;
+  }
+
+  .dash {
+    padding-inline: 12px;
+  }
+
+  .pagehead {
+    display: block;
+  }
+
+  .pageheadactions {
+    width: 100%;
+    margin-top: 0.75rem;
+    justify-content: flex-start;
+  }
+
+  .pageheadactions > * {
+    max-width: 100%;
+  }
+
+  .row2,
+  .tvrow2,
+  .gstnotes,
+  .rsvp-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .evitem,
+  .auditrow {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.45rem 0.7rem;
+  }
+
+  .evtime,
+  .audittime {
+    flex: 0 0 100%;
+  }
+
+  .evbody,
+  .auditbody {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .summaryrow > .panel,
+  .col-side,
+  .panel {
+    min-width: 0;
+  }
+
+  .mgrid-head,
+  .mgrid-row {
+    min-width: 520px;
+  }
+
+  .mplan-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .mplan-label,
+  .mplan-due,
+  .mplan-amt {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .hthead,
+  .htfoot,
+  .tvhead,
+  .tvwhead,
+  .allochead,
+  .changehead {
+    flex-wrap: wrap;
+  }
+
+  .htblockform,
+  .allocctl,
+  .tvdispatch,
+  .tvstatus,
+  .addbooking,
+  .actionrow,
+  .inlineform,
+  .reschedform {
+    width: 100%;
+  }
+
+  .htblockform input,
+  .htblockform select,
+  .tvdispatch input,
+  .tvstatus input,
+  .tvstatus select,
+  .addbooking select,
+  .rejectform input,
+  .reschedform input,
+  .reschedform select,
+  .reschedform .ovrationale {
+    min-width: 0;
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  .rsvp-header {
+    align-items: flex-start;
+    padding: 10px 12px;
+  }
+
+  .rsvp-logo {
+    width: 40px;
+    height: 36px;
+  }
+
+  .rsvp-foot-logo {
+    width: 58px;
+    height: 52px;
+  }
+
+  .rsvp-main {
+    padding-inline: 10px;
+  }
+
+  .rsvp-card {
+    padding: 20px 14px;
+  }
+
+  .rsvp-guest-top,
+  .rsvp-ev {
+    align-items: flex-start;
+  }
+
+  .rsvp-guest-top {
+    flex-wrap: wrap;
+  }
+
+  .rsvp-name {
+    flex: 1 1 100%;
+  }
+
+  .rsvp-seg {
+    max-width: 100%;
+  }
+
+  .rsvp-opt {
+    flex: 1 1 auto;
+    padding-inline: 0.55rem;
+  }
+
+  .rsvp-header-copy h1 {
+    font-size: 1.35rem;
+    overflow-wrap: anywhere;
+  }
+
+  .itin-wrap {
+    padding-inline: 10px;
+  }
+
+  .itin-ev-main {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .itin-ev-name {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .lp-nav-in {
+    padding-inline: 12px;
+    gap: 10px;
+  }
+
+  .lp-logo {
+    width: 48px;
+    height: 43px;
+  }
+
+  .lp-navlinks {
+    gap: 8px;
+  }
+
+  .lp-navlink {
+    font-size: 12px;
+  }
+
+  .lp-btn {
+    white-space: normal;
+    text-align: center;
+  }
+
+  .lp-hero-in,
+  .lp-sec-in,
+  .lp-diff-in,
+  .lp-poster-in {
+    padding-inline: 16px;
+  }
+
+  .lp-feature,
+  .lp-info,
+  .lp-cap,
+  .lp-kpis,
+  .lp-diff-cell,
+  .lp-step {
+    min-width: 0;
+  }
+
+  .lp-info-head,
+  .lp-captop,
+  .lp-gaxis {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .lp-gantt,
+  .lp-captrack {
+    overflow-x: auto;
+  }
+
+  .lp-foot-logo {
+    width: 78px;
+    height: 70px;
+  }
+
+  .lp-foot-in {
+    padding-inline: 16px;
+  }
+
+  .rsvp-page,
+  .lp,
+  .shell-main,
+  .dash,
+  .wrap,
+  .authcard,
+  .rsvp-card,
+  .itin-card {
+    max-width: 100%;
+  }
+
+  .rsvp-page * ,
+  .lp * ,
+  .shell-main * {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 480px) {
+  .shell-tab {
+    min-height: 52px;
+    padding-inline: 2px;
+  }
+
+  .shell-tab .tlbl {
+    font-size: 9px;
+  }
+
+  .fintrack-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .ft-list li a {
+    grid-template-columns: 1fr;
+    gap: 3px;
+  }
+
+  .ft-money {
+    justify-self: start;
+  }
+
+  .lp-cta-row,
+  .lp-poster .cta {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .lp-cta-row .lp-btn,
+  .lp-poster .cta .lp-btn {
+    width: 100%;
+  }
+
+  .rsvp-opt {
+    font-size: 0.75rem;
+  }
 }

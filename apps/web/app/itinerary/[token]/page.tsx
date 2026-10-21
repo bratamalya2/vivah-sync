@@ -1,6 +1,7 @@
 import { headers } from 'next/headers'
 import QRCode from 'qrcode'
 import { loadItinerary } from '@vivahsync/db'
+import BrandLogo from '@/app/_components/BrandLogo'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,10 +19,15 @@ export default async function ItineraryPage({ params }: { params: Promise<{ toke
   if (!it) {
     return (
       <div className="rsvp-page">
-        <div className="rsvp-card">
-          <h1>Itinerary not found</h1>
-          <p>This link may be mistyped or no longer active. Please check with your host.</p>
-        </div>
+        <header className="rsvp-header">
+          <BrandLogo className="rsvp-logo" />
+        </header>
+        <main className="rsvp-main">
+          <div className="rsvp-card">
+            <h1>Itinerary not found</h1>
+            <p>This link may be mistyped or no longer active. Please check with your host.</p>
+          </div>
+        </main>
       </div>
     )
   }
@@ -35,9 +41,12 @@ export default async function ItineraryPage({ params }: { params: Promise<{ toke
   return (
     <div className="rsvp-page">
       <header className="rsvp-header">
-        <span className="rsvp-kicker">{it.project.name}</span>
-        <h1>{it.party.name}</h1>
-        {it.project.city && <p>{it.project.city}</p>}
+        <BrandLogo className="rsvp-logo" />
+        <div className="rsvp-header-copy">
+          <span className="rsvp-kicker">{it.project.name}</span>
+          <h1>{it.party.name}</h1>
+          {it.project.city && <p>{it.project.city}</p>}
+        </div>
       </header>
 
       <div className="itin-wrap">
@@ -126,7 +135,9 @@ export default async function ItineraryPage({ params }: { params: Promise<{ toke
         </section>
       </div>
 
-      <p className="rsvp-foot">VivahSync · your personal wedding itinerary</p>
+      <div className="rsvp-foot">
+        <BrandLogo className="rsvp-foot-logo" />
+      </div>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import type { User } from '@supabase/supabase-js'
 import { signOutAction } from '@/app/dashboard/actions'
+import BrandLogo from '@/app/_components/BrandLogo'
 
 type OrgLite = { id: string; name: string; type: string }
 type ProjectLite = {
@@ -36,8 +37,7 @@ export default function TopBar({
   return (
     <header className="shell-topbar">
       <div className="shell-logo">
-        <div className="mark">∞</div>
-        <div className="word">VivahSync</div>
+        <BrandLogo className="shell-logo-image" />
       </div>
 
       {org && (

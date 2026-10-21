@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from 'next/link'
 import { getUser } from '@/lib/auth'
+import BrandLogo from '@/app/_components/BrandLogo'
 
 export const dynamic = 'force-dynamic'
 
@@ -46,10 +47,7 @@ export default async function LandingPage() {
       <nav className="lp-nav">
         <div className="lp-nav-in">
           <Link href="/" className="lp-brand">
-            <span className="lp-mark">∞</span>
-            <span className="lp-word">
-              Vivah<span>Sync</span>
-            </span>
+            <BrandLogo className="lp-logo" />
           </Link>
           <div className="lp-navlinks">
             <a href="#features" className="lp-navlink hide-sm">
@@ -523,9 +521,7 @@ export default async function LandingPage() {
       <footer className="lp-foot">
         <div className="lp-foot-in">
           <div>
-            <div className="lp-foot-brand">
-              Vivah<span>Sync</span>
-            </div>
+            <BrandLogo className="lp-foot-logo" />
             <div className="lp-foot-tag">
               The operational system of record for Indian wedding planning agencies.
             </div>

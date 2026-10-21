@@ -3,6 +3,7 @@
 import { useActionState } from 'react'
 import Link from 'next/link'
 import { signUp, type FormState } from './actions'
+import BrandLogo from '@/app/_components/BrandLogo'
 
 export default function SignupPage() {
   const [state, action, pending] = useActionState<FormState, FormData>(signUp, null)
@@ -10,9 +11,7 @@ export default function SignupPage() {
   return (
     <main className="authwrap">
       <form action={action} className="authcard">
-        <div className="authbrand">
-          Vivah<span>Sync</span>
-        </div>
+        <BrandLogo className="auth-logo" />
         <h1>Create your agency</h1>
         {state?.error && <p className="err">{state.error}</p>}
         {state?.message && <p className="ok">{state.message}</p>}

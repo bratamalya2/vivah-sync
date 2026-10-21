@@ -1,5 +1,6 @@
 import { loadRsvp } from '@vivahsync/db'
 import RsvpForm from './RsvpForm'
+import BrandLogo from '@/app/_components/BrandLogo'
 
 export const dynamic = 'force-dynamic'
 
@@ -17,8 +18,7 @@ export default async function RsvpPage({
   return (
     <div className="rsvp-page">
       <header className="rsvp-header">
-        <span className="rsvp-mark">∞</span>
-        <span className="rsvp-brand">VivahSync</span>
+        <BrandLogo className="rsvp-logo" />
       </header>
       <main className="rsvp-main">
         {!data ? (
@@ -62,7 +62,9 @@ export default async function RsvpPage({
             )}
           </div>
         )}
-        <footer className="rsvp-foot">Powered by VivahSync</footer>
+        <footer className="rsvp-foot">
+          <BrandLogo className="rsvp-foot-logo" />
+        </footer>
       </main>
     </div>
   )
