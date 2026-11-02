@@ -9,6 +9,8 @@ import {
   listProjectOverrides,
   listProjectEvidence,
 } from '@vivahsync/db'
+import { EVIDENCE_MAX_BYTES } from '@vivahsync/db/storage'
+import EvidenceUpload from '@/app/_components/EvidenceUpload'
 import ScheduleForm from './ScheduleForm'
 import PageHeader from '../../_shell/PageHeader'
 import {
@@ -20,7 +22,8 @@ import {
   editEventAction,
   deleteEventAction,
   setEventSpacesAction,
-  uploadEvidenceAction,
+  prepareEvidenceUploadAction,
+  finalizeEvidenceUploadAction,
 } from './actions'
 
 const RULE_KEYS: { value: string; label: string }[] = [
@@ -164,6 +167,9 @@ export default async function ProjectPage({
             <span className="count">
               {events.length} {events.length === 1 ? 'ceremony' : 'ceremonies'}
             </span>
+            <a href="#schedule" className="jump-sm">
+              ＋ Schedule
+            </a>
           </div>
 
           <div className="timeline">
@@ -265,13 +271,6 @@ export default async function ProjectPage({
                                 </form>
                               )}
                             </details>
-                            <form action={deleteEventAction} className="inlineform">
-                              <input type="hidden" name="projectId" value={id} />
-                              <input type="hidden" name="eventId" value={e.id} />
-                              <button className="mini ghostmini" type="submit">
-                                Delete ceremony
-                              </button>
-                            </form>
                             {(overridesByEvent.get(e.id) ?? []).length > 0 && (
                               <ul className="overrides">
                                 {(overridesByEvent.get(e.id) ?? []).map((o) => (
@@ -336,15 +335,21 @@ export default async function ProjectPage({
                                   ))}
                                 </ul>
                               )}
-                              <form action={uploadEvidenceAction} className="reschedform">
-                                <input type="hidden" name="projectId" value={id} />
-                                <input type="hidden" name="eventId" value={e.id} />
-                                <input type="file" name="file" accept="image/*,video/*" required />
-                                <button className="mini" type="submit">
-                                  Upload
-                                </button>
-                              </form>
+                              <EvidenceUpload
+                                eventId={e.id}
+                                basePath={`/dashboard/projects/${id}`}
+                                maxBytes={EVIDENCE_MAX_BYTES}
+                                prepare={prepareEvidenceUploadAction}
+                                finalize={finalizeEvidenceUploadAction}
+                              />
                             </details>
+                            <form action={deleteEventAction} className="inlineform evdelete">
+                              <input type="hidden" name="projectId" value={id} />
+                              <input type="hidden" name="eventId" value={e.id} />
+                              <button className="mini ghostmini" type="submit">
+                                Delete ceremony
+                              </button>
+                            </form>
                           </div>
                         </li>
                       ))}
@@ -356,7 +361,7 @@ export default async function ProjectPage({
           </div>
         </div>
 
-        <aside className="col-side">
+        <aside className="col-side" id="schedule">
           <h3>Schedule a ceremony</h3>
           {spaces.length === 0 && (
             <p className="muted">

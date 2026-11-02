@@ -59,9 +59,6 @@ Vendor Payment Milestone Structuring
 BR-2881
 Financial Obligation Trigger Definition
 
-BR-2901
-Regulated Escrow and Split Payment Routing
-
 BR-2961
 Auditable Financial Transaction Recording
 
@@ -1062,38 +1059,4 @@ Regulatory & Infrastructure: Media must be strictly and automatically purged exa
 
 ---------------------------------------------
 
-## BR-2901: Regulated Escrow and Split Payment Routing
-
-# Description
-
-The business requires the integration of Cashfree's Virtual Bank Accounts and Virtual UPI IDs to facilitate automated escrow and split payouts. High-value transactions must default to RTGS, IMPS, or NEFT, while lower-value transactions utilize UPI.
-
-# Stakeholder Need
-
-Vendors require absolute assurance of payment upon delivery, and planners need to automate the splitting of client funds directly to vendors without routing everything manually through their own operational accounts.
-
-# Business Rationale
-
-Manual fund routing is slow, prone to clerical errors, and creates severe cash-flow bottlenecks. An integrated escrow system builds immense trust within the vendor network, incentivizing platform adoption, while Cashfree automation handles the ledger reconciliation instantly.
-
-# Business Impact
-
-Area: Treasury & Network Adoption (Radically reduces planner accounting overhead and serves as the primary hook for vendor onboarding.)
-
-Affected Stakeholders: Wedding Planners, Vendors, Clients
-
-# Success Metrics
-
-Automated Reconciliation Rate (Target 100%) - Percentage of escrow-routed payments requiring zero manual ledger entry.
-
-# Assumptions
-
-Vendors will complete necessary KYC to receive funds via the Cashfree split network.
-
-# Dependencies
-
-External System: Relies on Cashfree API uptime and accurate webhook delivery.
-
-# Constraints
-
-Operational: To ensure transaction security and maintain user context, all UPI payments must present the QR code natively within the application; external web browser redirection is strictly prohibited.
+*BR-2901 (Regulated Escrow and Split Payment Routing) was removed on 2026-11-02 — payment-gateway integration is out of scope; VivahSync records payments in its ledger but never processes or routes funds.*

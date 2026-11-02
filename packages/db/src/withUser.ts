@@ -35,7 +35,7 @@ function wrap(client: PoolClient): Tx {
  *
  * Queries outside this wrapper (i.e. as the raw bypassrls role) see everything,
  * so this is the ONLY sanctioned request-scoped query path. Do not export the
- * pool. Keep the body short: never await external I/O (Cashfree, email) while a
+ * pool. Keep the body short: never await external I/O (email, OpenAI, Storage) while a
  * transaction — and thus a pooled connection — is held open.
  */
 export async function withUser<T>(
@@ -64,8 +64,8 @@ export async function withUser<T>(
 }
 
 /**
- * Privileged, RLS-bypassing transaction for the worker and for verified webhook
- * writes. Runs as the owner role on the system pool — no SET ROLE, so RLS does
+ * Privileged, RLS-bypassing transaction for the worker and for token-gated
+ * public routes (RSVP, itinerary). Runs as the owner role on the system pool — no SET ROLE, so RLS does
  * not apply. Use sparingly and never on request-supplied identity; this is the
  * "system mode" that must stay hard to reach by accident.
  */

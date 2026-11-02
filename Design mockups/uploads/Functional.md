@@ -81,11 +81,7 @@ Evidence Media Capture and Association
 FR-581.2
 Media Lifecycle Management (6-Month TTL)
 
-FR-2901.1
-Cashfree Escrow Routing & Virtual Account Generation
-
-FR-2901.2
-Native In-App UPI QR Rendering
+*(FR-2901.1 / FR-2901.2 — escrow routing and in-app UPI — removed 2026-11-02 along with all payment-gateway integration.)*
 
 ## FR-001.1: Project Profile Mandatory Input Data Capture
 
@@ -925,40 +921,4 @@ System guarantees that no photo or video evidence exists in either the database 
 
 ---------------------------------------------------------------
 
-## FR-2901.1: Cashfree Escrow Routing & Virtual Account Generation
-
-# Description
-
-The system shall interface with the Cashfree API to dynamically generate Virtual Bank Accounts for primary high-value transactions (RTGS, IMPS, NEFT) to facilitate split vendor payouts via escrow.
-
-# Trigger Event
-
-User initiates the activation of a milestone payment via bank transfer.
-
-# System Behavior
-
-System requests a dedicated Virtual Bank Account from Cashfree linked specifically to the transaction. Upon receiving webhook confirmation of client deposit, the system executes the split logic to disburse funds to the planner and assigned vendors.
-
-# Acceptance Criteria
-
-System successfully provisions Virtual Accounts and accurately translates Cashfree webhook payloads into immutable ledger_entries.
-
-------------------------------------------------------------------
-
-## FR-2901.2: Native In-App UPI QR Rendering
-
-# Description
-
-For secondary, smaller transactions executed via UPI, the system must generate a Cashfree Virtual UPI ID and display the corresponding QR code directly within the VivahSync interface, enforcing strict in-app context retention.
-
-# Trigger Event
-
-User selects UPI as the payment method for a milestone or invoice.
-
-# System Behavior
-
-Generates a dynamic Cashfree Virtual UPI ID and strictly renders the corresponding QR code inline within the application interface. The system natively handles the payment flow and explicitly blocks any redirection to external web browsers or third-party payment pages.
-
-# Acceptance Criteria
-
-System successfully renders the QR code natively on both mobile and web views. External URL redirection mechanisms are completely disabled for the payment flow.
+*FR-2901.1 (Escrow Routing & Virtual Account Generation) and FR-2901.2 (Native In-App UPI QR Rendering) were removed on 2026-11-02 — payment-gateway integration is out of scope; payments are recorded in the ledger, never processed.*

@@ -3,32 +3,41 @@
 import { useActionState } from 'react'
 import Link from 'next/link'
 import { signIn, type FormState } from './actions'
-import BrandLogo from '@/app/_components/BrandLogo'
+import AuthField from '../AuthField'
 
 export default function LoginPage() {
   const [state, action, pending] = useActionState<FormState, FormData>(signIn, null)
 
   return (
-    <main className="authwrap">
-      <form action={action} className="authcard">
-        <BrandLogo className="auth-logo" />
-        <h1>Sign in</h1>
+    <>
+      <h1 className="au-title">Sign in</h1>
+      <p className="au-lead">Welcome back — your weddings are waiting.</p>
+
+      <form action={action} className="au-form">
         {state?.error && <p className="err">{state.error}</p>}
-        <label>
-          Email
-          <input name="email" type="email" autoComplete="email" required />
-        </label>
-        <label>
-          Password
-          <input name="password" type="password" autoComplete="current-password" required />
-        </label>
-        <button type="submit" disabled={pending}>
+        <AuthField
+          label="Email"
+          name="email"
+          type="email"
+          autoComplete="email"
+          defaultValue={state?.email}
+          required
+        />
+        <AuthField
+          label="Password"
+          name="password"
+          type="password"
+          autoComplete="current-password"
+          required
+        />
+        <button type="submit" className="au-submit" disabled={pending}>
           {pending ? 'Signing in…' : 'Sign in'}
         </button>
-        <p className="muted">
-          No account? <Link href="/signup">Create your agency</Link>
-        </p>
       </form>
-    </main>
+
+      <p className="au-switch">
+        No account? <Link href="/signup">Create your agency</Link>
+      </p>
+    </>
   )
 }

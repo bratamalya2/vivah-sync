@@ -32,6 +32,11 @@ export default function NewContractForm({
       setStatus({ kind: 'error', msg: 'Choose a PDF first.' })
       return
     }
+    // the PDF is posted to a Vercel function, whose request body cap is 4.5 MB
+    if (f.size > 4 * 1024 * 1024) {
+      setStatus({ kind: 'error', msg: 'PDF is too large to auto-fill (max 4 MB). Fill the form manually.' })
+      return
+    }
     setStatus({ kind: 'loading' })
     try {
       const fd = new FormData()

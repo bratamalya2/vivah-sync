@@ -17,7 +17,14 @@ import {
   recordEvidence,
   type VenueRuleKey,
 } from '@vivahsync/db'
-import { ensureEvidenceBucket, uploadEvidence, deleteEvidenceObject } from '@vivahsync/db/storage'
+import {
+  prepareEvidenceUpload,
+  finalizeEvidenceUpload,
+  type PrepareInput,
+  type PrepareResult,
+  type FinalizeInput,
+  type FinalizeResult,
+} from '@/lib/evidenceUpload'
 import { translateDbError, describeActionError } from '@vivahsync/core'
 
 function projBase(projectId: string) {
@@ -205,58 +212,30 @@ export async function setEventSpacesAction(formData: FormData): Promise<void> {
   redirect(`${projBase(projectId)}?msg=${encodeURIComponent('Spaces updated.')}`)
 }
 
-const MAX_UPLOAD = 30 * 1024 * 1024 // 30 MB
-
-export async function uploadEvidenceAction(formData: FormData): Promise<void> {
+/** Evidence upload, step 1: the access check, then a one-time direct-upload token. */
+export async function prepareEvidenceUploadAction(input: PrepareInput): Promise<PrepareResult> {
   const user = await requireUser()
-  const projectId = String(formData.get('projectId') ?? '')
-  const eventId = String(formData.get('eventId') ?? '')
-  const base = projBase(projectId)
-  const file = formData.get('file')
+  return prepareEvidenceUpload(await getEventForUpload(user.id, input.eventId), input)
+}
 
-  if (!(file instanceof File) || file.size === 0) {
-    redirect(`${base}?err=${encodeURIComponent('Choose a photo or video to upload.')}`)
-  }
-  const f = file as File
-  if (f.size > MAX_UPLOAD) {
-    redirect(`${base}?err=${encodeURIComponent('File is too large (max 30 MB).')}`)
-  }
-
-  // authoritative access check — returns the project id iff the caller may upload
-  const proj = await getEventForUpload(user.id, eventId)
-  if (!proj) redirect(`${base}?err=${encodeURIComponent('You are not allowed to add evidence here.')}`)
-
-  const mediaId = crypto.randomUUID()
-  const dot = f.name.lastIndexOf('.')
-  const ext = dot >= 0 ? f.name.slice(dot).toLowerCase() : ''
-  const path = `${proj}/${mediaId}${ext}`
-  const bytes = Buffer.from(await f.arrayBuffer())
-
-  let target: string
-  try {
-    await ensureEvidenceBucket()
-    await uploadEvidence(path, bytes, f.type || 'application/octet-stream')
-    try {
-      await recordEvidence(user.id, {
-        id: mediaId,
-        projectId: proj!,
-        entityType: 'event',
-        entityId: eventId,
-        storagePath: path,
-        contentType: f.type || null,
-        fileName: f.name,
-        byteSize: f.size,
-      })
-    } catch (e) {
-      await deleteEvidenceObject(path) // don't leave orphaned bytes if the row insert fails
-      throw e
-    }
-    revalidatePath(base)
-    target = `${base}?msg=${encodeURIComponent('Evidence uploaded.')}`
-  } catch (e) {
-    target = `${base}?err=${encodeURIComponent(translateDbError(e)?.message ?? 'Upload failed.')}`
-  }
-  redirect(target)
+/** Evidence upload, step 3: verify what reached Storage and record it. */
+export async function finalizeEvidenceUploadAction(input: FinalizeInput): Promise<FinalizeResult> {
+  const user = await requireUser()
+  const projectId = await getEventForUpload(user.id, input.eventId)
+  const result = await finalizeEvidenceUpload(projectId, input, (stored) =>
+    recordEvidence(user.id, {
+      id: stored.mediaId,
+      projectId: projectId!,
+      entityType: 'event',
+      entityId: input.eventId,
+      storagePath: stored.path,
+      contentType: stored.contentType,
+      fileName: input.fileName,
+      byteSize: stored.size,
+    }),
+  )
+  if (result.ok && projectId) revalidatePath(projBase(projectId))
+  return result
 }
 
 export async function addOverrideAction(formData: FormData): Promise<void> {

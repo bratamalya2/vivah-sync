@@ -157,7 +157,7 @@ Postgres. A separate API service would be a thin layer translating SQLSTATE
 
 **The worker is genuinely necessary**, because five things don't fit a request cycle: date-triggered milestone activation, risk recomputation, WhatsApp/email notification retries, playbook PDF rendering, and the 6-month TTL sweep for evidence_media.
 
-**Payments & Webhooks**: The architecture interfaces heavily with Cashfree. For RTGS/IMPS/NEFT, virtual accounts are generated. For UPI, the architecture enforces a strict native rendering rule: the API returns a Virtual UPI payload, and the Next.js client renders the QR code locally. Redirection flows are structurally unsupported to prevent context-switching failures.
+**Payments**: VivahSync integrates no payment gateway. Money moves outside the system; the append-only ledger records each payment after the fact. *(Gateway integration — virtual accounts, UPI QR, escrow/split payouts — was removed from scope on 2026-11-02.)*
 
 **`packages/core` is why both exist safely.** Milestone activation and risk scoring
 must behave identically whether triggered by a planner clicking a button or the

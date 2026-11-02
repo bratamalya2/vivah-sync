@@ -167,11 +167,14 @@ export default async function DashboardPage() {
           <div className="col-head">
             <h2>Weddings</h2>
             <span className="count">{projects.length}</span>
+            <a href="#new-wedding" className="jump-sm">
+              ＋ New wedding
+            </a>
           </div>
 
           {projects.length === 0 ? (
             <div className="empty">
-              No weddings yet. Add your first one from the panel on the right.
+              No weddings yet. Add your first one with the New wedding form.
             </div>
           ) : (
             <ul className="projlist">
@@ -202,7 +205,7 @@ export default async function DashboardPage() {
           )}
         </div>
 
-        <aside className="col-side">
+        <aside className="col-side" id="new-wedding">
           <h3>New wedding</h3>
           <NewWeddingForm templates={WEDDING_TEMPLATE_OPTIONS} />
         </aside>

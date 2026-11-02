@@ -40,10 +40,6 @@ FT-143 | Milestone-based vendor payment schedules | When creating a vendor payme
 
 FT-144 | Milestone creation requirements | When a milestone is created, the system requires milestone name, amount or percentage, due date, and triggering condition (date-based or event-based). | BR-2881
 
-FT-150	| Cashfree Virtual Accounts & Split Payments |	When a planner initiates an escrow payout, the system utilizes Cashfree to generate a Virtual Bank Account, defaulting to RTGS/IMPS/NEFT for primary transactions. |	BR-2901
-
-FT-151 | In-app UPI QR Generation |	When a secondary/smaller payment is initiated via UPI, the system natively renders the Cashfree Virtual UPI QR code directly in the app without external web redirection. |	BR-2901
-
 FT-148 |	Payment recording details	| When a payment is recorded, the system captures paid amount, paid date/time, payment mode (cash/bank/UPI/card), and payer entity (client/planner/venue).	| BR-2961
 
 FT-159 |	Daily inflows vs outflows |	When a planner views the cash flow ledger, the system shows inflows vs outflows by day across the wedding date range and surrounding prep period.	| sBR-3181

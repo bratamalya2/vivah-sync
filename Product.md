@@ -299,21 +299,12 @@ Beyond the operational core, three assets the current design has quietly created
 the vendor graph, the milestone/ledger engine, and the cross-org access model —
 unlock a platform. These are strategic, sequenced deliberately.
 
-### 4.1 Escrow & payments — ⭕ Planned (the priority bet)
+### 4.1 Escrow & payments — ✖ Removed (2026-11-02)
 
-Client funds a milestone; money is released on the trigger the system already
-tracks. This directly solves the trust problem the ledger models, and — critically
-— gives vendors their first real reason to claim an account (get paid on delivery,
-guaranteed), which bootstraps the network.
-
-*Business logic / structure:* VivahSync does **not** custody funds. A regulated
-partner (payment aggregator or bank escrow) holds the money in an RBI-compliant
-escrow; VivahSync owns the *orchestration* — the milestone triggers decide when to
-release, and the append-only ledger mirrors what the partner reports back via
-webhook. Custody, KYC and licensing stay with the partner; the plan, the triggers
-and the record stay with VivahSync. This maps exactly onto the existing
-`payment_milestones` and `ledger_entries` boundary. *(A current account is
-insufficient and legally risky — third-party pooled funds must be ring-fenced.)*
+Payment-gateway integration — escrow, split payouts, virtual accounts / UPI, and
+platform billing — has been removed from the roadmap. VivahSync never moves or
+holds money: payments happen outside the system and are **recorded** in the
+append-only ledger against `payment_milestones`.
 
 ### 4.2 Tenant dashboards — ⭕ Planned
 
@@ -325,27 +316,26 @@ Rich, RLS-bounded dashboards per tenant. In priority order:
   `project_cash_flow` view.
 - **Vendor commitment & payment dashboard** — a vendor's unified calendar of
   on-site commitments across every agency, availability/double-commit guard, and
-  own payment status (with escrow: held / released). Novel because only VivahSync
+  own payment status. Novel because only VivahSync
   can aggregate a vendor across agencies.
 - **Portfolio operations** — every active wedding triaged by risk and days-out.
 - **Owner / exec view** — revenue, margin (contracted vendor cost vs client
   budget), pipeline forecast, win rate, vendor spend.
 - **Venue-chain occupancy** — space utilisation, upcoming load, revenue per space.
   The reason to activate the `VENUE_CHAIN` tenant.
-- **Client portal** — read-only schedule, run-sheet and payment status; with
-  escrow, "your funds are held safely and released on delivery".
+- **Client portal** — read-only schedule, run-sheet and payment status.
 
 *Business logic:* all dashboards are **computed views, never maintained tables** —
 same discipline as the cash-flow and risk engines — so no number can drift from
 its source of truth.
 
-### 4.3 Vendor marketplace — ⭕ Planned (after escrow)
+### 4.3 Vendor marketplace — ⭕ Planned (after vendor adoption)
 
 Once vendors have accounts, the cross-agency vendor graph becomes a searchable,
 relevance-ranked marketplace: discovery by real cost / reliability / availability,
 plus inbound lead-gen to vendors. *Business logic:* this is the one genuine
 full-text-search case (relevance ranking over a cross-tenant corpus). It must
-follow escrow — a marketplace with no vendor liquidity is a dead directory.
+follow real vendor adoption — a marketplace with no vendor liquidity is a dead directory.
 
 ### 4.4 Intelligence & benchmarking — ⭕ Planned
 
@@ -408,7 +398,7 @@ schedule-change acknowledgement (FR-261.1), versioned playbook synthesis
 board (FR-62141/62281/62721).
 
 **Not yet built (1 core + platform):** prospect→project conversion (FR-62561), plus
-the platform layer — escrow, dashboards, marketplace, intelligence, field ops.
+the platform layer — dashboards, marketplace, intelligence, field ops.
 
 *Verified by 74 database/integration tests and 74 end-to-end checks against the
 running application. See [Project-Overview.md](Project-Overview.md) for the

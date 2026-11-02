@@ -75,7 +75,8 @@ export async function POST(req: Request): Promise<Response> {
   if (!(file instanceof File) || file.size === 0) {
     return Response.json({ error: 'Choose a PDF to extract.' })
   }
-  if (file.size > 15 * 1024 * 1024) return Response.json({ error: 'PDF is too large (max 15 MB).' })
+  // Vercel rejects function request bodies over 4.5 MB before they reach us
+  if (file.size > 4 * 1024 * 1024) return Response.json({ error: 'PDF is too large (max 4 MB).' })
 
   let text = ''
   try {

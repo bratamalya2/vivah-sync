@@ -7,6 +7,12 @@ founder. Unlike Project-Overview.md — which is written in past tense but descr
 that **does not exist on disk** — this document reflects **intent and sequencing for a
 greenfield build starting from zero.***
 
+> **Scope change (2026-11-02):** the Cashfree / payment-gateway integration and all **platform
+> billing** (plans, subscriptions, entitlements, SaaS-fee collection, VivahSync→planner GST
+> invoice) are **removed from scope**. VivahSync is unbilled for now; monetisation will be
+> re-planned separately. Escrow / split payouts / virtual UPI (BR-2901) are dropped too.
+> Milestone numbers are kept stable, so M2 is intentionally empty.
+
 ---
 
 ## 0. Executive summary
@@ -17,14 +23,13 @@ it refuses to store an invalid plan (no double-booked venue space, no payment pl
 doesn't total 100%, no editable ledger). That enforcement lives in PostgreSQL, which is why
 the database is the core of the architecture.
 
-**Who pays:** the planner agency (₹799/wedding, ₹5,999/month, or ₹24,999/6-months). Vendors and
-(later) families use it free.
+**Who pays:** nobody yet — platform billing is out of scope (see the scope change above).
+Planners, vendors and families all use it free.
 
-**The v1 boundary in one line:** a planner agency can **sign up, pay, and run a wedding
+**The v1 boundary in one line:** a planner agency can **sign up and run a wedding
 end-to-end** — from creating the project through scheduling ceremonies, booking vendors
 (planner-recorded), tracking milestone payments in an immutable ledger, generating GST
-invoices, and producing a run-sheet — **without any vendor, family member, or escrow rail
-ever logging in.**
+invoices, and producing a run-sheet — **without any vendor or family member ever logging in.**
 
 **What v1 deliberately is NOT:** it does not move money (records only), has no vendor/family
 portals, no evidence media, no CRM, and no WhatsApp. Those are phase 2+.
@@ -50,10 +55,9 @@ portals, no evidence media, no CRM, and no WhatsApp. Those are phase 2+.
 |---|---|
 | Launch shape | **Public multi-tenant** (many independent agencies, self-serve) |
 | Feature surface v1 | **Planner-facing only** |
-| Pricing | ₹799/wedding · ₹5,999/month · ₹24,999/6-months **+ 18% GST on top** — planner pays, vendors free |
-| SaaS fee collection | **Cashfree merchant checkout**, one-time per period + email renewal reminders (auto-debit mandates deferred) |
-| DPDP posture | **Agency = Data Fiduciary; VivahSync = Data Processor** (Data Processing Agreement required); VivahSync is Fiduciary for its own users' account/billing data |
-| Fund custody | **Never** — VivahSync is pure software; PG charges captured in every payment |
+| Pricing / SaaS fee collection | **None** — platform billing and the payment gateway were removed from scope (2026-11-02) |
+| DPDP posture | **Agency = Data Fiduciary; VivahSync = Data Processor** (Data Processing Agreement required); VivahSync is Fiduciary for its own users' account data |
+| Fund custody | **Never** — VivahSync is pure software and never touches money |
 | Money movement v1 | **Record-only** immutable ledger (no escrow/split) |
 | Obligation vs disbursement | Two distinct quantities (TDS/GST-aware) |
 | Currency | INR-only v1; currency carried on the money entity (not locked per-project) |
@@ -65,20 +69,16 @@ portals, no evidence media, no CRM, and no WhatsApp. Those are phase 2+.
 | Cross-org co-ownership | **IN v1** — planner + production company co-own projects from launch |
 
 ### Resolved clarifications (2026-07-23)
-1. **Pricing is GST-exclusive** — ₹5,999 + 18% = ₹7,078.82 payable. Registered agencies reclaim
-   the GST as input credit; VivahSync nets the full headline price.
-2. **Cashfree, one-time per period** + email renewal reminders. Auto-debit mandates deferred.
+1. ~~Pricing is GST-exclusive~~ — *superseded 2026-11-02: no platform billing.*
+2. ~~Cashfree, one-time per period~~ — *superseded 2026-11-02: no payment gateway.*
 3. **Cross-org co-ownership is IN v1** *(founder decision, overriding the recommendation to
    defer)*. See §10 risk 1 — this is the highest-risk RLS surface and carries the heaviest test
    burden in the plan.
 4. **DPDP:** the planner agency is the Data Fiduciary; VivahSync is a Data Processor acting on
-   its instruction under a DPA. VivahSync remains Fiduciary for its own users' account/billing data.
+   its instruction under a DPA. VivahSync remains Fiduciary for its own users' account data.
 
-5. **Co-owned project billing: owner pays, collaborators ride free.** The owning planner's
-   subscription (or ₹799 per-wedding fee) covers the project for every collaborator; a
-   production company granted FULL scope needs no plan of its own. Entitlement checks therefore
-   hang off `projects.owner_org_id` alone — no reconciling two orgs' billing states on a read.
-   *(A paid collaborator tier is a future pricing experiment, not a v1 architecture change.)*
+5. ~~Co-owned project billing: owner pays, collaborators ride free~~ — *superseded 2026-11-02:
+   no platform billing.*
 
 ### Still open
 - *(nothing blocking — all v1 scope decisions are locked)*
@@ -91,7 +91,6 @@ portals, no evidence media, no CRM, and no WhatsApp. Those are phase 2+.
 | Capability | FR / BR |
 |---|---|
 | Self-serve signup + agency (org) onboarding | *(new — "not built" in overview)* |
-| Platform billing: 3 plans, entitlement gating, Cashfree collection, renewal, VivahSync→planner GST invoice | *(new)* |
 | Multi-tenant isolation (RLS) across many agencies | BR access model |
 | **Cross-org co-ownership** — `project_grants`, `PRODUCTION` org type, FULL collaborators | BR access model |
 | Project profile (mandatory fields) | FR-001.1 / BR-001 |
@@ -118,11 +117,15 @@ portals, no evidence media, no CRM, and no WhatsApp. Those are phase 2+.
 | Email notifications (milestone due, risk, booking) | *(BR-561/221/261 email-only subset)* |
 
 ### v1 — OUT (phase 2+)
-Cashfree escrow/split/UPI (BR-2901 / FR-2901.1/.2) · family portal (BR-561 / FR-561.1) ·
+family portal (BR-561 / FR-561.1) ·
 evidence media + 6-month TTL (BR-581 / FR-581.1/.2) · vendor self-service portal & write
 actions · CRM leads/pipeline/conversion (BR-621xx / FR-627xx) · WhatsApp/SMS (Meta + BSP +
 TRAI DLT) · within-org admin/member/finance RBAC · VENUE_CHAIN org semantics · native mobile /
-PWA offline capture · subscription auto-debit mandates.
+PWA offline capture.
+
+### Removed from the roadmap (2026-11-02)
+Platform billing (plans, subscriptions, entitlements, SaaS-fee GST invoice) · payment-gateway
+integration of any kind · escrow / split payouts / virtual UPI (BR-2901 / FR-2901.1/.2).
 
 ---
 
@@ -131,10 +134,10 @@ PWA offline capture · subscription auto-debit mandates.
 These are the material tensions the requirement docs never reconcile. Each is a decision baked
 into this plan.
 
-1. **"Escrow" is not escrow.** Cashfree Easy Split is an RBI Payment-Aggregator rail; it cannot
-   *hold* a milestone for months, and it can only pay KYC'd, claimed vendors — but v1 vendors
-   are unclaimed stubs. → **v1 records payments only; escrow is phase 2 and, when built, is
-   "collect-per-milestone," not "hold."**
+1. **"Escrow" is not escrow.** The specs' escrow (BR-2901) assumed a payment-aggregator rail,
+   which cannot *hold* a milestone for months and can only pay KYC'd, claimed vendors — but
+   vendors are unclaimed stubs. → **VivahSync records payments only; escrow and payment-gateway
+   integration were removed from the roadmap (2026-11-02).**
 2. **The double-booking guarantee is intra-agency only.** Venues are per-agency rows, so two
    agencies' copies of "Taj Lawn" are different `venue_spaces` and the EXCLUDE constraint can't
    see across them. → **v1 markets the guarantee honestly as "within your own projects."**
@@ -171,23 +174,23 @@ DEV
   Next.js dev server → Supabase (transaction pooler)
 
 PROD (Render, Singapore)
-  ┌─ Web service:  Next.js 15  (planner UI + route handlers + Cashfree/webhook endpoints)
+  ┌─ Web service:  Next.js 15  (planner UI + route handlers)
   └─ Worker:       node-cron    (milestone sweep, cash-flow/risk recompute cache,
-                                 email notification retries, renewal reminders)
+                                 email notification retries)
         │  app path → Supavisor transaction pooler (6543), RLS-scoped
-        │  worker/webhook privileged path → service_role via narrow SECURITY DEFINER RPCs
+        │  worker privileged path → service_role via narrow SECURITY DEFINER RPCs
         ▼
   Supabase (Mumbai)
     ├─ Postgres 16 — RLS · EXCLUDE gist overlap · triggers · generated columns · SECURITY DEFINER helpers
     ├─ Supabase Auth — auth.uid() bridged into RLS via request.jwt.claims (txn-local)
     └─ Supabase Storage — (reserved for phase-2 evidence media)
 
-  External: Cashfree (SaaS-fee merchant collection) · transactional email (e.g. Resend/SES)
+  External: transactional email (e.g. Resend/SES)
 ```
 
 ### Monorepo layout
 ```
-apps/web        Next.js 15 — marketing + planner app + route handlers (incl. Cashfree webhook)
+apps/web        Next.js 15 — marketing + planner app + route handlers
 apps/worker     node-cron — no HTTP surface
 packages/db     Prisma client, withUser(), SQL migrations, RLS + constraint tests
 packages/core   SQLSTATE→error translation, risk computation, GST/tax engine, brand tokens
@@ -197,7 +200,7 @@ packages/core   SQLSTATE→error translation, risk computation, GST/tax engine, 
 - **Identity:** Supabase Auth issues the JWT. The app opens a Prisma/`pg` transaction, sets
   `request.jwt.claims` (containing `sub` = user id) transaction-locally, runs queries, commits.
   Queries outside `withUser()` see **zero rows** (fail closed).
-- **Two roles:** the app connects as an RLS-subject role; the **worker + webhook** use
+- **Two roles:** the app connects as an RLS-subject role; the **worker** uses
   `service_role` (RLS-bypass) **only through narrow SECURITY DEFINER RPCs** — the RLS-bypass
   credential never reaches the public web tier broadly.
 - **`project_access`** is the flattened membership⋈grant table, maintained by triggers, read by
@@ -220,9 +223,6 @@ packages/core   SQLSTATE→error translation, risk computation, GST/tax engine, 
 
 **New clusters for v1**
 ```
-BILLING     plans · subscriptions · subscription_invoices · entitlements
-            (how VivahSync earns — absent from all 27 original models)
-
 TAX/INVOICE org_tax_profiles(GSTIN, state, invoice series) · invoices ·
             invoice_line_items · tax_lines   (principal-model GST invoicing)
 ```
@@ -242,14 +242,10 @@ TAX/INVOICE org_tax_profiles(GSTIN, state, invoice series) · invoices ·
 
 ## 6. GST & invoicing (principal model — "as extensive as possible")
 
-Two invoice contexts, both GST-compliant:
+One invoice context, GST-compliant *(the VivahSync → planner SaaS-fee invoice was removed with
+platform billing, 2026-11-02)*:
 
-**A. VivahSync → Planner (SaaS fee).** VivahSync's own GSTIN; 18% GST on the subscription/
-per-wedding fee; SAC for online information/SaaS services; place-of-supply = planner's state
-(intra-state → CGST+SGST, inter-state → IGST); sequential invoice series; planner's GSTIN
-captured so they can claim ITC.
-
-**B. Planner → Client (wedding package).** Principal model: the planner invoices the client for
+**Planner → Client (wedding package).** Principal model: the planner invoices the client for
 the **whole package**; GST charged on the package; the planner claims **input tax credit** on
 GST-registered vendors' invoices. Requires per-agency: GSTIN, invoice number series, letterhead.
 
@@ -292,7 +288,7 @@ overview was burned three times by controls that were present but enforcing noth
   a Supabase branch in CI (no Docker needed).
 - **DPDP Act 2023:** consent capture at data entry; data-principal access/erasure via
   tombstone/shred; breach-notification + grievance-officer posture; decide fiduciary (open #4).
-- **GST compliance** on both invoice contexts (§6).
+- **GST compliance** on planner→client invoicing (§6).
 - **Backups/DR:** Supabase PITR enabled; financial ledger effectively needs near-zero RPO.
 - **Availability:** weddings are live event-day systems — target no planned downtime on active
   event dates; Indian wedding load is **muhurat-clustered/bursty**, so size for same-date peaks,
@@ -321,9 +317,7 @@ write path.
   creation + teammate invite, audited platform-admin seam. **Ships with the full cross-org RLS
   test matrix** (competing agencies · shared vendor engaged by both · production company with
   FULL scope on another org's project) — attempt-the-violation, asserted on row counts.
-- **M2 Platform billing** — plans, subscriptions/entitlements, Cashfree merchant collection
-  (+18% GST), entitlement gating on wedding creation, **co-owned-project billing rule (owner
-  pays, collaborators ride free)**, email renewal reminders, VivahSync→planner GST invoice.
+- ~~**M2 Platform billing**~~ — *removed 2026-11-02 (no platform billing or payment gateway).*
 - **M3 Core operations** — projects, days (generated), events (guest count + buffers), venues,
   spaces (capacity + legal_max), event_spaces, space_bookings (generated `period` + EXCLUDE),
   rule overrides (audited); **live conflict detection through the real UI write path** (closes
@@ -339,9 +333,9 @@ write path.
   observability, DPDP consent/erasure, PITR/backup verification, accessibility pass.
 
 ### Phase 2+ (deferred)
-Cashfree escrow/split/UPI · family portal · evidence media + TTL · vendor self-service portal +
+Family portal · evidence media + TTL · vendor self-service portal +
 write actions · CRM (leads/pipeline/conversion) · WhatsApp/SMS (Meta + BSP + DLT) · within-org
-RBAC · cross-org co-ownership · VENUE_CHAIN · native/PWA offline capture · subscription mandates.
+RBAC · cross-org co-ownership · VENUE_CHAIN · native/PWA offline capture.
 
 ---
 
@@ -356,16 +350,14 @@ RBAC · cross-org co-ownership · VENUE_CHAIN · native/PWA offline capture · s
    asserted on row counts as `authenticated`; and a standing test fixture of two competing
    agencies sharing one vendor, plus a production-company collaborator, mirroring the hardest
    real case. No new table ships without an accompanying RLS test.
-2. **GST "as extensive as possible" is a large subsystem** (two invoice contexts, place-of-supply,
-   RCM, sequential numbering). Time-box ITC-reconciliation depth; keep invoice generation core.
+2. **GST "as extensive as possible" is a large subsystem** (place-of-supply, RCM, sequential
+   numbering). Time-box ITC-reconciliation depth; keep invoice generation core.
 3. **Supabase pooler + transaction-local `set_config`** must be validated in transaction mode
    before RLS is trusted (fail-open risk if it session-pins). Verify in Phase 0.
 4. **Prisma silently reverting generated columns / EXCLUDE / RLS** on any DDL it owns.
    Mitigation: Supabase SQL migrations own ALL DDL; Prisma is introspect-only.
 5. **Seasonal/bursty muhurat load** unmodelled; computed cash-flow/risk are the first to degrade.
    Add indexes + a light recompute cache before launch marketing.
-6. **Billing correctness** (entitlement gating, GST on your own fee, renewal) is real money-in
-   from day one — treat it with the same rigor as the domain ledger.
 
 ---
 

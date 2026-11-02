@@ -4,7 +4,7 @@
 // Scheduled responsibilities (added milestone by milestone):
 //   - date-triggered milestone activation (PENDING -> DUE)          [M5]
 //   - daily cash-flow / risk recompute cache                        [M5/M6]
-//   - email notification retries + subscription renewal reminders   [M2/M6]
+//   - email notification retries                                    [M6]
 //   - (phase 2) evidence media 6-month TTL sweep
 //
 // node-cron uses in-process wall-clock scheduling with no backfill, so every

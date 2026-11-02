@@ -2,6 +2,9 @@
 import Link from 'next/link'
 import { getUser } from '@/lib/auth'
 import BrandLogo from '@/app/_components/BrandLogo'
+import FeatureSteps, { type FeatureStep } from '@/app/_components/FeatureSteps'
+import LandingIntro from '@/app/_components/LandingIntro'
+import VideoHero from '@/app/_components/VideoHero'
 
 export const dynamic = 'force-dynamic'
 
@@ -36,6 +39,209 @@ function Ico({ n, s = 20 }: { n: string; s?: number }) {
   )
 }
 
+// "What it does" tour — each step swaps in its infographic.
+const FEATURES: FeatureStep[] = [
+  {
+    step: 'Run-of-show',
+    title: 'One timeline for the whole celebration',
+    content:
+      'Lay out every ceremony across the days, with setup and teardown built in. Move one and the whole team sees it — the schedule always tells the truth.',
+    points: [
+      'Sangeet, Haldi, Mehndi and the Pheras, in sequence',
+      'Setup and teardown time reserved automatically',
+      'Reschedule with a clear record of what changed',
+    ],
+    media: (
+      <div className="lp-info">
+        <div className="lp-info-head">
+          <span>Run-of-show · Mehra–Kapoor</span>
+          <span>5 days</span>
+        </div>
+        <div className="lp-info-body">
+          <div className="lp-gantt">
+            {[
+              { l: 'Haldi', left: 3, w: 13, c: 'var(--vs-gold-500)' },
+              { l: 'Mehndi', left: 23, w: 13, c: 'var(--vs-gold-600)' },
+              { l: 'Sangeet', left: 43, w: 15, c: 'var(--maroon)' },
+              { l: 'Pheras', left: 63, w: 21, c: 'var(--vs-maroon-500)' },
+              { l: 'Vidaai', left: 88, w: 9, c: 'var(--color-neutral-500)' },
+            ].map((b) => (
+              <div key={b.l} className="lp-grow">
+                <span className="lp-glabel">{b.l}</span>
+                <div className="lp-gtrack">
+                  <div
+                    className="lp-gbar"
+                    style={{ left: `${b.left}%`, width: `${b.w}%`, background: b.c }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="lp-gaxis">
+            <span />
+            <div className="lp-gdays">
+              <span>Day 1</span>
+              <span>Day 2</span>
+              <span>Day 3</span>
+              <span>Day 4</span>
+              <span>Day 5</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+  {
+    step: 'Venues & spaces',
+    title: 'Book a space once. Never twice.',
+    content:
+      'Map each venue’s spaces and their real capacity. Assign a ceremony and the calendar guards it — an overlap or an over-capacity room simply can’t be saved.',
+    points: [
+      'Every space with its true guest capacity',
+      'Overlapping bookings are refused, not just flagged',
+      'See peak load before the day, not on it',
+    ],
+    media: (
+      <div className="lp-info">
+        <div className="lp-info-head">
+          <span>Fairmont Jaipur · peak load</span>
+          <span>4 spaces</span>
+        </div>
+        <div className="lp-info-body">
+          <div className="lp-cap">
+            {[
+              { s: 'Mughal Lawn', use: 520, cap: 600, pct: 87, warn: false },
+              { s: 'Regal Ballroom', use: 300, cap: 450, pct: 67, warn: false },
+              { s: 'Amber Terrace', use: 210, cap: 200, pct: 100, warn: true },
+            ].map((c) => (
+              <div key={c.s}>
+                <div className="lp-captop">
+                  <span className="cs">{c.s}</span>
+                  <span className="cn">
+                    {c.use} / {c.cap}
+                  </span>
+                </div>
+                <div className="lp-captrack">
+                  <div
+                    className={`lp-capfill${c.warn ? ' warn' : ''}`}
+                    style={{ width: `${c.pct}%` }}
+                  />
+                </div>
+                {c.warn && (
+                  <div className="lp-capnote">
+                    <Ico n="shield" s={13} /> Over capacity — this booking is refused.
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    ),
+  },
+  {
+    step: 'Vendors',
+    title: 'From shortlist to locked commitment',
+    content:
+      'Track every vendor from first enquiry to a confirmed booking. The moment they accept, the agreed scope is locked in — no quiet changes to what both sides signed up for.',
+    points: [
+      'A clear status for every engagement',
+      'Acceptance locks the scope both sides agreed to',
+      'Nothing slips between draft and confirmed',
+    ],
+    media: (
+      <div className="lp-info">
+        <div className="lp-info-head">
+          <span>Booking lifecycle</span>
+          <span>Photographer · Sharma Studios</span>
+        </div>
+        <div className="lp-info-body">
+          <div className="lp-flow">
+            <span className="lp-pill">Draft</span>
+            <span className="lp-arrow">
+              <Ico n="chevron" s={14} />
+            </span>
+            <span className="lp-pill">Sent</span>
+            <span className="lp-arrow">
+              <Ico n="chevron" s={14} />
+            </span>
+            <span className="lp-pill on">Accepted</span>
+            <span className="lp-arrow">
+              <Ico n="chevron" s={14} />
+            </span>
+            <span className="lp-pill">Confirmed</span>
+          </div>
+          <p className="lp-flownote">
+            Draft → Sent → Accepted → Confirmed moves in one direction. Once accepted, the
+            commitment is fixed — later edits never rewrite what the vendor agreed to.
+          </p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    step: 'Money',
+    title: 'An honest ledger, end to end',
+    content:
+      'Every rupee in and out on one ledger you can trust. Corrections stay visible as reversals — the trail is never quietly rewritten behind anyone’s back.',
+    points: [
+      'Inflow, outflow and cash-on-hand at a glance',
+      'Committed-but-unpaid, always current',
+      'Mistakes are reversed on the record, never erased',
+    ],
+    media: (
+      <div className="lp-info">
+        <div className="lp-info-head">
+          <span>Money · Mehra–Kapoor</span>
+          <span>live</span>
+        </div>
+        <div className="lp-info-body" style={{ padding: 0 }}>
+          <div className="lp-kpis">
+            <div className="lp-kpi">
+              <div className="l">Inflow</div>
+              <div className="v gold">₹42.0L</div>
+            </div>
+            <div className="lp-kpi">
+              <div className="l">Outflow</div>
+              <div className="v dngr">₹28.6L</div>
+            </div>
+            <div className="lp-kpi">
+              <div className="l">Cash on hand</div>
+              <div className="v">₹13.4L</div>
+            </div>
+            <div className="lp-kpi">
+              <div className="l">Committed, unpaid</div>
+              <div className="v gold">₹9.2L</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+  {
+    step: 'For the family',
+    title: 'A calm, beautiful view for the couple’s family',
+    content:
+      'Share a read-only schedule with the family — the ceremonies and their timings, nothing else. No pricing, no vendor logistics, no clutter. Just where to be, and when.',
+    points: [
+      'The run-of-show, beautifully simple',
+      'Money and logistics stay hidden by design',
+      'Always up to date, on any phone',
+    ],
+    media: (
+      <figure className="lp-figure lp-feat-figure">
+        <img
+          className="lp-img"
+          src="/img/mehndi.jpg"
+          alt="Intricate mehndi (henna) applied on a bride's hands"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+    ),
+  },
+]
+
 export default async function LandingPage() {
   const user = await getUser()
   const startHref = user ? '/home' : '/signup'
@@ -43,75 +249,8 @@ export default async function LandingPage() {
 
   return (
     <div className="lp">
-      {/* nav */}
-      <nav className="lp-nav">
-        <div className="lp-nav-in">
-          <Link href="/" className="lp-brand">
-            <BrandLogo className="lp-logo" />
-          </Link>
-          <div className="lp-navlinks">
-            <a href="#features" className="lp-navlink hide-sm">
-              What it does
-            </a>
-            <a href="#how" className="lp-navlink hide-sm">
-              How it works
-            </a>
-            {!user && (
-              <Link href="/login" className="lp-navlink">
-                Sign in
-              </Link>
-            )}
-            <Link href={startHref} className="lp-btn primary sm">
-              {startLabel}
-            </Link>
-          </div>
-        </div>
-      </nav>
-
-      {/* hero */}
-      <header className="lp-hero">
-        <div className="lp-hero-in">
-          <div>
-            <div className="lp-kicker">The operational system of record for wedding planners</div>
-            <h1 className="lp-h1">
-              Run every Indian wedding like a <em>production.</em>
-            </h1>
-            <p className="lp-sub">
-              VivahSync keeps a multi-day wedding — every ceremony, venue, vendor and payment — in
-              one place your whole team trusts. The sequence holds, nothing double-books, and the big
-              day runs to plan.
-            </p>
-            <div className="lp-cta-row">
-              <Link href={startHref} className="lp-btn primary">
-                {startLabel}
-              </Link>
-              {!user && (
-                <Link href="/login" className="lp-btn ghost">
-                  Sign in
-                </Link>
-              )}
-            </div>
-            {!user && (
-              <p className="lp-note" style={{ marginTop: 14 }}>
-                Free to start · No card required
-              </p>
-            )}
-          </div>
-          <figure className="lp-figure lp-hero-figure">
-            <img
-              className="lp-img"
-              src="/img/hero-baraat.jpg"
-              alt="A baraat — the groom's wedding procession — in Jaipur"
-              loading="eager"
-              decoding="async"
-            />
-            <div className="lp-chip">
-              <div className="n">6 ceremonies</div>
-              <div className="l">Haldi to Vidaai — sequenced on one run-of-show.</div>
-            </div>
-          </figure>
-        </div>
-      </header>
+      <LandingIntro />
+      <VideoHero startHref={startHref} startLabel={startLabel} signedIn={!!user} />
 
       {/* stat band */}
       <section className="lp-stats">
@@ -186,234 +325,7 @@ export default async function LandingPage() {
             </p>
           </div>
 
-          {/* run-of-show */}
-          <div className="lp-feature">
-            <div>
-              <div className="lp-feat-eyebrow">Run-of-show</div>
-              <h3 className="lp-feat-title">One timeline for the whole celebration</h3>
-              <p className="lp-feat-body">
-                Lay out every ceremony across the days, with setup and teardown built in. Move one
-                and the whole team sees it — the schedule always tells the truth.
-              </p>
-              <ul className="lp-feat-list">
-                <li>Sangeet, Haldi, Mehndi and the Pheras, in sequence</li>
-                <li>Setup and teardown time reserved automatically</li>
-                <li>Reschedule with a clear record of what changed</li>
-              </ul>
-            </div>
-            <div className="lp-feat-media">
-              <div className="lp-info">
-                <div className="lp-info-head">
-                  <span>Run-of-show · Mehra–Kapoor</span>
-                  <span>5 days</span>
-                </div>
-                <div className="lp-info-body">
-                  <div className="lp-gantt">
-                    {[
-                      { l: 'Haldi', left: 3, w: 13, c: 'var(--vs-gold-500)' },
-                      { l: 'Mehndi', left: 23, w: 13, c: 'var(--vs-gold-600)' },
-                      { l: 'Sangeet', left: 43, w: 15, c: 'var(--maroon)' },
-                      { l: 'Pheras', left: 63, w: 21, c: 'var(--vs-maroon-500)' },
-                      { l: 'Vidaai', left: 88, w: 9, c: 'var(--color-neutral-500)' },
-                    ].map((b) => (
-                      <div key={b.l} className="lp-grow">
-                        <span className="lp-glabel">{b.l}</span>
-                        <div className="lp-gtrack">
-                          <div
-                            className="lp-gbar"
-                            style={{ left: `${b.left}%`, width: `${b.w}%`, background: b.c }}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="lp-gaxis">
-                    <span />
-                    <div className="lp-gdays">
-                      <span>Day 1</span>
-                      <span>Day 2</span>
-                      <span>Day 3</span>
-                      <span>Day 4</span>
-                      <span>Day 5</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* venues */}
-          <div className="lp-feature rev">
-            <div>
-              <div className="lp-feat-eyebrow">Venues &amp; spaces</div>
-              <h3 className="lp-feat-title">Book a space once. Never twice.</h3>
-              <p className="lp-feat-body">
-                Map each venue&rsquo;s spaces and their real capacity. Assign a ceremony and the
-                calendar guards it — an overlap or an over-capacity room simply can&rsquo;t be saved.
-              </p>
-              <ul className="lp-feat-list">
-                <li>Every space with its true guest capacity</li>
-                <li>Overlapping bookings are refused, not just flagged</li>
-                <li>See peak load before the day, not on it</li>
-              </ul>
-            </div>
-            <div className="lp-feat-media">
-              <div className="lp-info">
-                <div className="lp-info-head">
-                  <span>Fairmont Jaipur · peak load</span>
-                  <span>4 spaces</span>
-                </div>
-                <div className="lp-info-body">
-                  <div className="lp-cap">
-                    {[
-                      { s: 'Mughal Lawn', use: 520, cap: 600, pct: 87, warn: false },
-                      { s: 'Regal Ballroom', use: 300, cap: 450, pct: 67, warn: false },
-                      { s: 'Amber Terrace', use: 210, cap: 200, pct: 100, warn: true },
-                    ].map((c) => (
-                      <div key={c.s}>
-                        <div className="lp-captop">
-                          <span className="cs">{c.s}</span>
-                          <span className="cn">
-                            {c.use} / {c.cap}
-                          </span>
-                        </div>
-                        <div className="lp-captrack">
-                          <div
-                            className={`lp-capfill${c.warn ? ' warn' : ''}`}
-                            style={{ width: `${c.pct}%` }}
-                          />
-                        </div>
-                        {c.warn && (
-                          <div className="lp-capnote">
-                            <Ico n="shield" s={13} /> Over capacity — this booking is refused.
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* vendors */}
-          <div className="lp-feature">
-            <div>
-              <div className="lp-feat-eyebrow">Vendors</div>
-              <h3 className="lp-feat-title">From shortlist to locked commitment</h3>
-              <p className="lp-feat-body">
-                Track every vendor from first enquiry to a confirmed booking. The moment they accept,
-                the agreed scope is locked in — no quiet changes to what both sides signed up for.
-              </p>
-              <ul className="lp-feat-list">
-                <li>A clear status for every engagement</li>
-                <li>Acceptance locks the scope both sides agreed to</li>
-                <li>Nothing slips between draft and confirmed</li>
-              </ul>
-            </div>
-            <div className="lp-feat-media">
-              <div className="lp-info">
-                <div className="lp-info-head">
-                  <span>Booking lifecycle</span>
-                  <span>Photographer · Sharma Studios</span>
-                </div>
-                <div className="lp-info-body">
-                  <div className="lp-flow">
-                    <span className="lp-pill">Draft</span>
-                    <span className="lp-arrow">
-                      <Ico n="chevron" s={14} />
-                    </span>
-                    <span className="lp-pill">Sent</span>
-                    <span className="lp-arrow">
-                      <Ico n="chevron" s={14} />
-                    </span>
-                    <span className="lp-pill on">Accepted</span>
-                    <span className="lp-arrow">
-                      <Ico n="chevron" s={14} />
-                    </span>
-                    <span className="lp-pill">Confirmed</span>
-                  </div>
-                  <p className="lp-flownote">
-                    Draft → Sent → Accepted → Confirmed moves in one direction. Once accepted, the
-                    commitment is fixed — later edits never rewrite what the vendor agreed to.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* money */}
-          <div className="lp-feature rev">
-            <div>
-              <div className="lp-feat-eyebrow">Money</div>
-              <h3 className="lp-feat-title">An honest ledger, end to end</h3>
-              <p className="lp-feat-body">
-                Every rupee in and out on one ledger you can trust. Corrections stay visible as
-                reversals — the trail is never quietly rewritten behind anyone&rsquo;s back.
-              </p>
-              <ul className="lp-feat-list">
-                <li>Inflow, outflow and cash-on-hand at a glance</li>
-                <li>Committed-but-unpaid, always current</li>
-                <li>Mistakes are reversed on the record, never erased</li>
-              </ul>
-            </div>
-            <div className="lp-feat-media">
-              <div className="lp-info">
-                <div className="lp-info-head">
-                  <span>Money · Mehra–Kapoor</span>
-                  <span>live</span>
-                </div>
-                <div className="lp-info-body" style={{ padding: 0 }}>
-                  <div className="lp-kpis">
-                    <div className="lp-kpi">
-                      <div className="l">Inflow</div>
-                      <div className="v gold">₹42.0L</div>
-                    </div>
-                    <div className="lp-kpi">
-                      <div className="l">Outflow</div>
-                      <div className="v dngr">₹28.6L</div>
-                    </div>
-                    <div className="lp-kpi">
-                      <div className="l">Cash on hand</div>
-                      <div className="v">₹13.4L</div>
-                    </div>
-                    <div className="lp-kpi">
-                      <div className="l">Committed, unpaid</div>
-                      <div className="v gold">₹9.2L</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* family */}
-          <div className="lp-feature">
-            <div>
-              <div className="lp-feat-eyebrow">For the family</div>
-              <h3 className="lp-feat-title">A calm, beautiful view for the couple&rsquo;s family</h3>
-              <p className="lp-feat-body">
-                Share a read-only schedule with the family — the ceremonies and their timings,
-                nothing else. No pricing, no vendor logistics, no clutter. Just where to be, and when.
-              </p>
-              <ul className="lp-feat-list">
-                <li>The run-of-show, beautifully simple</li>
-                <li>Money and logistics stay hidden by design</li>
-                <li>Always up to date, on any phone</li>
-              </ul>
-            </div>
-            <div className="lp-feat-media">
-              <figure className="lp-figure lp-feat-figure">
-                <img
-                  className="lp-img"
-                  src="/img/mehndi.jpg"
-                  alt="Intricate mehndi (henna) applied on a bride's hands"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </figure>
-            </div>
-          </div>
+          <FeatureSteps features={FEATURES} />
         </div>
       </section>
 

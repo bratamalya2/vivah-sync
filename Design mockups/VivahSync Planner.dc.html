@@ -691,92 +691,6 @@
         </div>
       </sc-if>
 
-      <sc-if value="{{ isBilling }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:18px 22px 48px;">
-          <div style="padding-bottom:12px; border-bottom:2px solid var(--color-divider);">
-            <div style="font-size:9px; font-weight:700; letter-spacing:0.11em; text-transform:uppercase; color:var(--color-neutral-700);">Agency onboarding & subscription</div>
-            <div style="margin-top:5px; font-size:20px; font-weight:700; letter-spacing:-0.3px;">Sign up · pick how you pay</div>
-            <div style="margin-top:4px; font-size:12px; color:var(--color-neutral-700);">Planner agencies pay. Vendors and families use VivahSync free. Prices are GST-exclusive; registered agencies reclaim the 18% as input credit.</div>
-          </div>
-
-          <div style="display:grid; grid-template-columns:340px 1fr; gap:20px; margin-top:18px; align-items:start;">
-            <div style="border:2px solid var(--color-divider); background:var(--color-surface);">
-              <div style="padding:10px 14px; border-bottom:2px solid var(--color-divider); background:var(--color-neutral-200); font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">Step 1 · Agency details</div>
-              <div style="padding:14px; display:flex; flex-direction:column; gap:12px;">
-                <div>
-                  <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:5px;">Agency legal name</div>
-                  <div style="padding:8px 9px; font-size:13px; border:1px solid var(--color-neutral-400); background:var(--color-surface);">Shubh Muhurat Weddings LLP</div>
-                </div>
-                <div>
-                  <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:5px;">GSTIN <span style="color:var(--vs-maroon);">required for tax invoice</span></div>
-                  <div style="padding:8px 9px; font-family:var(--font-body); letter-spacing:0.01em; font-size:13px; border:1px solid var(--color-neutral-400); background:var(--color-surface);">08AAGCS4821K1ZP</div>
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                  <div>
-                    <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:5px;">State</div>
-                    <div style="padding:8px 9px; font-size:13px; border:1px solid var(--color-neutral-400); background:var(--color-surface);">Rajasthan</div>
-                  </div>
-                  <div>
-                    <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700); margin-bottom:5px;">Weddings / year</div>
-                    <div style="padding:8px 9px; font-family:var(--font-body); letter-spacing:0.01em; font-size:13px; border:1px solid var(--color-neutral-400); background:var(--color-surface);">38</div>
-                  </div>
-                </div>
-                <div style="padding:9px 10px; background:var(--vs-gold-100); border:1px solid var(--vs-gold-300); font-size:11px; line-height:1.55; color:var(--color-neutral-700);">Your agency is the <strong style="color:var(--color-text);">Data Fiduciary</strong> for client and vendor data under DPDP. VivahSync processes it on your instruction — a Data Processing Agreement is signed at this step.</div>
-              </div>
-            </div>
-
-            <div>
-              <div style="font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--color-neutral-700);">Step 2 · Plan</div>
-              <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:10px;">
-                <sc-for list="{{ plans }}" as="p" hint-placeholder-count="3">
-                  <div onClick="{{ p.pick }}" style="{{ p.style }}">
-                    <div style="display:flex; align-items:center; justify-content:space-between;">
-                      <div style="font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-neutral-700);">{{ p.kicker }}</div>
-                      <div style="{{ p.tagStyle }}">{{ p.tag }}</div>
-                    </div>
-                    <div style="margin-top:8px; font-size:16px; font-weight:700;">{{ p.name }}</div>
-                    <div style="margin-top:6px; display:flex; align-items:baseline; gap:5px;">
-                      <div style="font-family:var(--font-body); letter-spacing:0.01em; font-size:26px; font-weight:600; letter-spacing:-0.5px;">{{ p.price }}</div>
-                      <div style="font-size:12px; color:var(--color-neutral-700);">{{ p.unit }}</div>
-                    </div>
-                    <div style="margin-top:3px; font-family:var(--font-body); letter-spacing:0.01em; font-size:11px; color:var(--color-neutral-700);">{{ p.gst }}</div>
-                    <div style="margin-top:11px; display:flex; flex-direction:column; gap:5px;">
-                      <sc-for list="{{ p.features }}" as="f" hint-placeholder-count="3">
-                        <div style="display:flex; gap:7px; font-size:12px; line-height:1.4; color:var(--color-neutral-800);">
-                          <span style="color:var(--vs-gold); font-weight:700;">—</span><span>{{ f }}</span>
-                        </div>
-                      </sc-for>
-                    </div>
-                    <div style="{{ p.footStyle }}">{{ p.foot }}</div>
-                  </div>
-                </sc-for>
-              </div>
-
-              <div style="display:grid; grid-template-columns:1fr 300px; gap:12px; margin-top:14px; align-items:start;">
-                <div style="border:2px solid var(--color-divider); background:var(--color-surface); padding:14px;">
-                  <div style="font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">Step 3 · Pay via Cashfree</div>
-                  <div style="margin-top:8px; font-size:12px; color:var(--color-neutral-700); line-height:1.55;">One-time charge for the period, with an email reminder before renewal. Auto-debit mandates are not used. UPI renders a virtual QR inside VivahSync — no redirect, no lost session on event day.</div>
-                  <div style="display:flex; gap:8px; margin-top:12px;">
-                    <div style="padding:6px 10px; font-size:11px; font-weight:600; border:1px solid var(--color-neutral-400); background:var(--color-bg);">UPI QR (in-app)</div>
-                    <div style="padding:6px 10px; font-size:11px; font-weight:600; border:1px solid var(--color-neutral-400); background:var(--color-bg);">NEFT / RTGS / IMPS</div>
-                    <div style="padding:6px 10px; font-size:11px; font-weight:600; border:1px solid var(--color-neutral-400); background:var(--color-bg);">Card</div>
-                  </div>
-                </div>
-                <div style="border:1px solid var(--vs-maroon); background:var(--color-surface);">
-                  <div style="padding:9px 12px; background:var(--vs-maroon); color:var(--color-bg); font-size:10px; font-weight:700; letter-spacing:0.09em; text-transform:uppercase;">Order summary</div>
-                  <div style="padding:12px;">
-                    <div style="display:flex; justify-content:space-between; font-size:12px; padding:4px 0;"><span style="color:var(--color-neutral-700);">{{ selPlanName }}</span><span style="font-family:var(--font-body); letter-spacing:0.01em;">{{ selPlanBase }}</span></div>
-                    <div style="display:flex; justify-content:space-between; font-size:12px; padding:4px 0; border-bottom:1px solid var(--color-neutral-300);"><span style="color:var(--color-neutral-700);">GST @ 18%</span><span style="font-family:var(--font-body); letter-spacing:0.01em;">{{ selPlanGst }}</span></div>
-                    <div style="display:flex; justify-content:space-between; align-items:baseline; padding:9px 0 0;"><span style="font-size:12px; font-weight:700;">Payable now</span><span style="font-family:var(--font-body); letter-spacing:0.01em; font-size:18px; font-weight:600;">{{ selPlanTotal }}</span></div>
-                    <button class="btn btn-primary btn-block" style="margin-top:11px; min-height:38px;">Continue to Cashfree</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </sc-if>
-
       <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
         <div style="padding:22px; display:flex; gap:26px; align-items:flex-start;">
           <div style="width:390px; flex:0 0 390px; border:2px solid var(--color-divider); background:var(--color-surface); box-shadow:0 1px 0 var(--color-neutral-300);">
@@ -900,7 +814,6 @@ class Component extends DCLogic {
       { id: 'lg_1005', ts: '14 Jan 18:55', dir: 'IN', desc: 'Client tranche 2 — Mehra family', mode: 'Bank RTGS · client', amount: 800000, ref: 'UTR HDFC0031180', day: -1 }
     ],
     form: { dir: 'OUT', party: 'Blacklight Productions', mode: 'UPI · planner', amount: 250000 },
-    plan: 'monthly',
     seq: 2000,
     toast: null,
     msSaved: false
@@ -1097,19 +1010,6 @@ class Component extends DCLogic {
       };
     });
 
-    const plans = [
-      { id: 'wedding', kicker: 'Pay as you go', name: 'Per wedding', price: '₹799', unit: '/ project', gst: '+ 18% GST = ₹942.82', tag: '', features: ['One wedding project, unlimited events', 'Unlimited vendors & collaborators', 'Ledger, milestones, playbooks', 'Charged when the project is created'], foot: 'Best under 8 weddings a year', base: 799 },
-      { id: 'monthly', kicker: 'Most agencies', name: 'Studio monthly', price: '₹5,999', unit: '/ month', gst: '+ 18% GST = ₹7,078.82', tag: 'Current', features: ['Unlimited concurrent projects', 'Team seats & role scoping', 'Risk dashboard across all weddings', 'Email renewal reminder, no auto-debit'], foot: 'Breaks even at 8 weddings a year', base: 5999 },
-      { id: 'halfyear', kicker: 'Season rate', name: '6-month season', price: '₹24,999', unit: '/ 6 months', gst: '+ 18% GST = ₹29,498.82', tag: 'Save 31%', features: ['Everything in Studio monthly', 'Covers one full muhurat season', 'Priority support during peak dates', 'One invoice for the season'], foot: 'For Nov–Feb heavy agencies', base: 24999 }
-    ].map(p => ({
-      kicker: p.kicker, name: p.name, price: p.price, unit: p.unit, gst: p.gst, tag: p.tag, features: p.features, foot: p.foot,
-      pick: () => S.setState({ plan: p.id }),
-      style: { padding: '14px', background: 'var(--color-surface)', border: st.plan === p.id ? '2px solid var(--vs-maroon)' : '2px solid var(--color-divider)', cursor: 'pointer', outline: st.plan === p.id ? 'none' : 'none' },
-      tagStyle: { fontSize: '9px', fontWeight: 700, letterSpacing: '0.09em', textTransform: 'uppercase', padding: p.tag ? '2px 6px' : '0', background: p.tag === 'Current' ? 'var(--vs-maroon)' : 'var(--vs-gold)', color: p.tag === 'Current' ? 'var(--color-surface)' : 'var(--vs-maroon-800)' },
-      footStyle: { marginTop: '12px', paddingTop: '9px', borderTop: '1px solid var(--color-neutral-300)', fontSize: '11px', color: 'var(--color-neutral-700)' }
-    }));
-    const selPlan = [{ id: 'wedding', n: 'Per wedding', b: 799 }, { id: 'monthly', n: 'Studio monthly', b: 5999 }, { id: 'halfyear', n: '6-month season', b: 24999 }].find(p => p.id === st.plan);
-
     const runSheet = [
       { time: '18:45', title: 'Guest entry opens · foyer', who: 'Ushers ×6 — Priya on floor', done: true },
       { time: '19:00', title: 'Sound check complete', who: 'Blacklight Productions — Dev', done: true },
@@ -1127,13 +1027,13 @@ class Component extends DCLogic {
 
     return {
       daysOut: 31,
-      agencyNav: [mk('weddings', 'Weddings', '3'), mk('vendors', 'Vendor directory', '24'), mk('leads', 'Leads', 'v2'), mk('billing', 'Billing & plan', '')],
+      agencyNav: [mk('weddings', 'Weddings', '3'), mk('vendors', 'Vendor directory', '24'), mk('leads', 'Leads', 'v2')],
       projectNav: [mk('dashboard', 'Dashboard', '5', dangerBadge), mk('timeline', 'Timeline & ceremonies', '6'), mk('venues', 'Venue & spaces', '4'), mk('vendors', 'Vendors & bookings', '2', dangerBadge), mk('contracts', 'Contracts & milestones', '', st.dash), mk('ledger', 'Ledger & cash flow', '')],
-      viewNav: [mk('mobile', 'Event-day (mobile)', ''), mk('billing', 'Subscription', '')],
+      viewNav: [mk('mobile', 'Event-day (mobile)', '')],
 
       isDashboard: st.screen === 'dashboard', isTimeline: st.screen === 'timeline', isVenues: st.screen === 'venues',
       isVendors: st.screen === 'vendors' || st.screen === 'leads', isContracts: st.screen === 'contracts',
-      isLedger: st.screen === 'ledger', isWeddings: st.screen === 'weddings', isBilling: st.screen === 'billing', isMobile: st.screen === 'mobile',
+      isLedger: st.screen === 'ledger', isWeddings: st.screen === 'weddings', isMobile: st.screen === 'mobile',
 
       setDashA: () => S.setState({ dash: 'A' }), setDashB: () => S.setState({ dash: 'B' }),
       dashAStyle: tabBtn(dash === 'A'), dashBStyle: tabBtn(dash === 'B'),
@@ -1269,8 +1169,6 @@ class Component extends DCLogic {
         { rule: 'No open flame indoors', rationale: 'Havan kund permitted with a fire marshal on standby and a 3m clearance; venue safety officer signed off.', scope: 'Pheras · Mughal Lawn', logged: 'Arjun · 11 Jan 10:44' },
         { rule: 'Load-in from 08:00', rationale: 'LED wall rigging needs 06:00 access to clear the ballroom before guest movement.', scope: 'Sangeet · Regal Ballroom', logged: 'Priya · 06 Jan 18:20' }
       ],
-
-      plans, selPlanName: selPlan.n, selPlanBase: INR(selPlan.b), selPlanGst: INR(selPlan.b * 0.18), selPlanTotal: '₹' + (selPlan.b * 1.18).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
 
       runSheet,
       contacts: [

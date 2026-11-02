@@ -5,7 +5,7 @@ import { dbEnv, dbSsl } from './env.js'
 //
 //  appPool    — every request-scoped query. Connects as a bypassrls role, so it
 //               is ONLY safe through withUser(), which SET LOCAL ROLE authenticated.
-//  systemPool — privileged, RLS-bypassing. Worker jobs + verified webhook writes.
+//  systemPool — privileged, RLS-bypassing. Worker jobs + token-gated public routes (RSVP, itinerary).
 //
 // Both are module singletons so the process holds a bounded connection count.
 

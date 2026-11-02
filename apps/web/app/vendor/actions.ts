@@ -9,10 +9,15 @@ import {
   vendorEventProject,
   vendorRecordEvidence,
 } from '@vivahsync/db'
-import { ensureEvidenceBucket, uploadEvidence, deleteEvidenceObject } from '@vivahsync/db/storage'
+import {
+  prepareEvidenceUpload,
+  finalizeEvidenceUpload,
+  type PrepareInput,
+  type PrepareResult,
+  type FinalizeInput,
+  type FinalizeResult,
+} from '@/lib/evidenceUpload'
 import { translateDbError } from '@vivahsync/core'
-
-const MAX_UPLOAD = 30 * 1024 * 1024 // 30 MB
 
 export async function respondBookingAction(formData: FormData): Promise<void> {
   const user = await getUser()
@@ -54,53 +59,28 @@ export async function acknowledgeChangeAction(formData: FormData): Promise<void>
   redirect(target)
 }
 
-export async function uploadVendorEvidenceAction(formData: FormData): Promise<void> {
+/** Evidence upload, step 1: only a vendor booked on this ceremony gets a token. */
+export async function prepareVendorEvidenceUploadAction(input: PrepareInput): Promise<PrepareResult> {
   const user = await getUser()
   if (!user) redirect('/login')
+  return prepareEvidenceUpload(await vendorEventProject(user.id, input.eventId), input)
+}
 
-  const eventId = String(formData.get('eventId') ?? '')
-  const file = formData.get('file')
-  if (!(file instanceof File) || file.size === 0) {
-    redirect(`/vendor?err=${encodeURIComponent('Choose a photo or video to upload.')}`)
-  }
-  const f = file as File
-  if (f.size > MAX_UPLOAD) {
-    redirect(`/vendor?err=${encodeURIComponent('File is too large (max 30 MB).')}`)
-  }
-
-  // authoritative check — the project id iff the vendor is booked on this ceremony
-  const project = await vendorEventProject(user.id, eventId)
-  if (!project) {
-    redirect(`/vendor?err=${encodeURIComponent('You are not allowed to add evidence here.')}`)
-  }
-
-  const mediaId = crypto.randomUUID()
-  const dot = f.name.lastIndexOf('.')
-  const ext = dot >= 0 ? f.name.slice(dot).toLowerCase() : ''
-  const path = `${project}/${mediaId}${ext}`
-  const bytes = Buffer.from(await f.arrayBuffer())
-
-  let target: string
-  try {
-    await ensureEvidenceBucket()
-    await uploadEvidence(path, bytes, f.type || 'application/octet-stream')
-    try {
-      await vendorRecordEvidence(user.id, {
-        id: mediaId,
-        eventId,
-        storagePath: path,
-        contentType: f.type || null,
-        fileName: f.name,
-        byteSize: f.size,
-      })
-    } catch (e) {
-      await deleteEvidenceObject(path) // don't leave orphaned bytes if the row insert fails
-      throw e
-    }
-    target = `/vendor?msg=${encodeURIComponent('Evidence uploaded.')}`
-  } catch (e) {
-    target = `/vendor?err=${encodeURIComponent(translateDbError(e)?.message ?? 'Upload failed.')}`
-  }
-  revalidatePath('/vendor')
-  redirect(target)
+/** Evidence upload, step 3: verify what reached Storage and record it as the vendor. */
+export async function finalizeVendorEvidenceUploadAction(input: FinalizeInput): Promise<FinalizeResult> {
+  const user = await getUser()
+  if (!user) redirect('/login')
+  const projectId = await vendorEventProject(user.id, input.eventId)
+  const result = await finalizeEvidenceUpload(projectId, input, (stored) =>
+    vendorRecordEvidence(user.id, {
+      id: stored.mediaId,
+      eventId: input.eventId,
+      storagePath: stored.path,
+      contentType: stored.contentType,
+      fileName: input.fileName,
+      byteSize: stored.size,
+    }),
+  )
+  if (result.ok) revalidatePath('/vendor')
+  return result
 }

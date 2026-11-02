@@ -6,6 +6,8 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
 export const EVIDENCE_BUCKET = 'evidence'
+/** Per-file cap, enforced by the bucket itself (signed uploads bypass our server). */
+export const EVIDENCE_MAX_BYTES = 30 * 1024 * 1024
 
 let _client: SupabaseClient | undefined
 function svc(): SupabaseClient {
@@ -18,15 +20,47 @@ function svc(): SupabaseClient {
   return _client
 }
 
-/** Idempotently ensure the private evidence bucket exists. */
+/**
+ * Idempotently ensure the private evidence bucket exists with its size cap.
+ * Browsers upload straight to Storage via signed URLs, so the bucket's own
+ * fileSizeLimit is what actually rejects oversized files.
+ */
 export async function ensureEvidenceBucket(): Promise<void> {
   const s = svc()
+  const opts = { public: false, fileSizeLimit: EVIDENCE_MAX_BYTES }
   const { data } = await s.storage.getBucket(EVIDENCE_BUCKET)
   if (!data) {
-    const { error } = await s.storage.createBucket(EVIDENCE_BUCKET, { public: false })
+    const { error } = await s.storage.createBucket(EVIDENCE_BUCKET, opts)
     // ignore "already exists" races
     if (error && !/exist/i.test(error.message)) throw new Error(`createBucket: ${error.message}`)
+  } else if (data.file_size_limit !== EVIDENCE_MAX_BYTES) {
+    const { error } = await s.storage.updateBucket(EVIDENCE_BUCKET, opts)
+    if (error) throw new Error(`updateBucket: ${error.message}`)
   }
+}
+
+/** A one-time token the browser uses to upload this exact path itself. */
+export async function createEvidenceUploadToken(path: string): Promise<string> {
+  const { data, error } = await svc().storage.from(EVIDENCE_BUCKET).createSignedUploadUrl(path)
+  if (error || !data) throw new Error(`signed upload: ${error?.message ?? 'no token'}`)
+  return data.token
+}
+
+/** What actually landed in Storage at `path` (size + type), or null if nothing did. */
+export async function evidenceObjectInfo(
+  path: string,
+): Promise<{ size: number; contentType: string | null } | null> {
+  const slash = path.lastIndexOf('/')
+  const dir = path.slice(0, slash)
+  const name = path.slice(slash + 1)
+  const { data, error } = await svc()
+    .storage.from(EVIDENCE_BUCKET)
+    .list(dir, { search: name, limit: 10 })
+  if (error) throw new Error(`storage list: ${error.message}`)
+  const obj = data?.find((o) => o.name === name)
+  if (!obj) return null
+  const meta = (obj.metadata ?? {}) as { size?: number; mimetype?: string }
+  return { size: Number(meta.size ?? 0), contentType: meta.mimetype ?? null }
 }
 
 export async function uploadEvidence(path: string, bytes: Buffer, contentType: string): Promise<void> {

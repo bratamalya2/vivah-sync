@@ -79,7 +79,12 @@ export default function AppShell({
         <Sidebar groups={groups} scope={scope} />
         <div className="shell-main">{children}</div>
       </div>
-      <BottomTabs tabs={tabs} />
+      <BottomTabs
+        tabs={tabs}
+        groups={groups}
+        userName={(user.user_metadata?.full_name as string | undefined) ?? ''}
+        userEmail={user.email ?? ''}
+      />
     </div>
   )
 }

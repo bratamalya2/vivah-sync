@@ -12,7 +12,14 @@ import { categoryLabel } from '@/lib/categories'
 import AppShell from '@/app/dashboard/_shell/AppShell'
 import PageHeader from '@/app/dashboard/_shell/PageHeader'
 import SubmitButton from '@/app/_components/SubmitButton'
-import { respondBookingAction, acknowledgeChangeAction, uploadVendorEvidenceAction } from './actions'
+import {
+  respondBookingAction,
+  acknowledgeChangeAction,
+  prepareVendorEvidenceUploadAction,
+  finalizeVendorEvidenceUploadAction,
+} from './actions'
+import { EVIDENCE_MAX_BYTES } from '@vivahsync/db/storage'
+import EvidenceUpload from '@/app/_components/EvidenceUpload'
 
 export const dynamic = 'force-dynamic'
 
@@ -171,17 +178,14 @@ export default async function VendorPortal({
                                   ))}
                                 </ul>
                               )}
-                              <form
-                                action={uploadVendorEvidenceAction}
-                                className="reschedform"
-                                style={{ marginTop: '0.4rem' }}
-                              >
-                                <input type="hidden" name="eventId" value={b.event_id} />
-                                <input type="file" name="file" accept="image/*,video/*" required />
-                                <SubmitButton className="mini" pendingLabel="Uploading…">
-                                  Upload proof
-                                </SubmitButton>
-                              </form>
+                              <EvidenceUpload
+                                eventId={b.event_id}
+                                basePath="/vendor"
+                                maxBytes={EVIDENCE_MAX_BYTES}
+                                prepare={prepareVendorEvidenceUploadAction}
+                                finalize={finalizeVendorEvidenceUploadAction}
+                                label="Upload proof"
+                              />
                             </details>
                           )}
                         </div>

@@ -76,19 +76,17 @@ export default async function PlaybookPage({
                 </h2>
                 <div className="pbmetaright">
                   <span className="daydate">Generated {playbook.generated_at} IST</span>
-                  {selectedStatus === 'READY' ? (
-                    <a
-                      href={`/dashboard/projects/${id}/playbook/${selectedId}/pdf`}
-                      target="_blank"
-                      rel="noopener"
-                      className="mini pdfbtn"
-                    >
-                      ⬇ Download PDF
-                    </a>
-                  ) : selectedStatus === 'FAILED' ? (
-                    <span className="pdfstatus failed">PDF render failed</span>
-                  ) : (
-                    <span className="pdfstatus">PDF rendering…</span>
+                  {/* generated on first download (and retried if a render failed) */}
+                  <a
+                    href={`/dashboard/projects/${id}/playbook/${selectedId}/pdf`}
+                    target="_blank"
+                    rel="noopener"
+                    className="mini pdfbtn"
+                  >
+                    ⬇ Download PDF
+                  </a>
+                  {selectedStatus === 'FAILED' && (
+                    <span className="pdfstatus failed">Last render failed — download to retry</span>
                   )}
                 </div>
               </div>
@@ -187,7 +185,13 @@ export default async function PlaybookPage({
                     {h.is_draft && <span className="badge ff-open">draft</span>}
                     <span
                       className={`pdfdot ${(statusById.get(h.id) ?? 'PENDING').toLowerCase()}`}
-                      title={`PDF ${statusById.get(h.id) ?? 'PENDING'}`}
+                      title={
+                        statusById.get(h.id) === 'READY'
+                          ? 'PDF ready'
+                          : statusById.get(h.id) === 'FAILED'
+                            ? 'PDF render failed — download to retry'
+                            : 'PDF is generated on first download'
+                      }
                     >
                       {statusById.get(h.id) === 'READY'
                         ? 'PDF'

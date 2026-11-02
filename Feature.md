@@ -7,6 +7,7 @@
 - **Shipped** — implemented through the web UI and data layer, with the important rules enforced in PostgreSQL.
 - **Partial** — a useful slice works, but the stated feature is not complete.
 - **Not implemented** — no working product flow exists. A schema field or comment alone does not count.
+- **Removed** — dropped from scope; listed only for traceability.
 
 ## Accurate picture
 
@@ -14,7 +15,7 @@ VivahSync is currently a working **wedding-operations MVP**, not yet a complete 
 
 The application supports planner signup and onboarding, wedding creation from templates, multi-day scheduling, venue and space allocation, vendor requirements and bookings, vendor/family portals, schedule-change acknowledgements, live risks, immutable playbooks with generated PDFs, contracts and milestones, guest RSVP, travel dispatch, hotel rooms, itineraries, evidence uploads, and segmented message logging.
 
-The largest product gaps are **Cashfree/payment execution, configurable tax and currency, actual outbound messaging, CRM/lead management, and richer agency/team ownership**. Some older project documents describe these as present or planned without clearly distinguishing the two; this file records the implementation that exists now.
+The largest product gaps are **configurable tax and currency, actual outbound messaging, CRM/lead management, and richer agency/team ownership**. Some older project documents describe these as present or planned without clearly distinguishing the two; this file records the implementation that exists now.
 
 ### Verification note
 
@@ -44,8 +45,8 @@ The live database suite passed **91 of 104 tests** on 26 September 2026. The rem
 | FT-142 | Capture vendor commercial terms | **Partial** | Vendor contracts capture vendor, title, total agreed amount, notes, source, and payment milestones. Optional AI extraction can prefill a contract from a text-based PDF when OpenAI is configured. | Payment-method preferences, GST/tax applicability, and structured commercial clauses are not captured. | BR-2841 |
 | FT-143 | Milestone-based vendor payment schedules | **Shipped** | Contracts support ordered milestone labels, amounts, and optional due dates. Plans cannot exceed the contract value and must total exactly 100% before activation. Paid milestones and upcoming/overdue amounts are tracked. | — | BR-2861 |
 | FT-144 | Milestone creation requirements | **Partial** | Each saved milestone requires a label and positive amount; due date is supported and the plan is editable while drafting. | Due date is optional. Percentage entry and date-based/event-based trigger conditions are not modelled. | BR-2881 |
-| FT-150 | Cashfree virtual accounts and split payments | **Not implemented** | No Cashfree client, webhook, virtual account, escrow, payout, or split-payment flow exists. | Entire integration remains to be designed and built. | BR-2901 |
-| FT-151 | In-app UPI QR generation | **Not implemented** | The ledger can record a UPI payment after the fact. | No virtual UPI payload or native QR generation exists. | BR-2901 |
+| FT-150 | Virtual accounts and split payments | **Removed** | Payment-gateway integration was dropped from scope on 2026-11-02. Payments are recorded in the ledger, never processed. | — | BR-2901 |
+| FT-151 | In-app UPI QR generation | **Removed** | Dropped with payment-gateway integration (2026-11-02). The ledger can still record a UPI payment after the fact. | — | BR-2901 |
 | FT-148 | Payment recording details | **Shipped** | Ledger entries capture direction, amount, paid timestamp, mode (cash/bank/UPI/card), payer (client/planner/vendor/venue), optional vendor, and notes. Entries lock after 15 minutes; later corrections require a reversing entry. | This records payments; it does not execute or reconcile them with a bank/provider. | BR-2961 |
 | FT-159 | Daily inflows vs outflows | **Partial** | The ledger shows total money in, total money out, net position, and a chronological entry list. | There is no per-day cash-flow table/chart across the preparation and wedding period. | BR-3181 |
 | FT-3107 | Lead capture fields | **Not implemented** | No lead tables, data-access functions, routes, or screens exist. | Full CRM lead capture remains unbuilt. | BR-62141 |
@@ -83,5 +84,4 @@ The live database suite passed **91 of 104 tests** on 26 September 2026. The rem
 1. Finish the partial core flows: editable venue defaults, space/venue maintenance, richer conflict detail, team ownership, and explicit playbook dependencies.
 2. Connect a real messaging provider so invitations, schedule changes, and guest broadcasts leave the system with retryable delivery states.
 3. Add configurable currency/GST and a true daily cash-flow view before expanding the financial surface.
-4. Treat Cashfree as a separate payment domain with idempotent webhooks, reconciliation, and failure recovery rather than extending the manual ledger directly.
-5. Build CRM only after deciding whether it is a first-class product surface; currently there is no hidden or partial lead implementation to preserve.
+4. Build CRM only after deciding whether it is a first-class product surface; currently there is no hidden or partial lead implementation to preserve.

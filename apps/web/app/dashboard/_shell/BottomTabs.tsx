@@ -3,19 +3,31 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Icon } from './icons'
-import type { NavItem } from './nav'
+import MoreSheet from './MoreSheet'
+import type { NavGroup, NavItem } from './nav'
 
 function isActive(pathname: string, href: string, match?: 'exact' | 'startsWith') {
   if (match === 'startsWith') return pathname === href || pathname.startsWith(`${href}/`)
   return pathname === href
 }
 
-export default function BottomTabs({ tabs }: { tabs: NavItem[] }) {
+export default function BottomTabs({
+  tabs,
+  groups,
+  userName,
+  userEmail,
+}: {
+  tabs: NavItem[]
+  /** Everything the sidebar lists — shown in the "More" sheet. */
+  groups: NavGroup[]
+  userName: string
+  userEmail: string
+}) {
   const pathname = usePathname()
   return (
     <nav
       className="shell-bottomtabs"
-      style={{ gridTemplateColumns: `repeat(${tabs.length}, 1fr)` }}
+      style={{ gridTemplateColumns: `repeat(${tabs.length + 1}, 1fr)` }}
     >
       {tabs.map((t) => (
         <Link
@@ -31,6 +43,7 @@ export default function BottomTabs({ tabs }: { tabs: NavItem[] }) {
           <span className="tlbl">{t.label}</span>
         </Link>
       ))}
+      <MoreSheet groups={groups} userName={userName} userEmail={userEmail} />
     </nav>
   )
 }
